@@ -21,7 +21,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.theme.lumo.Lumo;
+import com.vaadin.flow.theme.material.Material;
 
 import java.util.Optional;
 
@@ -29,9 +29,9 @@ import java.util.Optional;
  * The main view is a top-level placeholder for other views.
  */
 @CssImport("./styles/views/main/main-view.css")
-@PWA(name = "Fooda", shortName = "Fooda")
+@PWA(name = "Fooda", shortName = "Fooda", enableInstallPrompt = false)
 @JsModule("./styles/shared-styles.js")
-@Theme(value = Lumo.class, variant = Lumo.DARK)
+@Theme(value = Material.class, variant = Material.DARK)
 public class MainView extends AppLayout {
 
     private final Tabs menu;
@@ -47,29 +47,26 @@ public class MainView extends AppLayout {
     private Component createHeaderContent() {
         HorizontalLayout layout = new HorizontalLayout();
         layout.setId("header");
-        layout.getThemeList().set("dark", true);
         layout.setWidthFull();
         layout.setSpacing(false);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
         layout.add(new DrawerToggle());
         viewTitle = new H1();
         layout.add(viewTitle);
-        layout.add(new Image("images/basket_empty.svg", "Basket"));
+        final Image basketIcon = new Image("images/basket_empty.svg", "Basket");
+        layout.add(basketIcon);
         return layout;
     }
 
     private Component createDrawerContent(Tabs menu) {
         VerticalLayout layout = new VerticalLayout();
-        layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        layout.getThemeList().set("spacing-s", true);
-        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
+        layout.addClassName("drawer_layout");
+
         HorizontalLayout logoLayout = new HorizontalLayout();
-        logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        logoLayout.getStyle().set("padding-top", "8vh");
-        logoLayout.add(new Image("images/logo.png", "Fooda Logo"));
+        final Image logoImage = new Image("images/logo.png", "Fooda Logo");
+        logoImage.addClassName("drawer_logo");
+        logoLayout.add(logoImage);
         layout.add(logoLayout, menu);
         return layout;
     }
@@ -85,9 +82,12 @@ public class MainView extends AppLayout {
 
     private Component[] createMenuItems() {
         return new Tab[]{
-                createTab("Basket", new Image("images/basket_empty.svg", "Basket"), BasketView.class),
-                createTab("Search", new Image("images/search.svg", "Search"), SearchFoodView.class),
-                createTab("Profile", new Image("images/profile.svg", "Profile"), ProfileView.class)
+                createTab("Basket", BasketView.class),
+                createTab("Search", SearchFoodView.class),
+                createTab("Profile", ProfileView.class)
+//                createTab("Basket", new Image("images/basket_empty.svg", "Basket"), BasketView.class),
+//                createTab("Search", new Image("images/search.svg", "Search"), SearchFoodView.class),
+//                createTab("Profile", new Image("images/profile.svg", "Profile"), ProfileView.class)
         };
     }
 

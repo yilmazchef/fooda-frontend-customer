@@ -1,5 +1,5 @@
 // eagerly import theme styles so as we can override them
-import '@vaadin/vaadin-lumo-styles/all-imports';
+import '@vaadin/vaadin-material-styles/all-imports';
 
 const $_documentContainer = document.createElement('template');
 
