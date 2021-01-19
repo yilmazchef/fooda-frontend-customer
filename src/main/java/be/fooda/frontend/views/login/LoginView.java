@@ -10,6 +10,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
+
 @Route(value = "login", layout = MainView.class)
 @PageTitle("Fooda | SMS Login")
 public class LoginView extends VerticalLayout {
@@ -30,10 +32,14 @@ public class LoginView extends VerticalLayout {
         Button sendSmsCodeButton = new Button("Send SMS Code");
         sendSmsCodeButton.addClickListener(click -> {
             final ResponseEntity<String> response = userService.sendSmsCode(phoneNumberField.getValue());
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody().equalsIgnoreCase("SMS_CODE_IS_SENT")) {
+            if (response.getStatusCode().is2xxSuccessful() &&
+                    Objects.requireNonNull(response.getBody()).equalsIgnoreCase("SMS_CODE_IS_SENT")) {
+
                 UI.getCurrent().navigate("verify");
             }
         });
+
+        add(phoneNumberField, sendSmsCodeButton);
 
     }
 

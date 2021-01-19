@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> sendSmsCode(String phoneNumber) {
-        final String completeUrl = baseUrl + "send_sms_code?phoneNumber={phoneNumber}}";
+        final String completeUrl = baseUrl + "send_sms_code?phoneNumber={phoneNumber}";
         return restTemplate.getForEntity(completeUrl, String.class, phoneNumber);
     }
 }
