@@ -12,7 +12,7 @@ public class VerifyFailedView extends Div {
 
     public VerifyFailedView() {
         setId("verify-failed-view");
-        add(new Text("Content placeholder"));
+        add(new Text("Verify failed.. resend the code.. "));
     }
 
 }

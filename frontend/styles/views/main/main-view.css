@@ -1,47 +1,7 @@
-#header {
-    height: 5vh;
-    width: 100vw;
+#welcome-view #logo {
+
 }
 
-#header h1, h2, h3 {
-    font-size: medium;
-}
-
-#header img {
-    width: 22px;
-    position: absolute;
-    right: 4vw;
-}
-
-#welcome-view,
-#basket-view,
-#product-search-view,
-#profile-view {
-    padding-top: 2vh;
-    padding-left: 6vw;
-}
-
-.drawer_layout {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding-left: 1vw;
-    vertical-align: central;
-    justify-items: left;
-}
-
-.drawer_logo {
-    padding-top: 6vh;
-    padding-bottom: 4vh;
-    max-width: 128px;
-    width: 20vw;
-    height: auto;
-}
-
-.navigation_icon {
-    padding-right: 4px;
-}
 
 .product_image {
     width: 640px;
@@ -50,7 +10,7 @@
 
 @media (max-width: 600px) {
     .product_image {
-        width: 128px;
+        width: 85vw;
         height: auto;
     }
 }

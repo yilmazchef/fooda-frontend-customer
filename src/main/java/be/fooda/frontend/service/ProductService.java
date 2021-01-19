@@ -1,6 +1,7 @@
 package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.product.Product;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -9,7 +10,9 @@ import org.springframework.web.client.RestTemplate;
 public class ProductService {
 
     private final RestTemplate restTemplate;
-    private static final String baseUrl = "http://localhost:8001/api/v1/product/";
+
+    @Value("${fooda.product.service.url}")
+    private String baseUrl;
 
     public ProductService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
