@@ -2,12 +2,16 @@ package be.fooda.frontend.models.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.math.BigDecimal;
+
 public class ProductIngredient {
 
     @JsonIgnore
     private Long id;
 
     private String ingredientName;
+
+    private BigDecimal price;
 
     public Long getId() {
         return id;
