@@ -31,21 +31,44 @@ public class LoginView extends VerticalLayout {
         sendSmsCodeButton.addClickListener(sendSmsClick -> {
             final ResponseEntity<String> sendSmsResponse = userService.sendSmsCode(phoneNumberField.getValue());
             if (sendSmsResponse.getStatusCode().is2xxSuccessful()) {
-                new Notification("Sms is Sent").open();
-                TextField smsCodeField = new TextField();
-                smsCodeField.setRequired(true);
-                smsCodeField.setAutofocus(true);
+                final Notification codeIsValidNotification = new Notification("SMS Code is sent.");
+                codeIsValidNotification.getElement().getStyle()
+                        .set("color", "#29ED6C");
+                codeIsValidNotification.setDuration(2000);
+                codeIsValidNotification.open();
+            }
+        });
 
-                Button validateCodeButton = new Button("Validate & Login");
-                validateCodeButton.addClickListener(validateClick -> {
-                    final ResponseEntity<String> codeValidationResponse = userService.validateSmsCode(phoneNumberField.getValue(), smsCodeField.getValue());
-                    if (codeValidationResponse.getStatusCode().is2xxSuccessful()) {
-                        UI.getCurrent().navigate("main");
-                        new Notification("Sms is Valid").open();
-                    }
-                });
+        TextField smsCodeField = new TextField();
+        smsCodeField.setRequired(true);
+        smsCodeField.setAutofocus(true);
 
-                add(smsCodeField, validateCodeButton);
+        Button validateCodeButton = new Button("Validate & Login");
+        validateCodeButton.addClickListener(validateClick -> {
+            if (phoneNumberField.getValue().isEmpty()) {
+                final Notification requiredPhoneNumberNotification = new Notification("Phone number is required");
+                requiredPhoneNumberNotification.getElement().getStyle()
+                        .set("color", "#FFCC00");
+                requiredPhoneNumberNotification.setDuration(2000);
+                requiredPhoneNumberNotification.open();
+            }
+
+            if (smsCodeField.getValue().isEmpty()) {
+                final Notification requiredSmsCodeNotification = new Notification("Sms Code is required");
+                requiredSmsCodeNotification.getElement().getStyle()
+                        .set("color", "#FFCC00");
+                requiredSmsCodeNotification.setDuration(2000);
+                requiredSmsCodeNotification.open();
+            }
+
+            final ResponseEntity<String> codeValidationResponse = userService.validateSmsCode(phoneNumberField.getValue(), smsCodeField.getValue());
+            if (codeValidationResponse.getStatusCode().is2xxSuccessful()) {
+                final Notification codeIsValidNotification = new Notification("User is valid.");
+                codeIsValidNotification.getElement().getStyle()
+                        .set("color", "#29ED6C");
+                codeIsValidNotification.setDuration(2000);
+                codeIsValidNotification.open();
+                UI.getCurrent().navigate("main");
             }
         });
 
@@ -53,7 +76,7 @@ public class LoginView extends VerticalLayout {
         setMargin(false);
         setSizeFull();
         setAlignItems(Alignment.CENTER);
-        add(phoneNumberField, sendSmsCodeButton);
+        add(phoneNumberField, sendSmsCodeButton, smsCodeField, validateCodeButton);
 
     }
 
