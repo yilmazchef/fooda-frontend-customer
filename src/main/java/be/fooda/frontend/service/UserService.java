@@ -21,4 +21,9 @@ public class UserService {
         final String completeUrl = baseUrl + "send_sms_code?phoneNumber={phoneNumber}";
         return restTemplate.getForEntity(completeUrl, String.class, phoneNumber);
     }
+
+    public ResponseEntity<String> validateSmsCode(String phoneNumber, String smsCode) {
+        final String completeUrl = baseUrl + "validate_sms_code?phoneNumber={phoneNumber}&smsCode={smsCode}";
+        return restTemplate.getForEntity(completeUrl, String.class, phoneNumber, smsCode);
+    }
 }
