@@ -1,15 +1,13 @@
 package be.fooda.frontend.models.basket;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalTime;
 
 
 public class BasketOrder {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     private BasketUser user;
