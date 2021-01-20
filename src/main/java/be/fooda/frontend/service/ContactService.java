@@ -6,12 +6,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.Positive;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,13 +41,11 @@ public class ContactService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Contact.class, id);
     }
 
-    @GetMapping("get_Contact_details_By_user_Id")
-    public ResponseEntity getContactByUserId(@RequestParam @Positive Long externalUserId) {
+    public ResponseEntity getContactByUserId(Long externalUserId) {
         final String completeUrl = baseUrl + "get_Contact_details_By_user_Id?externalUserId={externalUserId}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Contact[].class, externalUserId);
     }
 
-    @PostMapping("add_Contact")
     public ResponseEntity addContact(Contact contact) {
         final String completeUrl = baseUrl + "add_Contact";
         return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(contact), String.class);
