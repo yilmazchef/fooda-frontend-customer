@@ -4,15 +4,26 @@ import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.service.ProductService;
 import be.fooda.frontend.views.main.MainView;
+import com.github.appreciated.card.Card;
+import com.github.appreciated.card.action.ActionButton;
+import com.github.appreciated.card.action.Actions;
+import com.github.appreciated.card.content.IconItem;
+import com.github.appreciated.card.content.Item;
+import com.github.appreciated.card.label.PrimaryLabel;
+import com.github.appreciated.card.label.SecondaryLabel;
+import com.github.appreciated.card.label.TitleLabel;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -57,33 +68,24 @@ public class MainMenuView extends VerticalLayout {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
             for (Product product : products) {
-                createProductCardLayout(product);
+                newDetailedProductCard(product);
             }
         }
     }
 
-    private void createProductCardLayout(Product product) {
-
-        VerticalLayout productCardLayout = new VerticalLayout();
-        productCardLayout.addClassName("product-card-layout");
-
-        Image img = new Image(product.getImages().get(0).getUrl(), product.getProductName());
-        img.addClassName("product-img");
+    private void newDetailedProductCard(Product product) {
 
         NumberField qty = new NumberField();
         qty.setValue(1d);
         qty.setHasControls(true);
         qty.setMin(1);
         qty.setMax(product.getLimitPerOrder());
-        qty.addClassName("product-quantity");
 
         BigDecimalField price = new BigDecimalField("Total:");
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setPrefixComponent(new Icon(VaadinIcon.EURO));
-        price.addClassName("product-price");
 
-        Label tax = new Label();
-        tax.addClassName("product-tax");
+        Paragraph tax = new Paragraph();
 
         qty.addValueChangeListener(onQuantityChange -> {
             price.setValue(product.getPrices().get(0).getAmount().multiply(BigDecimal.valueOf(qty.getValue())).setScale(2));
@@ -99,35 +101,17 @@ public class MainMenuView extends VerticalLayout {
             tax.setText("VAT " + product.getTaxes().get(0).getPercentage() + "%: " + taxValue + product.getPrices().get(0).getCurrency());
         });
 
-        final Label name = new Label(product.getProductName());
-        name.addClassName("product-name");
+        SimpleCard simpleCard = new SimpleCard(
+                product.getImages().get(0).getUrl(),
+                product.getProductName(),
+                product.getDescription(),
+                qty, price, tax,
+                new ActionButton(VaadinIcon.CHECK.create(), onClick -> {
+                    new Notification(product.getProductName() + " is added.. ");
+                })
+        );
 
-        final Label description = new Label(product.getDescription());
-        description.addClassNames("product-description");
-
-        Button addToBasket = new Button("Add to Basket", onClick -> {
-            new Notification(product.getProductName() + " is added to basket.. ").open();
-        });
-        addToBasket.addClassName("product-add-to-basket");
-
-        // get image
-        VerticalLayout imageLayout = new VerticalLayout();
-        imageLayout.add(img);
-
-        // get name, get description, get ingredients ..
-        VerticalLayout nameAndDescLayout = new VerticalLayout();
-        nameAndDescLayout.add(name, description);
-
-        // change quantity, set price, get tax info, add to basket ..
-        HorizontalLayout quantityAndPriceLayout = new HorizontalLayout();
-        quantityAndPriceLayout.add(qty, price, tax);
-
-        // change quantity, set price, get tax info, add to basket ..
-        HorizontalLayout actionButtonsLayout = new HorizontalLayout();
-        actionButtonsLayout.add(addToBasket);
-
-        productCardLayout.add(imageLayout, nameAndDescLayout, quantityAndPriceLayout, actionButtonsLayout);
-        add(productCardLayout);
+        add(simpleCard);
     }
 
     private void initProductCategoriesFromResponse(ResponseEntity<ProductCategory[]> responseEntity) {
@@ -153,5 +137,60 @@ public class MainMenuView extends VerticalLayout {
             add(accordion);
         }
     }
+
+    public class DetailedCard extends VerticalLayout {
+
+        public DetailedCard(String titleLabel, String primaryLabel, String secondaryLabel,
+                            Image icon, String iconTitle,
+                            String iconDescription, String item, String itemDescription,
+                            String imageUrl, String imageAlt,
+                            String action1Text, String action2Text, ComponentEventListener<ClickEvent<Button>> action01Event, ComponentEventListener<ClickEvent<Button>> action02Event) {
+            Card card = new Card(
+                    // if you don't want the title to wrap you can set the whitespace = nowrap
+                    new TitleLabel(titleLabel).withWhiteSpaceNoWrap(),
+                    new PrimaryLabel(primaryLabel),
+                    new SecondaryLabel(secondaryLabel),
+                    new IconItem(icon, iconTitle, iconDescription),
+                    new Item(item, itemDescription),
+                    new Image(imageUrl, imageAlt),
+                    new Actions(
+                            new ActionButton(action1Text, action01Event),
+                            new ActionButton(action2Text, action02Event)
+                    )
+            );
+
+            add(card);
+        }
+    }
+
+    public class SimpleCard extends VerticalLayout {
+        public SimpleCard(String imagePath, String title, String description,
+                          String action1Text, ComponentEventListener<ClickEvent<Button>> action01Event) {
+            Image img = new Image(imagePath, title);
+            img.setWidth("50px");
+            img.setHeight("50px");
+            Card card = new Card(
+                    new IconItem(img, title, description),
+                    new Actions(
+                            new ActionButton(action1Text, action01Event)
+                    )
+            );
+            card.setWidth("100%");
+            add(card);
+        }
+
+        public SimpleCard(String imagePath, String title, String description, Component... components) {
+            Image img = new Image(imagePath, title);
+            img.setWidth("50px");
+            img.setHeight("50px");
+            Card card = new Card(
+                    new IconItem(img, title, description),
+                    new Actions(components)
+            );
+            card.setWidth("100%");
+            add(card);
+        }
+    }
+
 
 }
