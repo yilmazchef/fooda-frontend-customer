@@ -1,7 +1,6 @@
 package be.fooda.frontend.models.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.math.BigDecimal;
 
 public class OrderProduct {
