@@ -28,6 +28,9 @@ public class MainView extends AppLayout {
 
     public MainView() {
 
+        setDrawerOpened(false);
+        setId("main-view");
+
         Image logoForTabs = new Image("images/logo.svg", "Fooda Logo");
         logoForTabs.setWidth("128px");
         logoForTabs.getStyle()
@@ -43,6 +46,7 @@ public class MainView extends AppLayout {
         Tabs tabs = new Tabs(
                 new Tab(logoForTabs),
                 new Tab(new Anchor("login", "Login")),
+                new Tab(new Anchor("basket", "Go to Basket")),
                 new Tab(new Anchor("search_food", "Search Food")),
                 new Tab(new Anchor("search_restaurant", "Search Restaurant")),
                 new Tab(new Anchor("search_map", "Search by Location")),
