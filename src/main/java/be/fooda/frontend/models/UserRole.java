@@ -1,8 +1,9 @@
 package be.fooda.frontend.models;
 
 public enum UserRole {
-    STATUS01("");
-
+    ROLE_FOODA_PARENT("Fooda Application Customer"),
+    ROLE_RESTA_PARENT("Restaurant Managers"),
+    ROLE_DELLA_PARENT("Couriers");
 
     private String value;
 
