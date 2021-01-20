@@ -1,13 +1,13 @@
 package be.fooda.frontend.models.payment;
 
 import be.fooda.frontend.models.PaymentMethod;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
 public class PaymentItem {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private BigDecimal amount;
