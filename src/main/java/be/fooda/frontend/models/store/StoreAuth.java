@@ -8,7 +8,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class storeAuth {
+public class StoreAuth {
 
     private Long id;
 

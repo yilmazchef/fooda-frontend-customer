@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.URL;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class storeMenuItem {
+public class StoreMenuItem {
 
     private Long id;
 

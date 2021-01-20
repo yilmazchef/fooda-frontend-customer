@@ -2,7 +2,7 @@ package be.fooda.frontend.models.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class storeUser {
+public class StoreUser {
 
     Long id;
 

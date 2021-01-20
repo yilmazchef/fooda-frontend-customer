@@ -1,12 +1,9 @@
 package be.fooda.frontend.models.store;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class store {
+public class Store {
     public class FoodaStore {
 
 
@@ -34,24 +31,24 @@ public class store {
 
         private LocalDateTime updateTime;
 
-        private storeAuth auth;
+        private StoreAuth auth;
 
-        private storeUser user;
-
-
-        private List<storeImage> images;
+        private StoreUser user;
 
 
-        private storeAddress address;
+        private List<StoreImage> images;
 
 
-        private storeContact contact;
+        private StoreAddress address;
 
 
-        private List<storeMenuItem> menuItems;
+        private StoreContact contact;
 
 
-        private List<storeAcceptedPaymentMethod> acceptedPaymentMethods;
+        private List<StoreMenuItem> menuItems;
+
+
+        private List<StoreAcceptedPaymentMethod> acceptedPaymentMethods;
 
         public Long getId() {
             return id;
@@ -125,82 +122,82 @@ public class store {
             this.updateTime = updateTime;
         }
 
-        public storeAuth getAuth() {
+        public StoreAuth getAuth() {
             return auth;
         }
 
-        public void setAuth(storeAuth auth) {
+        public void setAuth(StoreAuth auth) {
             this.auth = auth;
         }
 
-        public storeUser getUser() {
+        public StoreUser getUser() {
             return user;
         }
 
-        public void setUser(storeUser user) {
+        public void setUser(StoreUser user) {
             this.user = user;
         }
 
-        public List<storeImage> getImages() {
+        public List<StoreImage> getImages() {
             return images;
         }
 
-        public void setImages(List<storeImage> images) {
+        public void setImages(List<StoreImage> images) {
             this.images = images;
         }
 
-        public storeAddress getAddress() {
+        public StoreAddress getAddress() {
             return address;
         }
 
-        public void setAddress(storeAddress address) {
+        public void setAddress(StoreAddress address) {
             this.address = address;
         }
 
-        public storeContact getContact() {
+        public StoreContact getContact() {
             return contact;
         }
 
-        public void setContact(storeContact contact) {
+        public void setContact(StoreContact contact) {
             this.contact = contact;
         }
 
-        public List<storeMenuItem> getMenuItems() {
+        public List<StoreMenuItem> getMenuItems() {
             return menuItems;
         }
 
-        public void setMenuItems(List<storeMenuItem> menuItems) {
+        public void setMenuItems(List<StoreMenuItem> menuItems) {
             this.menuItems = menuItems;
         }
 
-        public List<storeAcceptedPaymentMethod> getAcceptedPaymentMethods() {
+        public List<StoreAcceptedPaymentMethod> getAcceptedPaymentMethods() {
             return acceptedPaymentMethods;
         }
 
-        public void setAcceptedPaymentMethods(List<storeAcceptedPaymentMethod> acceptedPaymentMethods) {
+        public void setAcceptedPaymentMethods(List<StoreAcceptedPaymentMethod> acceptedPaymentMethods) {
             this.acceptedPaymentMethods = acceptedPaymentMethods;
         }
 
-        public List<storeDeliveryLocation> getDeliveryLocations() {
+        public List<StoreDeliveryLocation> getDeliveryLocations() {
             return deliveryLocations;
         }
 
-        public void setDeliveryLocations(List<storeDeliveryLocation> deliveryLocations) {
+        public void setDeliveryLocations(List<StoreDeliveryLocation> deliveryLocations) {
             this.deliveryLocations = deliveryLocations;
         }
 
-        public List<storeWorkingHours> getWorkingHours() {
+        public List<StoreWorkingHours> getWorkingHours() {
             return workingHours;
         }
 
-        public void setWorkingHours(List<storeWorkingHours> workingHours) {
+        public void setWorkingHours(List<StoreWorkingHours> workingHours) {
             this.workingHours = workingHours;
         }
 
-        private List<storeDeliveryLocation> deliveryLocations;
+        private List<StoreDeliveryLocation> deliveryLocations;
 
 
-        private List<storeWorkingHours> workingHours;
+        private List<StoreWorkingHours> workingHours;
 
 
     }

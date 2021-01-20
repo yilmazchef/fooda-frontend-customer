@@ -8,7 +8,7 @@ import javax.validation.constraints.FutureOrPresent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class storeAcceptedPaymentMethod {
+public class StoreAcceptedPaymentMethod {
 
 
     private Long id;

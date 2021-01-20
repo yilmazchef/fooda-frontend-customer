@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 
-public class storeDeliveryLocation {
+public class StoreDeliveryLocation {
 
     private Long id;
 

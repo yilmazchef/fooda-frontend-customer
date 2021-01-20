@@ -1,16 +1,13 @@
 package be.fooda.frontend.models.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.URL;
-
-public class storeImage {
+public class StoreImage {
 
     private Long id;
 
     private Long externalMediaId;
 
 
-    private storeUser.Type type;
+    private StoreUser.Type type;
 
     private String url;
 
@@ -31,11 +28,11 @@ public class storeImage {
         this.externalMediaId = externalMediaId;
     }
 
-    public storeUser.Type getType() {
+    public StoreUser.Type getType() {
         return type;
     }
 
-    public void setType(storeUser.Type type) {
+    public void setType(StoreUser.Type type) {
         this.type = type;
     }
 

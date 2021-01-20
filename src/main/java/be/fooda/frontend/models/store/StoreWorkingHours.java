@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class storeWorkingHours {
+public class StoreWorkingHours {
 
     private Long id;
 
