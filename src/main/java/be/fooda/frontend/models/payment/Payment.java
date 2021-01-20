@@ -1,7 +1,7 @@
 package be.fooda.frontend.models.payment;
 
 import be.fooda.frontend.models.PaymentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Payment {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private Boolean isActive = Boolean.TRUE;
