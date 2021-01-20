@@ -3,17 +3,31 @@ package be.fooda.frontend.views.mainmenu;
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.service.ProductService;
-import be.fooda.frontend.views.components.ProductCard;
 import be.fooda.frontend.views.main.MainView;
+import com.github.appreciated.card.Card;
+import com.github.appreciated.card.action.ActionButton;
+import com.github.appreciated.card.action.Actions;
+import com.github.appreciated.card.content.IconItem;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,7 +65,57 @@ public class MainMenuView extends VerticalLayout {
     private void initProductsFromResponse(ResponseEntity<Product[]> responseEntity) {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
-            Arrays.stream(products).forEachOrdered(product -> add(new ProductCard(product)));
+
+            for (Product product : products) {
+
+                Image img = new Image(product.getImages().get(0).getUrl(), product.getProductName());
+                img.setWidth("50px");
+                img.setHeight("50px");
+
+                NumberField qty = new NumberField();
+                qty.setValue(1d);
+                qty.setHasControls(true);
+                qty.setMin(1);
+                qty.setMax(product.getLimitPerOrder());
+
+                BigDecimalField price = new BigDecimalField("Total cost");
+                price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+                price.setPrefixComponent(new Icon(VaadinIcon.EURO));
+
+                Label taxLabel = new Label();
+
+                qty.addValueChangeListener(onQuantityChange -> {
+                    price.setValue(product.getPrices().get(0).getAmount().multiply(BigDecimal.valueOf(qty.getValue())).setScale(2));
+                });
+
+                price.addValueChangeListener(e -> {
+                    BigDecimal taxValue;
+                    if (e.getValue() == null) {
+                        taxValue = BigDecimal.ZERO;
+                    } else {
+                        taxValue = e.getValue().multiply(new BigDecimal(product.getTaxes().get(0).getPercentage())).setScale(2, RoundingMode.HALF_EVEN);
+                    }
+                    taxLabel.setText("VAT " + product.getTaxes().get(0).getPercentage() + "%: " + taxValue + product.getPrices().get(0).getCurrency());
+                });
+
+                VerticalLayout productLeftLayout = new VerticalLayout();
+                productLeftLayout.setPadding(false);
+                productLeftLayout.add(img);
+
+                VerticalLayout productRightLayout = new VerticalLayout();
+                productRightLayout.setPadding(false);
+                productRightLayout.add(new H3(product.getProductName()), new Paragraph(product.getDescription()), qty, price);
+
+                Card card = new Card(
+                        new IconItem(productLeftLayout, productRightLayout),
+                        new Actions(
+                                new ActionButton("Add to Basket")
+                        )
+                );
+                card.setWidth("100%");
+                add(card);
+            }
+
         }
     }
 
@@ -77,4 +141,5 @@ public class MainMenuView extends VerticalLayout {
             add(accordion);
         }
     }
+
 }

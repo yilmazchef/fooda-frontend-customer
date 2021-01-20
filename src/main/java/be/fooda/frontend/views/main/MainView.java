@@ -46,11 +46,11 @@ public class MainView extends AppLayout {
         Tabs tabs = new Tabs(
                 new Tab(logoForTabs),
                 new Tab(new Anchor("login", "Login")),
-                new Tab(new Anchor("basket", "Go to Basket")),
-                new Tab(new Anchor("search_food", "Search Food")),
-                new Tab(new Anchor("search_restaurant", "Search Restaurant")),
-                new Tab(new Anchor("search_map", "Search by Location")),
-                new Tab(new Anchor("search_orders", "Search in Orders"))
+                new Tab(new Anchor("basket", "Basket")),
+                new Tab(new Anchor("search_food", "Foods")),
+                new Tab(new Anchor("search_restaurant", "Restaurants")),
+                new Tab(new Anchor("search_map", "Maps")),
+                new Tab(new Anchor("search_orders", "Orders"))
         );
 
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
