@@ -1,6 +1,5 @@
 package be.fooda.frontend.models.delivery;
 
-
 import be.fooda.frontend.models.DeliveryStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;

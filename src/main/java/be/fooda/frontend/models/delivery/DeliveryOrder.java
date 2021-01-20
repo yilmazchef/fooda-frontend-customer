@@ -3,7 +3,6 @@ package be.fooda.frontend.models.delivery;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 
-
 public class DeliveryOrder {
 
     @JsonIgnore
