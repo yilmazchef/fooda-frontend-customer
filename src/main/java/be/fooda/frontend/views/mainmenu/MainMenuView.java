@@ -4,19 +4,15 @@ import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.service.ProductService;
 import be.fooda.frontend.views.main.MainView;
-import com.github.appreciated.card.Card;
-import com.github.appreciated.card.action.ActionButton;
-import com.github.appreciated.card.action.Actions;
-import com.github.appreciated.card.content.IconItem;
 import com.vaadin.flow.component.accordion.Accordion;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -43,12 +39,9 @@ public class MainMenuView extends VerticalLayout {
         this.productService = productService;
         setId("main-menu-view");
 
-        setPadding(false);
-        setMargin(false);
-        setAlignItems(Alignment.AUTO);
+        setAlignItems(Alignment.STRETCH);
 
         getProductCategories();
-
         getProducts();
     }
 
@@ -65,58 +58,73 @@ public class MainMenuView extends VerticalLayout {
     private void initProductsFromResponse(ResponseEntity<Product[]> responseEntity) {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
-
             for (Product product : products) {
-
-                Image img = new Image(product.getImages().get(0).getUrl(), product.getProductName());
-                img.setWidth("50px");
-                img.setHeight("50px");
-
-                NumberField qty = new NumberField();
-                qty.setValue(1d);
-                qty.setHasControls(true);
-                qty.setMin(1);
-                qty.setMax(product.getLimitPerOrder());
-
-                BigDecimalField price = new BigDecimalField("Total cost");
-                price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-                price.setPrefixComponent(new Icon(VaadinIcon.EURO));
-
-                Label taxLabel = new Label();
-
-                qty.addValueChangeListener(onQuantityChange -> {
-                    price.setValue(product.getPrices().get(0).getAmount().multiply(BigDecimal.valueOf(qty.getValue())).setScale(2));
-                });
-
-                price.addValueChangeListener(e -> {
-                    BigDecimal taxValue;
-                    if (e.getValue() == null) {
-                        taxValue = BigDecimal.ZERO;
-                    } else {
-                        taxValue = e.getValue().multiply(new BigDecimal(product.getTaxes().get(0).getPercentage())).setScale(2, RoundingMode.HALF_EVEN);
-                    }
-                    taxLabel.setText("VAT " + product.getTaxes().get(0).getPercentage() + "%: " + taxValue + product.getPrices().get(0).getCurrency());
-                });
-
-                VerticalLayout productLeftLayout = new VerticalLayout();
-                productLeftLayout.setPadding(false);
-                productLeftLayout.add(img);
-
-                VerticalLayout productRightLayout = new VerticalLayout();
-                productRightLayout.setPadding(false);
-                productRightLayout.add(new H3(product.getProductName()), new Paragraph(product.getDescription()), qty, price);
-
-                Card card = new Card(
-                        new IconItem(productLeftLayout, productRightLayout),
-                        new Actions(
-                                new ActionButton("Add to Basket")
-                        )
-                );
-                card.setWidth("100%");
-                add(card);
+                createProductCardLayout(product);
             }
-
         }
+    }
+
+    private void createProductCardLayout(Product product) {
+
+        Image img = new Image(product.getImages().get(0).getUrl(), product.getProductName());
+        img.setWidth("95vw");
+        img.setMaxWidth("480px");
+        img.setHeight("auto");
+
+        NumberField qty = new NumberField();
+        qty.setValue(1d);
+        qty.setHasControls(true);
+        qty.setMin(1);
+        qty.setMax(product.getLimitPerOrder());
+
+        BigDecimalField price = new BigDecimalField("Total:");
+        price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        price.setPrefixComponent(new Icon(VaadinIcon.EURO));
+
+        Label tax = new Label();
+
+        qty.addValueChangeListener(onQuantityChange -> {
+            price.setValue(product.getPrices().get(0).getAmount().multiply(BigDecimal.valueOf(qty.getValue())).setScale(2));
+        });
+
+        price.addValueChangeListener(e -> {
+            BigDecimal taxValue;
+            if (e.getValue() == null) {
+                taxValue = BigDecimal.ZERO;
+            } else {
+                taxValue = e.getValue().multiply(new BigDecimal(product.getTaxes().get(0).getPercentage())).setScale(2, RoundingMode.HALF_EVEN);
+            }
+            tax.setText("VAT " + product.getTaxes().get(0).getPercentage() + "%: " + taxValue + product.getPrices().get(0).getCurrency());
+        });
+
+
+        Button addToBasket = new Button("Add to Basket", onClick -> {
+            new Notification(product.getProductName() + " is added to basket.. ").open();
+        });
+
+        // get image
+        VerticalLayout imageLayout = new VerticalLayout();
+        imageLayout.setWidth("90vw");
+        imageLayout.add(img);
+
+        // get name, get description, get ingredients ..
+        VerticalLayout nameAndDescLayout = new VerticalLayout();
+        nameAndDescLayout.setWidth("90vw");
+        final H4 name = new H4(product.getProductName());
+        final Span description = new Span(product.getDescription());
+        nameAndDescLayout.add(name, description);
+
+        // change quantity, set price, get tax info, add to basket ..
+        HorizontalLayout quantityAndPriceLayout = new HorizontalLayout();
+        quantityAndPriceLayout.setWidth("90vw");
+        quantityAndPriceLayout.add(qty, price, tax);
+
+        // change quantity, set price, get tax info, add to basket ..
+        HorizontalLayout actionButtonsLayout = new HorizontalLayout();
+        actionButtonsLayout.setWidth("90vw");
+        actionButtonsLayout.add(addToBasket);
+
+        add(imageLayout, nameAndDescLayout, quantityAndPriceLayout, actionButtonsLayout);
     }
 
     private void initProductCategoriesFromResponse(ResponseEntity<ProductCategory[]> responseEntity) {
