@@ -2,7 +2,6 @@ package be.fooda.frontend.views.searchfood;
 
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
-import be.fooda.frontend.service.BasketService;
 import be.fooda.frontend.service.ProductService;
 import be.fooda.frontend.views.main.MainView;
 import com.github.appreciated.card.Card;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 public class SearchFoodView extends VerticalLayout {
 
     private final ProductService productService;
-    private final BasketService basketService;
 
     private static final int RESULTS_PER_PAGE = 25;
     private static final int DEFAULT_PAGE_NUMBER = 1;
@@ -42,9 +40,8 @@ public class SearchFoodView extends VerticalLayout {
     private final TextField searchField = new TextField();
     private final Button searchButton = new Button();
 
-    public SearchFoodView(ProductService productService, BasketService basketService) {
+    public SearchFoodView(ProductService productService) {
         this.productService = productService;
-        this.basketService = basketService;
 
         setId("search-food-view");
 

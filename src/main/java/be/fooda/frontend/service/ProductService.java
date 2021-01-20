@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -26,7 +28,10 @@ public class ProductService {
 
     public ResponseEntity getAll(int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "getAllProducts?pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity searchByName(String productName, int pageNo, int pageSize) {
