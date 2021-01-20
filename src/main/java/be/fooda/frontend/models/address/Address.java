@@ -1,10 +1,10 @@
 package be.fooda.frontend.models.address;
 
-import be.fooda.frontend.models.contact.contactUser;
+import be.fooda.frontend.models.contact.ContactUser;
 
 import java.time.LocalDateTime;
 
-public class address {
+public class Address {
 
     private Long id;
 
@@ -36,15 +36,15 @@ public class address {
 
     private String countryCode;
 
-    public contactUser getUser() {
+    public ContactUser getUser() {
         return user;
     }
 
-    public void setUser(contactUser user) {
+    public void setUser(ContactUser user) {
         this.user = user;
     }
 
-    private contactUser user;
+    private ContactUser user;
 
     public Long getId() {
         return id;

@@ -1,12 +1,10 @@
 package be.fooda.frontend.models.contact;
 
-import java.time.LocalDateTime;
-
-public class contact {
+public class Contact {
 
     private Long id;
 
-    private contactUser user;
+    private ContactUser user;
 
     private String firstName;
 
@@ -34,11 +32,11 @@ public class contact {
         this.id = id;
     }
 
-    public contactUser getUser() {
+    public ContactUser getUser() {
         return user;
     }
 
-    public void setUser(contactUser user) {
+    public void setUser(ContactUser user) {
         this.user = user;
     }
 

@@ -1,7 +1,12 @@
-package be.fooda.frontend.models.address;
+package be.fooda.frontend.models.contact;
 
-public class addressUser {
+public class ContactUser {
+
+
+
     private Long externalUserId;
+
+    private String username;
 
     public Long getExternalUserId() {
         return externalUserId;
@@ -18,6 +23,4 @@ public class addressUser {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    private String username;
 }
