@@ -1,103 +1,80 @@
 package be.fooda.frontend.views.mainmenu;
 
 import be.fooda.frontend.models.product.Product;
-import be.fooda.frontend.service.BasketService;
+import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.service.ProductService;
+import be.fooda.frontend.views.components.ProductCard;
 import be.fooda.frontend.views.main.MainView;
-import com.github.appreciated.card.RippleClickableCard;
-import com.github.appreciated.card.action.ActionButton;
-import com.github.appreciated.card.action.Actions;
-import com.github.appreciated.card.content.IconItem;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.accordion.Accordion;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static be.fooda.frontend.views.main.MainView.DEFAULT_PAGE_NUMBER;
+
 @Route(value = "main", layout = MainView.class)
 @PageTitle("Fooda | Main Menu")
 public class MainMenuView extends VerticalLayout {
 
     private ProductService productService;
-    private BasketService basketService;
 
-    final Long externalUserId = 1L;
-    final String userSession = UI.getCurrent().getSession().getSession().getId();
-
-    public MainMenuView(ProductService productService, BasketService basketService) {
+    public MainMenuView(ProductService productService) {
+        this.productService = productService;
         setId("main-menu-view");
+
         setPadding(false);
         setMargin(false);
-        setAlignItems(Alignment.CENTER);
+        setAlignItems(Alignment.AUTO);
 
-        ResponseEntity<Product[]> responseEntity = productService.getAll(1, 2);
+        getProductCategories();
 
+        getProducts();
+    }
+
+    private void getProductCategories() {
+        final ResponseEntity<ProductCategory[]> categories = productService.getAllCategories();
+        initProductCategoriesFromResponse(categories);
+    }
+
+    private void getProducts() {
+        final ResponseEntity<Product[]> responseEntity = productService.getAll(DEFAULT_PAGE_NUMBER, 2);
+        initProductsFromResponse(responseEntity);
+    }
+
+    private void initProductsFromResponse(ResponseEntity<Product[]> responseEntity) {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
-            if (products.length > 0) {
-                searchProducts(products);
-            } else {
-                final Notification requiredSmsCodeNotification = new Notification("No Products Found..");
-                requiredSmsCodeNotification.getElement().getStyle()
-                        .set("color", "#FFCC00");
-                requiredSmsCodeNotification.setDuration(2000);
-                requiredSmsCodeNotification.open();
-            }
+            Arrays.stream(products).forEachOrdered(product -> add(new ProductCard(product)));
         }
     }
 
-    private void searchProducts(Product[] products) {
+    private void initProductCategoriesFromResponse(ResponseEntity<ProductCategory[]> responseEntity) {
+        if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
+            List<ProductCategory> categories = Arrays.asList(responseEntity.getBody());
 
-        for (Product product : products) {
-            add(new ProductCardLayout(
-                    product.getImages().get(0).getUrl(),
-                    product.getProductName(),
-                    product.getDescription()
-            ));
+            Accordion accordion = new Accordion();
+
+            FormLayout categoriesSelectionForm = new FormLayout();
+            categories.forEach(c -> {
+                final Checkbox categoryCheckBox = new Checkbox(c.getTitle(), false);
+                categoryCheckBox.addValueChangeListener(onCheck -> {
+                    final Boolean checked = onCheck.getValue();
+
+                });
+                categoriesSelectionForm.add(categoryCheckBox);
+            });
+
+            accordion.setWidthFull();
+            accordion.add("Categories", categoriesSelectionForm);
+            accordion.close();
+            add(accordion);
         }
     }
-
-    public static class ProductCardLayout extends VerticalLayout {
-        public ProductCardLayout(String imagePath, String title, String description) {
-            setPadding(false);
-            setMargin(false);
-
-            Image img = new Image(imagePath, title);
-            img.setWidth("25vw");
-            img.setHeight("auto");
-            RippleClickableCard card = new RippleClickableCard(
-                    componentEvent -> Notification.show("A RippleClickableCard was clicked!"),
-                    new IconItem(img, title, description)
-            );
-            card.setWidth("100vw");
-            add(card);
-        }
-    }
-
-    public static class StoreCardLayout extends VerticalLayout {
-        public StoreCardLayout(String imagePath, String title, String description) {
-            setPadding(false);
-            setMargin(false);
-            
-            Image img = new Image(imagePath, title);
-            img.setWidth("25vw");
-            img.setHeight("auto");
-            RippleClickableCard card = new RippleClickableCard(
-                    componentEvent -> Notification.show("A RippleClickableCard was clicked!"),
-                    new IconItem(img, title, description),
-                    new Actions(
-                            new ActionButton("View Menu", viewStoreMenu -> {
-                                UI.getCurrent().navigate("restaurant_info");
-                            })
-                    )
-            );
-            card.setWidth("100vw");
-            add(card);
-        }
-    }
-
-
 }

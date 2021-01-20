@@ -1,6 +1,7 @@
 package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.product.Product;
+import be.fooda.frontend.models.product.ProductCategory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -32,6 +33,11 @@ public class ProductService {
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Product[].class, queryParams);
+    }
+
+    public ResponseEntity getAllCategories() {
+        final String completeUrl = baseUrl + "getAllCategories";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, ProductCategory[].class);
     }
 
     public ResponseEntity searchByName(String productName, int pageNo, int pageSize) {

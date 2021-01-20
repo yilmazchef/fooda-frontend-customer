@@ -1,6 +1,7 @@
 package be.fooda.frontend.models.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.time.LocalTime;
 
 public class ProductPrice {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String title;
