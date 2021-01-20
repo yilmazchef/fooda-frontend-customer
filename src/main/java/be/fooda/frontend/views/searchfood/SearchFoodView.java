@@ -1,31 +1,35 @@
 package be.fooda.frontend.views.searchfood;
 
 import be.fooda.frontend.models.product.Product;
-import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.service.ProductService;
 import be.fooda.frontend.views.main.MainView;
 import com.github.appreciated.card.Card;
 import com.github.appreciated.card.action.ActionButton;
 import com.github.appreciated.card.action.Actions;
 import com.github.appreciated.card.content.IconItem;
-import com.github.appreciated.card.content.Item;
-import com.github.appreciated.card.label.PrimaryLabel;
-import com.github.appreciated.card.label.SecondaryLabel;
-import com.github.appreciated.card.label.TitleLabel;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import static be.fooda.frontend.views.main.MainView.DEFAULT_PAGE_NUMBER;
+import static be.fooda.frontend.views.main.MainView.RESULTS_PER_PAGE;
 
 @Route(value = "search_food", layout = MainView.class)
 @PageTitle("Search Food")
@@ -33,21 +37,17 @@ public class SearchFoodView extends VerticalLayout {
 
     private final ProductService productService;
 
-    private static final int RESULTS_PER_PAGE = 25;
-    private static final int DEFAULT_PAGE_NUMBER = 1;
-
     private final HorizontalLayout searchLayout = new HorizontalLayout();
     private final TextField searchField = new TextField();
     private final Button searchButton = new Button();
 
     public SearchFoodView(ProductService productService) {
         this.productService = productService;
-
         setId("search-food-view");
 
         setPadding(false);
         setMargin(false);
-        setAlignItems(FlexComponent.Alignment.CENTER);
+        setAlignItems(Alignment.AUTO);
 
         searchLayout.setPadding(false);
         searchLayout.setMargin(false);
@@ -59,7 +59,6 @@ public class SearchFoodView extends VerticalLayout {
             searchProductByName(this.searchField.getValue());
         });
 
-        searchLayout.setFlexGrow(0.5, searchButton);
         searchLayout.setWidthFull();
 
         searchLayout.add(searchField, searchButton);
@@ -77,57 +76,60 @@ public class SearchFoodView extends VerticalLayout {
     }
 
     private void initProductsFromResponse(ResponseEntity<Product[]> responseEntity) {
+
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
-            Arrays.stream(products).forEachOrdered(product -> add(new ProductCard(product)));
-        }
-    }
 
-    public class ProductCard extends VerticalLayout {
-        public ProductCard(Product product) {
+            for (Product product : products) {
 
-            Image image = new Image(product.getImages().get(0).getUrl(), product.getProductName());
-            image.setWidth("25%");
-            image.setHeight("auto");
-            Card card = new Card(
-                    new IconItem(image, product.getProductName(), product.getDescription()),
-                    new Actions(
-                            new ActionButton("Action 1", event -> {/* Handle Action*/}),
-                            new ActionButton("Action 2", event -> {/* Handle Action*/})
-                    )
-            );
-            card.setWidth("100%");
-            add(card);
-        }
-    }
+                Image img = new Image(product.getImages().get(0).getUrl(), product.getProductName());
+                img.setWidth("50px");
+                img.setHeight("50px");
 
-    public class ProductCardAdvanced extends VerticalLayout {
+                NumberField qty = new NumberField();
+                qty.setValue(1d);
+                qty.setHasControls(true);
+                qty.setMin(1);
+                qty.setMax(product.getLimitPerOrder());
 
-        public ProductCardAdvanced(Product product) {
-            final TitleLabel titleLabel = new TitleLabel(product.getProductName());
-            final PrimaryLabel primaryLabel = new PrimaryLabel(product.getDescription());
-            final SecondaryLabel secondaryLabel = new SecondaryLabel(product.getCategories().stream().map(ProductCategory::getTitle).collect(Collectors.joining()));
-            final IconItem iconItem = new IconItem(VaadinIcon.CART.create(), "Icon Item title", "Icon Item description");
-            final Item item = new Item("Item title", "Item description");
-            final Image image = new Image(product.getImages().get(0).getUrl(), product.getProductName());
-            image.setWidth("25%");
-            image.setHeight("auto");
+                BigDecimalField price = new BigDecimalField("Total cost");
+                price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+                price.setPrefixComponent(new Icon(VaadinIcon.EURO));
 
-            Card card = new Card(
-                    // if you don't want the title to wrap you can set the whitespace = nowrap
-                    titleLabel.withWhiteSpaceNoWrap(),
-                    primaryLabel,
-                    secondaryLabel,
-                    iconItem,
-                    item,
-                    image,
-                    new Actions(
-                            new ActionButton("Action 1", event -> {/* Handle Action*/}),
-                            new ActionButton("Action 2", event -> {/* Handle Action*/})
-                    )
-            );
-            card.setWidth("100%");
-            add(card);
+                Label taxLabel = new Label();
+
+                qty.addValueChangeListener(onQuantityChange -> {
+                    price.setValue(product.getPrices().get(0).getAmount().multiply(BigDecimal.valueOf(qty.getValue())).setScale(2));
+                });
+
+                price.addValueChangeListener(e -> {
+                    BigDecimal taxValue;
+                    if (e.getValue() == null) {
+                        taxValue = BigDecimal.ZERO;
+                    } else {
+                        taxValue = e.getValue().multiply(new BigDecimal(product.getTaxes().get(0).getPercentage())).setScale(2, RoundingMode.HALF_EVEN);
+                    }
+                    taxLabel.setText("VAT " + product.getTaxes().get(0).getPercentage() + "%: " + taxValue + product.getPrices().get(0).getCurrency());
+                });
+
+                VerticalLayout productLeftLayout = new VerticalLayout();
+                productLeftLayout.setPadding(false);
+                productLeftLayout.add(img);
+
+                VerticalLayout productRightLayout = new VerticalLayout();
+                productRightLayout.setPadding(false);
+                productRightLayout.add(new H3(product.getProductName()), new Paragraph(product.getDescription()), qty, price);
+
+                Card card = new Card(
+                        new IconItem(productLeftLayout, productRightLayout),
+                        new Actions(
+                                new ActionButton("Add to Basket")
+                        )
+                );
+                card.setWidth("100%");
+                add(card);
+            }
+
         }
     }
 

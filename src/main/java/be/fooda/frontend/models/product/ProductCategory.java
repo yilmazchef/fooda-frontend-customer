@@ -1,13 +1,16 @@
 package be.fooda.frontend.models.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ProductCategory {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String title;
+
+    private Byte[] icon;
 
     public Long getId() {
         return id;
@@ -23,5 +26,13 @@ public class ProductCategory {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Byte[] getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Byte[] icon) {
+        this.icon = icon;
     }
 }

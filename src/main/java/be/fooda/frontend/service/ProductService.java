@@ -1,6 +1,7 @@
 package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.product.Product;
+import be.fooda.frontend.models.product.ProductCategory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -31,7 +32,17 @@ public class ProductService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
+        // 1st param -> COMPLETE URL OF THE ENDPOINT -> http://localhost:8001/api/v1/product/getAllProducts?pageNo={pageNo}&pageSize={pageSize}
+        // 2nd param -> GET, PUT, POST, PATCH ..
+        // 3rd param -> request body -> if there is @RequestBody you set body as 3rd param, if not set it to EMPTY
+        // 4th param -> return type of the body .. if return is list : Product[].class, if single item : Product.class, if it is only http message :  String.class
+        // 5th param -> not mandatory, it is query params .. if you @RequestParam then you create a map with Map<String, Object>, then you put the map as the 5th parameter..
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Product[].class, queryParams);
+    }
+
+    public ResponseEntity getAllCategories() {
+        final String completeUrl = baseUrl + "getAllCategories";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, ProductCategory[].class);
     }
 
     public ResponseEntity searchByName(String productName, int pageNo, int pageSize) {
@@ -106,16 +117,23 @@ public class ProductService {
 
     public ResponseEntity updateProductInfo(Long id, String productName, String productDescription,
                                             Integer limitPerOrder, Boolean isFeatured, String type) {
-        final String completeUrl = baseUrl + "updateProductInfo?id={id}&" +
+        final String completeUrl = baseUrl + "updateProductInfo?" +
+                "id={id}&" +
                 "productName={productName}&" +
                 "productDescription={productDescription}&" +
                 "limitPerOrder={limitPerOrder}&" +
                 "isFeatured={isFeatured}&" +
                 "type={type}";
 
-        return restTemplate.exchange(completeUrl, HttpMethod.PUT, null, String.class,
-                id, productName, productDescription, limitPerOrder, isFeatured, type);
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("productName", productName);
+        params.put("productDescription", productDescription);
+        params.put("limitPerOrder", limitPerOrder);
+        params.put("isFeatured", isFeatured);
+        params.put("type", type);
 
+        return restTemplate.exchange(completeUrl, HttpMethod.PUT, null, String.class, params);
     }
 
     public ResponseEntity updateProduct(Long id, Product product) {
