@@ -6,7 +6,7 @@ public enum PaymentStatus {
     NOT_PAID("Not paid yet"),
     CANCELLED ("Payment cancelled");
 
-    private final String value;
+    private String value;
 
     PaymentStatus(String value) {
         this.value = value;
