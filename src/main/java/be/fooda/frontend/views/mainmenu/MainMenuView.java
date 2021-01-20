@@ -39,8 +39,6 @@ public class MainMenuView extends VerticalLayout {
         this.productService = productService;
         setId("main-menu-view");
 
-        setAlignItems(Alignment.STRETCH);
-
         getProductCategories();
         getProducts();
     }
@@ -66,22 +64,26 @@ public class MainMenuView extends VerticalLayout {
 
     private void createProductCardLayout(Product product) {
 
+        VerticalLayout productCardLayout = new VerticalLayout();
+        productCardLayout.addClassName("product-card-layout");
+
         Image img = new Image(product.getImages().get(0).getUrl(), product.getProductName());
-        img.setWidth("95vw");
-        img.setMaxWidth("480px");
-        img.setHeight("auto");
+        img.addClassName("product-img");
 
         NumberField qty = new NumberField();
         qty.setValue(1d);
         qty.setHasControls(true);
         qty.setMin(1);
         qty.setMax(product.getLimitPerOrder());
+        qty.addClassName("product-quantity");
 
         BigDecimalField price = new BigDecimalField("Total:");
         price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         price.setPrefixComponent(new Icon(VaadinIcon.EURO));
+        price.addClassName("product-price");
 
         Label tax = new Label();
+        tax.addClassName("product-tax");
 
         qty.addValueChangeListener(onQuantityChange -> {
             price.setValue(product.getPrices().get(0).getAmount().multiply(BigDecimal.valueOf(qty.getValue())).setScale(2));
@@ -97,34 +99,35 @@ public class MainMenuView extends VerticalLayout {
             tax.setText("VAT " + product.getTaxes().get(0).getPercentage() + "%: " + taxValue + product.getPrices().get(0).getCurrency());
         });
 
+        final Label name = new Label(product.getProductName());
+        name.addClassName("product-name");
+
+        final Label description = new Label(product.getDescription());
+        description.addClassNames("product-description");
 
         Button addToBasket = new Button("Add to Basket", onClick -> {
             new Notification(product.getProductName() + " is added to basket.. ").open();
         });
+        addToBasket.addClassName("product-add-to-basket");
 
         // get image
         VerticalLayout imageLayout = new VerticalLayout();
-        imageLayout.setWidth("90vw");
         imageLayout.add(img);
 
         // get name, get description, get ingredients ..
         VerticalLayout nameAndDescLayout = new VerticalLayout();
-        nameAndDescLayout.setWidth("90vw");
-        final H4 name = new H4(product.getProductName());
-        final Span description = new Span(product.getDescription());
         nameAndDescLayout.add(name, description);
 
         // change quantity, set price, get tax info, add to basket ..
         HorizontalLayout quantityAndPriceLayout = new HorizontalLayout();
-        quantityAndPriceLayout.setWidth("90vw");
         quantityAndPriceLayout.add(qty, price, tax);
 
         // change quantity, set price, get tax info, add to basket ..
         HorizontalLayout actionButtonsLayout = new HorizontalLayout();
-        actionButtonsLayout.setWidth("90vw");
         actionButtonsLayout.add(addToBasket);
 
-        add(imageLayout, nameAndDescLayout, quantityAndPriceLayout, actionButtonsLayout);
+        productCardLayout.add(imageLayout, nameAndDescLayout, quantityAndPriceLayout, actionButtonsLayout);
+        add(productCardLayout);
     }
 
     private void initProductCategoriesFromResponse(ResponseEntity<ProductCategory[]> responseEntity) {
@@ -134,6 +137,7 @@ public class MainMenuView extends VerticalLayout {
             Accordion accordion = new Accordion();
 
             FormLayout categoriesSelectionForm = new FormLayout();
+            categoriesSelectionForm.addClassName("product-categories");
             categories.forEach(c -> {
                 final Checkbox categoryCheckBox = new Checkbox(c.getTitle(), false);
                 categoryCheckBox.addValueChangeListener(onCheck -> {
