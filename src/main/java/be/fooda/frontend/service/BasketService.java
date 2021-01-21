@@ -237,4 +237,14 @@ public class BasketService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, String.class, id);
 
     }
+
+    public ResponseEntity getOrdersByUser(Long externalUserId, String userSession, Long externalStoreId) {
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("externalUserId", externalUserId);
+        queryParams.put("userSession", userSession);
+        queryParams.put("externalStoreId", externalStoreId);
+        final String completeUrl = baseUrl + "order/get_orders_by_user_and_store?" +
+                "externalUserId={externalUserId}&userSession={userSession}&externalStoreId={externalStoreId}";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketOrder[].class, queryParams);
+    }
 }
