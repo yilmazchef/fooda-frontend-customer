@@ -1,26 +1,95 @@
 * {
+    --material-background-color: #161616;
+    --material-secondary-background-color: #1a1818;
     --material-font-family: Source Code Pro;
     --material-secondary-text-color: #F2F2F2;
     --material-disabled-text-color: #323232;
     --material-primary-text-color: #FF0066;
-    --material-error-text-color: #44d000
+    --material-error-text-color: #44d000;
+    --material-primary-button-background-color: #FF0066;
+    --max-product-layout-width: 350px;
+    --max-product-category-width: 240px;
 }
 
 vaadin-vertical-layout vaading-horizontal-layout {
     padding: 0;
-    margin: 2%;
+    margin: 0;
 }
 
-.product-category-accordion-layout {
-    width: 90vw;
+#main-menu-view {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+#product-category-layout {
+    width: 100vw;
     height: 30px;
+    max-width: var(--max-product-layout-width);
 }
 
-.product-card-layout {
-    border: #99007c solid medium;
-    border-radius: 30px;
+#product-layout {
+    background: var(--material-secondary-background-color);
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: var(--max-product-layout-width)
 }
 
-.welcome-view {
+.product-image-layout,
+.product-info-layout,
+.product-price-layout,
+.product-quantity-layout,
+.product-action-layout {
+    padding: 0 20px;
+    margin: 0;
+    width: 100vw;
+
+    max-width: var(--max-product-layout-width);
+}
+
+.product-image-field {
+    border-radius: 20px 20px 0 0;
+    width: 100vw;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    max-width: var(--max-product-layout-width)
+}
+
+.product-name-header {
+    font-size: 30pt;
+    max-width: var(--max-product-layout-width)
 
 }
+
+.product-add-to-basket-button {
+    border-radius: 0 0 20px 20px;
+    width: 100vw;
+    height: 70px;
+    font-size: medium;
+    background-color: var(--material-primary-button-background-color);
+    color: var(--material-secondary-text-color);
+    max-width: var(--max-product-layout-width)
+}
+
+.product-quantity-field {
+    font-size: 18pt;
+    padding-bottom: 20px;
+}
+
+.product-price-field, .product-tax-field {
+    font-size: 12pt;
+    padding-bottom: 20px;
+
+}
+
+.product-description-paragraph {
+    font-size: 10pt;
+    max-width: var(--max-product-layout-width)
+
+}
+

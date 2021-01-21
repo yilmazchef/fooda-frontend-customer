@@ -1,6 +1,6 @@
 package be.fooda.frontend.views.searchfood;
 
-import be.fooda.frontend.components.ProductCardLayout;
+import be.fooda.frontend.components.ProductLayout;
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.service.ProductService;
 import be.fooda.frontend.views.main.MainView;
@@ -57,7 +57,7 @@ public class SearchFoodView extends VerticalLayout {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
             for (Product product : products) {
-                add(new ProductCardLayout(product));
+                add(new ProductLayout(product));
             }
         }
     }
