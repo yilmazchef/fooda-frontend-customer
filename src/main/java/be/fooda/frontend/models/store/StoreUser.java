@@ -1,7 +1,8 @@
 package be.fooda.frontend.models.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreUser {
 
     Long id;
@@ -45,8 +46,6 @@ public class StoreUser {
     public void setType(Type type) {
         this.type = type;
     }
-
-
 
 
 

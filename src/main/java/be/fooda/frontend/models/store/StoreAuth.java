@@ -1,13 +1,11 @@
 package be.fooda.frontend.models.store;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.URL;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreAuth {
 
     private Long id;
@@ -18,6 +16,7 @@ public class StoreAuth {
     private String secret;
 
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
 
     private String siteUrl;

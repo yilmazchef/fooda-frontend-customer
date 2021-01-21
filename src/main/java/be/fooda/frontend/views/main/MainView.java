@@ -23,9 +23,6 @@ import com.vaadin.flow.theme.material.Material;
 @Theme(value = Material.class, variant = Material.DARK)
 public class MainView extends AppLayout {
 
-    public static final int RESULTS_PER_PAGE = 25;
-    public static final int DEFAULT_PAGE_NUMBER = 1;
-
     public MainView() {
 
         setDrawerOpened(false);

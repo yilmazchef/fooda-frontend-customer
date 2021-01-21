@@ -1,20 +1,24 @@
 package be.fooda.frontend.models.store;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreWorkingHours {
 
     private Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate workingDate;
 
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime openTime;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime closeTime;
 
     public Long getId() {
@@ -48,8 +52,6 @@ public class StoreWorkingHours {
     public void setCloseTime(LocalTime closeTime) {
         this.closeTime = closeTime;
     }
-
-
 
 
 }
