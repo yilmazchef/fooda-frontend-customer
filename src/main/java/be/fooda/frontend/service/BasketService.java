@@ -44,7 +44,7 @@ public class BasketService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalUserId", externalUserId);
         queryParams.put("userSession", userSession);
-        if (externalStoreId != null || externalStoreId.longValue() > 0)
+
             queryParams.put("externalStoreId", externalStoreId);
         final String completeUrl = baseUrl + "product/get_products_by_user_and_store?" +
                 "externalUserId={externalUserId}&userSession={userSession}&externalStoreId={externalStoreId}";
@@ -52,7 +52,13 @@ public class BasketService {
     }
 
     public ResponseEntity getProductsByUser(Long externalUserId, String userSession) {
-        return getProductsByUserAndStore(externalUserId, userSession, null);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("externalUserId", externalUserId);
+        queryParams.put("userSession", userSession);
+
+        final String completeUrl = baseUrl + "product/get_products_by_user_and_store?" +
+                "externalUserId={externalUserId}&userSession={userSession}";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketProduct[].class, queryParams);
     }
 
     public ResponseEntity addProduct(BasketProduct product) {
