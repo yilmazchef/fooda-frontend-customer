@@ -8,13 +8,13 @@ import com.vaadin.flow.theme.material.Material;
 
 import java.util.Set;
 
-public class ProductCategoryAccordionLayout extends Accordion {
+public class ProductCategoriesLayout extends Accordion {
 
-    public ProductCategoryAccordionLayout(Set<ProductCategory> categories) {
+    public ProductCategoriesLayout(Set<ProductCategory> categories) {
 
         getElement().setAttribute("theme", Material.DARK);
 
-        setId("product-category-accordion-layout");
+        setId("product-categories-layout");
 
         FormLayout categoriesSelectionForm = new FormLayout();
         categories.forEach(c -> {

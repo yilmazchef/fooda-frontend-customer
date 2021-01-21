@@ -20,9 +20,9 @@ import com.vaadin.flow.theme.material.Material;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class ProductCardLayout extends VerticalLayout {
+public class ProductSearchLayout extends VerticalLayout {
 
-    public ProductCardLayout(Product data) {
+    public ProductSearchLayout(Product data) {
 
         getElement().setAttribute("theme", Material.DARK);
 

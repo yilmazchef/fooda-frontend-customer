@@ -1,7 +1,7 @@
 package be.fooda.frontend.views.mainmenu;
 
-import be.fooda.frontend.components.ProductCardLayout;
-import be.fooda.frontend.components.ProductCategoryAccordionLayout;
+import be.fooda.frontend.components.ProductSearchLayout;
+import be.fooda.frontend.components.ProductCategoriesLayout;
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.service.ProductService;
@@ -44,7 +44,7 @@ public class MainMenuView extends VerticalLayout {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
             for (Product product : products) {
-                add(new ProductCardLayout(product));
+                add(new ProductSearchLayout(product));
             }
         }
     }
@@ -52,7 +52,7 @@ public class MainMenuView extends VerticalLayout {
     private void initProductCategoriesFromResponse(ResponseEntity<ProductCategory[]> responseEntity) {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             Set<ProductCategory> categories = new HashSet<>(Arrays.asList(responseEntity.getBody()));
-            add(new ProductCategoryAccordionLayout(categories));
+            add(new ProductCategoriesLayout(categories));
         }
     }
 

@@ -1,6 +1,6 @@
 package be.fooda.frontend.views.searchrestaurant;
 
-import be.fooda.frontend.components.StoreCardLayout;
+import be.fooda.frontend.components.StoreSearchLayout;
 import be.fooda.frontend.models.store.Store;
 import be.fooda.frontend.service.StoreService;
 import be.fooda.frontend.views.main.MainView;
@@ -24,7 +24,7 @@ public class SearchRestaurantView extends Div {
             Store[] stores = apiResponse.getBody();
             if (stores != null && stores.length > 0) {
                 for (Store store : stores) {
-                    add(new StoreCardLayout(store));
+                    add(new StoreSearchLayout(store));
                 }
             }
         }
