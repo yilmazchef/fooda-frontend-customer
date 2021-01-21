@@ -17,7 +17,7 @@ public class BasketView extends VerticalLayout {
     private BasketService basketService;
 
     private Long externalUserId = 1L;
-    private String session = "FNAUN23123VSQ";
+    private String session = "1";
     private Long externalStoreId = 1L;
 
     public BasketView(BasketService basketService) {

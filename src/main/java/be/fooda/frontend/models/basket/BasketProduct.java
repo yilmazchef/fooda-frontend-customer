@@ -1,22 +1,17 @@
 package be.fooda.frontend.models.basket;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.math.BigDecimal;
 import java.util.Set;
 
-@Document
 public class BasketProduct {
 
-    @Id
     private String id;
 
     private Long externalProductId;
 
     private BasketUser user;
 
-    private be.fooda.backend.basket.model.entity.FoodaBasketStore store;
+    private BasketStore store;
 
     private String name;
 
@@ -28,7 +23,7 @@ public class BasketProduct {
 
     private Integer quantity;
 
-    private Set<be.fooda.backend.basket.model.entity.FoodaBasketProductIngredient> ingredients;
+    private Set<BasketProductIngredient> ingredients;
 
     public BasketProduct() {
     }
@@ -45,7 +40,7 @@ public class BasketProduct {
         return this.user;
     }
 
-    public be.fooda.backend.basket.model.entity.FoodaBasketStore getStore() {
+    public BasketStore getStore() {
         return this.store;
     }
 
@@ -69,7 +64,7 @@ public class BasketProduct {
         return this.quantity;
     }
 
-    public Set<be.fooda.backend.basket.model.entity.FoodaBasketProductIngredient> getIngredients() {
+    public Set<BasketProductIngredient> getIngredients() {
         return this.ingredients;
     }
 
@@ -85,7 +80,7 @@ public class BasketProduct {
         this.user = user;
     }
 
-    public void setStore(be.fooda.backend.basket.model.entity.FoodaBasketStore store) {
+    public void setStore(BasketStore store) {
         this.store = store;
     }
 
@@ -109,7 +104,7 @@ public class BasketProduct {
         this.quantity = quantity;
     }
 
-    public void setIngredients(Set<be.fooda.backend.basket.model.entity.FoodaBasketProductIngredient> ingredients) {
+    public void setIngredients(Set<BasketProductIngredient> ingredients) {
         this.ingredients = ingredients;
     }
 

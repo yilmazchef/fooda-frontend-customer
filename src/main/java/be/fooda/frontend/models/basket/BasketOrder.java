@@ -1,15 +1,11 @@
 package be.fooda.frontend.models.basket;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalTime;
 
-@Document
 public class BasketOrder {
 
-    @Id
     private String id;
 
     private BasketUser user;
