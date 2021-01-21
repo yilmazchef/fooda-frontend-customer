@@ -1,12 +1,14 @@
 * {
-    --material-background-color: #000000;
-    --material-secondary-color: #161616;
-    --material-primary-color: #F2F2F2;
     --material-font-family: Source Code Pro;
     --material-secondary-text-color: #F2F2F2;
     --material-disabled-text-color: #323232;
     --material-primary-text-color: #FF0066;
     --material-error-text-color: #44d000
+}
+
+vaadin-vertical-layout vaading-horizontal-layout {
+    padding: 0;
+    margin: 2%;
 }
 
 .product-category-accordion-layout {
@@ -17,4 +19,8 @@
 .product-card-layout {
     border: #99007c solid medium;
     border-radius: 30px;
+}
+
+.welcome-view {
+
 }

@@ -1,17 +1,18 @@
-package be.fooda.frontend.models.store;
+package be.fooda.frontend.models.courier;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class StoreImage {
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+public class CourierMedia {
+
+    @JsonIgnore
     private Long id;
 
     private Long externalMediaId;
 
-    private StoreImage type;
-
     private String url;
+
+    private MediaType type;
 
     public Long getId() {
         return id;
@@ -29,14 +30,6 @@ public class StoreImage {
         this.externalMediaId = externalMediaId;
     }
 
-    public StoreImage getType() {
-        return type;
-    }
-
-    public void setType(StoreImage type) {
-        this.type = type;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -45,5 +38,17 @@ public class StoreImage {
         this.url = url;
     }
 
+    public MediaType getType() {
+        return type;
+    }
 
+    public void setType(MediaType type) {
+        this.type = type;
+    }
+
+    public enum MediaType {
+        PROFILE_IMAGE,
+        INTRO_VIDEO;
+
+    }
 }

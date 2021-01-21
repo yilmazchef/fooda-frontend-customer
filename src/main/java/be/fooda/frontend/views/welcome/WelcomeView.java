@@ -5,6 +5,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -20,13 +21,21 @@ public class WelcomeView extends VerticalLayout {
     public WelcomeView() {
 
         setId("welcome-view");
+        setJustifyContentMode(JustifyContentMode.CENTER);
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
-        Image logoImage = new Image("images/logo.svg", "Fooda Logo");
-        logoImage.setId("logo-image");
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setIndeterminate(true);
+
+        add(progressBar);
+
         Image sloganImage = new Image("images/slogan.svg", "Painkiller for Food Delivery..!");
-        sloganImage.setId("slogan-image");
+        sloganImage.setWidth("300px");
+        sloganImage.setHeight("auto");
+
         Button nextButton = new Button("Next");
-        nextButton.setId("next-button");
+        nextButton.setWidth("220px");
+        nextButton.setHeight("auto");
 
         nextButton.addClickListener(click -> {
             UI.getCurrent().navigate(NEXT_PAGE);
@@ -34,7 +43,7 @@ public class WelcomeView extends VerticalLayout {
 
         setAlignItems(Alignment.CENTER);
 
-        addAndExpand(logoImage, sloganImage, nextButton);
+        add(sloganImage, nextButton);
     }
 
 

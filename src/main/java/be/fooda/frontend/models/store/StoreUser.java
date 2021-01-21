@@ -12,7 +12,7 @@ public class StoreUser {
 
     String username;
 
-    private Type type;
+    private StoreUserType type;
 
 
     public Long getId() {
@@ -39,17 +39,17 @@ public class StoreUser {
         this.username = username;
     }
 
-    public Type getType() {
+    public StoreUserType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(StoreUserType type) {
         this.type = type;
     }
 
 
 
-    public enum Type {
+    public enum StoreUserType {
         CREATED,
         UPDATED,
         DELETED;

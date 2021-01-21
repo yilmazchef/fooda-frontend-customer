@@ -1,6 +1,5 @@
 package be.fooda.frontend.models.store;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ public class StoreAuth {
     private String secret;
 
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
 
     private String siteUrl;
