@@ -1,25 +1,21 @@
 package be.fooda.frontend.models.basket;
 
-import be.fooda.backend.commons.model.payment.FoodaPaymentMethod;
-import be.fooda.backend.commons.model.payment.FoodaPaymentStatus;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import be.fooda.frontend.models.PaymentMethod;
+import be.fooda.frontend.models.PaymentStatus;
 
 import java.math.BigDecimal;
 
-@Document
 public class BasketPayment {
 
-    @Id
     private String id;
 
     private BasketUser user;
 
-    private FoodaPaymentMethod method;
+    private PaymentMethod method;
 
     private BigDecimal amount;
 
-    private FoodaPaymentStatus status;
+    private PaymentStatus status;
 
     public BasketPayment() {
     }
@@ -32,7 +28,7 @@ public class BasketPayment {
         return this.user;
     }
 
-    public FoodaPaymentMethod getMethod() {
+    public PaymentMethod getMethod() {
         return this.method;
     }
 
@@ -40,7 +36,7 @@ public class BasketPayment {
         return this.amount;
     }
 
-    public FoodaPaymentStatus getStatus() {
+    public PaymentStatus getStatus() {
         return this.status;
     }
 
@@ -52,7 +48,7 @@ public class BasketPayment {
         this.user = user;
     }
 
-    public void setMethod(FoodaPaymentMethod method) {
+    public void setMethod(PaymentMethod method) {
         this.method = method;
     }
 
@@ -60,7 +56,7 @@ public class BasketPayment {
         this.amount = amount;
     }
 
-    public void setStatus(FoodaPaymentStatus status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 

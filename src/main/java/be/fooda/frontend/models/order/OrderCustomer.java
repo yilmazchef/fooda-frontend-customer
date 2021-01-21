@@ -11,6 +11,8 @@ public class OrderCustomer {
 
     private String familyName;
 
+    private String phone;
+
     public Long getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class OrderCustomer {
 
     public void setFamilyName(String familyName) {
         this.familyName = familyName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
