@@ -139,4 +139,22 @@ public class DeliveryService {
 
         return restTemplate.exchange(completeUrl, HttpMethod.PATCH, HttpEntity.EMPTY,  String.class, queryParams);
     }
+
+    public ResponseEntity deleteById (Long id){
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("id", id);
+
+        final String completeUrl = baseUrl + "delete_by_id?id={id}";
+        return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, queryParams);
+    }
+
+    public ResponseEntity existsById(Long id) {
+        final String completeUrl = baseUrl + "exists_by_id?id={id}";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, String.class, id);
+    }
+
+    public ResponseEntity existsByExample(Delivery delivery) {
+        final String completeUrl = baseUrl + "exists";
+        return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(delivery), String.class);
+    }
 }
