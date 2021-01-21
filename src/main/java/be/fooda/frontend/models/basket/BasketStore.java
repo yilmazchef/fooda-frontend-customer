@@ -1,10 +1,10 @@
 package be.fooda.frontend.models.basket;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BasketStore {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     private Long externalStoreId;

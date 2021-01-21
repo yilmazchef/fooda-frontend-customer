@@ -3,13 +3,13 @@ package be.fooda.frontend.models.basket;
 
 import be.fooda.frontend.models.PaymentMethod;
 import be.fooda.frontend.models.PaymentStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
 public class BasketPayment {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     private BasketUser user;

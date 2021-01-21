@@ -1,10 +1,10 @@
 package be.fooda.frontend.models.payment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PaymentStore {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private Long externalStoreId;

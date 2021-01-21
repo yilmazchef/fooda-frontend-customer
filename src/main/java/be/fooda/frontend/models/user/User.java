@@ -1,12 +1,14 @@
 package be.fooda.frontend.models.user;
 
 import be.fooda.frontend.models.UserRole;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 public class User {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String login;
