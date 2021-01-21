@@ -20,19 +20,12 @@ import com.vaadin.flow.theme.material.Material;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class ProductSearchLayout extends VerticalLayout {
+public class ProductLayout extends VerticalLayout {
 
-    public ProductSearchLayout(Product data) {
+    public ProductLayout(Product data) {
 
         getElement().setAttribute("theme", Material.DARK);
-
-        setId("product-card-layout");
-
-        // product card layout design settings ..
-        setPadding(false);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setWidthFull();
+        setId("product-layout");
 
         // number field for setting quantity  ..
         NumberField quantityField = new NumberField();
@@ -40,6 +33,7 @@ public class ProductSearchLayout extends VerticalLayout {
         quantityField.setHasControls(true);
         quantityField.setMin(1);
         quantityField.setMax(data.getLimitPerOrder());
+        quantityField.addClassName("product-quantity-field");
 
         // price field which automatically is calculated every time the qty changes ..
         BigDecimalField priceField = new BigDecimalField("Total:");
@@ -50,6 +44,7 @@ public class ProductSearchLayout extends VerticalLayout {
             final ProductPrice productPrice = data.getPrices().get(0);
             priceField.setValue(productPrice.getAmount().multiply(BigDecimal.valueOf(quantityField.getValue())).setScale(2));
         });
+        priceField.addClassName("product-price-field");
 
         // tax info which is also recalculated every every time when price is changed ..
         BigDecimalField taxField = new BigDecimalField("VAT:");
@@ -72,40 +67,42 @@ public class ProductSearchLayout extends VerticalLayout {
                             .multiply(BigDecimal.valueOf(productTax.getPercentage()))
                             .setScale(2));
         });
+        taxField.addClassName("product-tax-field");
 
         Image productImage = new Image(data.getImages().get(0).getUrl(), data.getProductName());
-        productImage.setWidth("85vw");
-        productImage.setHeight("auto");
+        productImage.addClassName("product-image-field");
 
         VerticalLayout imageLayout = new VerticalLayout();
         imageLayout.setAlignItems(Alignment.CENTER);
         imageLayout.add(productImage);
+        imageLayout.addClassName("product-image-layout");
 
         VerticalLayout infoLayout = new VerticalLayout();
         infoLayout.setAlignItems(Alignment.CENTER);
-
+        infoLayout.addClassName("product-info-layout");
         final H2 nameHeader = new H2(data.getProductName());
-        nameHeader.getStyle().set("font-size", "24pt");
+        nameHeader.addClassName("product-name-header");
         final Paragraph descriptionParagraph = new Paragraph(data.getDescription());
-        descriptionParagraph.getStyle().set("font-size", "12pt");
+        descriptionParagraph.addClassName("product-description-paragraph");
         infoLayout.add(nameHeader, descriptionParagraph);
 
         HorizontalLayout quantityLayout = new HorizontalLayout();
         quantityLayout.setVerticalComponentAlignment(Alignment.CENTER);
-        quantityLayout.setSizeFull();
-        quantityLayout.getStyle().set("font-size", "12pt");
-
+        quantityLayout.addClassName("product-quantity-layout");
         quantityLayout.add(quantityField);
 
         HorizontalLayout priceLayout = new HorizontalLayout();
         priceLayout.setVerticalComponentAlignment(Alignment.CENTER);
+        priceLayout.addClassName("product-price-layout");
         priceLayout.add(priceField, taxField);
 
         VerticalLayout actionLayout = new VerticalLayout();
         actionLayout.setAlignItems(Alignment.CENTER);
+        actionLayout.addClassName("product-action-layout");
         Button addToBasketButton = new Button("Add to Basket", onClick -> {
             new Notification("Add to basket is clicked .. ");
         });
+        addToBasketButton.addClassName("product-add-to-basket-button");
         actionLayout.add(addToBasketButton);
 
         add(imageLayout, infoLayout, quantityLayout, priceLayout, actionLayout);

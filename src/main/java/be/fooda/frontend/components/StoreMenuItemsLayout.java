@@ -11,7 +11,6 @@ public class StoreMenuItemsLayout extends Accordion {
     public StoreMenuItemsLayout(Store store) {
 
         getElement().setAttribute("theme", Material.DARK);
-
         setId("store-menu-items-layout");
 
         FormLayout categoriesSelectionForm = new FormLayout();

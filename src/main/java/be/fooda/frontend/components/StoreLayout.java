@@ -7,13 +7,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.theme.material.Material;
 
-public class StoreSearchLayout extends VerticalLayout {
+public class StoreLayout extends VerticalLayout {
 
-    public StoreSearchLayout(Store data) {
+    public StoreLayout(Store data) {
 
         getElement().setAttribute("theme", Material.DARK);
 
-        setId("store-card-layout");
+        setId("store-layout");
 
         setPadding(false);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);

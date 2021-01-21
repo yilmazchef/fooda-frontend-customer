@@ -1,4 +1,6 @@
 * {
+    --material-background-color: #161616;
+    --material-secondary-background-color: #1a1818;
     --material-font-family: Source Code Pro;
     --material-secondary-text-color: #F2F2F2;
     --material-disabled-text-color: #323232;
@@ -8,19 +10,48 @@
 
 vaadin-vertical-layout vaading-horizontal-layout {
     padding: 0;
-    margin: 2%;
+    margin: 0;
 }
 
-.product-category-accordion-layout {
-    width: 90vw;
+#main-menu-view {
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+#product-layout {
+    background: var(--material-secondary-background-color);
+    border-radius: 20px;
+    padding: 0 20px 30px;
+}
+
+#product-category-layout {
+    width: 100vw;
     height: 30px;
 }
 
-.product-card-layout {
-    border: #99007c solid medium;
-    border-radius: 30px;
+.product-image-layout
+.product-info-layout
+.product-price-layout
+.product-quantity-layout {
+    padding: 0;
+    margin: 0;
 }
 
-.welcome-view {
-
+.product-image-field {
+    border-radius: 20px 20px 0 0;
+    width: 100vw;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
 }
+
+.product-add-to-basket-button {
+    border-radius: 0 0 20px 20px;
+    width: 100vw;
+    height: 40px;
+    background-color: var(--material-background-color);
+    color: var(--material-primary-text-color);
+    font-size: medium;
+}
+
