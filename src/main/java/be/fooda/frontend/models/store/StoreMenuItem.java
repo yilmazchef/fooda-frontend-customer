@@ -1,13 +1,13 @@
 package be.fooda.frontend.models.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreMenuItem {
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private Long externalProductId;

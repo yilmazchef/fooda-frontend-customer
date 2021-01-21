@@ -2,13 +2,14 @@ package be.fooda.frontend.models.store;
 
 import be.fooda.frontend.models.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class StoreAcceptedPaymentMethod {
 
+public class StoreAcceptedPaymentMethod {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private PaymentMethod paymentMethod;
@@ -17,6 +18,8 @@ public class StoreAcceptedPaymentMethod {
 
 
     private LocalDate expiryDate;
+
+
 
     public Long getId() {
         return id;

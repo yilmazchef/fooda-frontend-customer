@@ -1,13 +1,15 @@
 package be.fooda.frontend.models.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class StoreWorkingHours {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
