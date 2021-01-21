@@ -1,12 +1,15 @@
 package be.fooda.frontend.components;
 
 import be.fooda.frontend.models.product.Product;
+import be.fooda.frontend.models.product.ProductPrice;
+import be.fooda.frontend.models.product.ProductTax;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
@@ -40,22 +43,34 @@ public class ProductCardLayout extends VerticalLayout {
 
         // price field which automatically is calculated every time the qty changes ..
         BigDecimalField priceField = new BigDecimalField("Total:");
-        priceField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+        priceField.setReadOnly(true);
+        priceField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
         priceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         quantityField.addValueChangeListener(onQuantityChange -> {
-            priceField.setValue(data.getPrices().get(0).getAmount().multiply(BigDecimal.valueOf(quantityField.getValue())).setScale(2));
+            final ProductPrice productPrice = data.getPrices().get(0);
+            priceField.setValue(productPrice.getAmount().multiply(BigDecimal.valueOf(quantityField.getValue())).setScale(2));
         });
 
         // tax info which is also recalculated every every time when price is changed ..
-        Paragraph taxParagraph = new Paragraph();
+        BigDecimalField taxField = new BigDecimalField("VAT:");
+        taxField.setReadOnly(true);
+        taxField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
+        taxField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         priceField.addValueChangeListener(e -> {
             BigDecimal taxValue;
+            final ProductTax productTax = data.getTaxes().get(0);
             if (e.getValue() == null) {
                 taxValue = BigDecimal.ZERO;
             } else {
-                taxValue = e.getValue().multiply(new BigDecimal(data.getTaxes().get(0).getPercentage())).setScale(2, RoundingMode.HALF_EVEN);
+                taxValue = e.getValue()
+                        .multiply(new BigDecimal(productTax.getPercentage()))
+                        .setScale(2, RoundingMode.HALF_EVEN);
             }
-            taxParagraph.setText("VAT " + data.getTaxes().get(0).getPercentage() + "%: " + taxValue + data.getPrices().get(0).getCurrency());
+            taxField.setValue(
+                    data.getPrices().get(0).getAmount()
+                            .multiply(BigDecimal.valueOf(quantityField.getValue()))
+                            .multiply(BigDecimal.valueOf(productTax.getPercentage()))
+                            .setScale(2));
         });
 
         Image productImage = new Image(data.getImages().get(0).getUrl(), data.getProductName());
@@ -63,30 +78,36 @@ public class ProductCardLayout extends VerticalLayout {
         productImage.setHeight("auto");
 
         VerticalLayout imageLayout = new VerticalLayout();
-        imageLayout.setPadding(false);
-        imageLayout.setWidthFull();
+        imageLayout.setAlignItems(Alignment.CENTER);
         imageLayout.add(productImage);
 
         VerticalLayout infoLayout = new VerticalLayout();
-        infoLayout.setPadding(false);
-        infoLayout.setWidthFull();
+        infoLayout.setAlignItems(Alignment.CENTER);
 
-        final H3 nameHeader = new H3(data.getProductName());
+        final H2 nameHeader = new H2(data.getProductName());
+        nameHeader.getStyle().set("font-size", "24pt");
         final Paragraph descriptionParagraph = new Paragraph(data.getDescription());
+        descriptionParagraph.getStyle().set("font-size", "12pt");
         infoLayout.add(nameHeader, descriptionParagraph);
 
+        HorizontalLayout quantityLayout = new HorizontalLayout();
+        quantityLayout.setVerticalComponentAlignment(Alignment.CENTER);
+        quantityLayout.setSizeFull();
+        quantityLayout.getStyle().set("font-size", "12pt");
+
+        quantityLayout.add(quantityField);
+
         HorizontalLayout priceLayout = new HorizontalLayout();
-        priceLayout.setPadding(false);
         priceLayout.setVerticalComponentAlignment(Alignment.CENTER);
-        priceLayout.setSpacing(true);
-        priceLayout.add(quantityField, priceField, taxParagraph);
+        priceLayout.add(priceField, taxField);
 
         VerticalLayout actionLayout = new VerticalLayout();
-        actionLayout.setPadding(false);
-        actionLayout.setWidthFull();
-        Button addToBasketButton = new Button(VaadinIcon.CHECK.create());
+        actionLayout.setAlignItems(Alignment.CENTER);
+        Button addToBasketButton = new Button("Add to Basket", onClick -> {
+            new Notification("Add to basket is clicked .. ");
+        });
         actionLayout.add(addToBasketButton);
 
-        add(imageLayout, infoLayout, actionLayout);
+        add(imageLayout, infoLayout, quantityLayout, priceLayout, actionLayout);
     }
 }
