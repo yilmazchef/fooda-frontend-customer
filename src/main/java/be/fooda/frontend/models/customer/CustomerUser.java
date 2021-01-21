@@ -1,11 +1,10 @@
-package be.fooda.frontend.models.Media;
+package be.fooda.frontend.models.customer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+public class CustomerUser {
 
-public class MediaUser {
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonIgnore
     private Long id;
 
     private Long externalUserId;
@@ -35,5 +34,4 @@ public class MediaUser {
     public void setUsername(String username) {
         this.username = username;
     }
-
 }

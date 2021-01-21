@@ -2,6 +2,8 @@ package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
+import be.fooda.frontend.models.product.ProductIngredient;
+import be.fooda.frontend.models.product.ProductTag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -32,11 +34,6 @@ public class ProductService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
-        // 1st param -> COMPLETE URL OF THE ENDPOINT -> http://localhost:8001/api/v1/product/getAllProducts?pageNo={pageNo}&pageSize={pageSize}
-        // 2nd param -> GET, PUT, POST, PATCH ..
-        // 3rd param -> request body -> if there is @RequestBody you set body as 3rd param, if not set it to EMPTY
-        // 4th param -> return type of the body .. if return is list : Product[].class, if single item : Product.class, if it is only http message :  String.class
-        // 5th param -> not mandatory, it is query params .. if you @RequestParam then you create a map with Map<String, Object>, then you put the map as the 5th parameter..
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
@@ -45,74 +42,122 @@ public class ProductService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, ProductCategory[].class);
     }
 
+    public ResponseEntity getAllTags() {
+        final String completeUrl = baseUrl + "getAllTags";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, ProductTag[].class);
+    }
+
     public ResponseEntity searchByName(String productName, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "productName?productName={productName}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, productName, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("productName",productName);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY,Product[].class,queryParams);
     }
 
     public ResponseEntity searchByDescription(String description, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "description?description={description}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, description, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("description",description);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity searchByIngredients(Set<String> ingredients, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "ingredients?ingredients={ingredients}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, ingredients, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("ingredients",ingredients);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity searchByCategories(Set<String> categories, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "categories?categories={categories}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, categories, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("categories",categories);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity searchByTags(Set<String> tags, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "tags?tags={tags}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, tags, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("tags",tags);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class,queryParams);
     }
 
     public ResponseEntity searchByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "priceRange?minPrice={minPrice}&maxPrice={maxPrice}&pageNo={pageNo}&pageSize={pageSize}&isActive={isActive}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, minPrice, maxPrice, pageNo, pageSize, true);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("minPrice",minPrice);
+        queryParams.put("maxPrice",maxPrice);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity searchByStoreName(String storeName, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "searchByStoreName?storeName={storeName}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, storeName, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("storeName",storeName);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity filterByFeature(int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "isFeatured?isFeatured={isFeatured}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, true, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity create(Product product) {
         final String completeUrl = baseUrl + "createProduct";
-        return restTemplate.postForEntity(completeUrl, product, String.class);
+        return restTemplate.exchange(completeUrl,HttpMethod.POST,new HttpEntity<>(product), String.class);
     }
 
     public ResponseEntity create(List<Product> products) {
         final String completeUrl = baseUrl + "createListOfProducts";
-        return restTemplate.postForEntity(completeUrl, products, String.class);
+        return restTemplate.exchange(completeUrl,HttpMethod.POST,new HttpEntity<>(products), String.class);
     }
 
-    public ResponseEntity findById(Long id) {
+    public ResponseEntity findById(Long id,boolean isActive) {
         final String completeUrl = baseUrl + "findProductById?id={id}&isActive={isActive}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, id, true);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("id", id);
+        queryParams.put("isActive", isActive);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product.class, queryParams);
     }
 
     public ResponseEntity existById(Long id) {
         final String completeUrl = baseUrl + "existProductById?id={id}&isActive={isActive}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, id, true);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("id", id);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, String.class, queryParams);
     }
 
     public ResponseEntity search(Set<String> keywords, int pageNo, int pageSize) {
         final String completeUrl = baseUrl + "search?keywords={keywords}&pageNo={pageNo}&pageSize={pageSize}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, keywords, pageNo, pageSize);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("keywords", keywords);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, Product[].class, queryParams);
     }
 
     public ResponseEntity getIngredientsByProductId(Long productId) {
-        final String completeUrl = baseUrl + "getIngredientsByProductId?productId={productId}";
-        return restTemplate.getForEntity(completeUrl, Product[].class, productId);
+        final String completeUrl = baseUrl + "getAllIngredientsByProductId?productId={productId}";
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("productId", productId);
+        return restTemplate.exchange(completeUrl,HttpMethod.GET,HttpEntity.EMPTY, ProductIngredient[].class, queryParams);
     }
 
     public ResponseEntity updateProductInfo(Long id, String productName, String productDescription,
@@ -133,7 +178,7 @@ public class ProductService {
         params.put("isFeatured", isFeatured);
         params.put("type", type);
 
-        return restTemplate.exchange(completeUrl, HttpMethod.PUT, null, String.class, params);
+        return restTemplate.exchange(completeUrl, HttpMethod.PUT, HttpEntity.EMPTY, String.class, params);
     }
 
     public ResponseEntity updateProduct(Long id, Product product) {
@@ -144,7 +189,9 @@ public class ProductService {
 
     public ResponseEntity deleteProduct(Long id) {
         final String completeUrl = baseUrl + "deleteProduct/id=" + id;
-        return restTemplate.exchange(completeUrl, HttpMethod.PATCH, HttpEntity.EMPTY, String.class);
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("id", id);
+        return restTemplate.exchange(completeUrl, HttpMethod.PATCH, HttpEntity.EMPTY, String.class,queryParams);
     }
 
 }

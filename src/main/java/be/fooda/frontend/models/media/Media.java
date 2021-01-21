@@ -1,4 +1,4 @@
-package be.fooda.frontend.models.Media;
+package be.fooda.frontend.models.media;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
