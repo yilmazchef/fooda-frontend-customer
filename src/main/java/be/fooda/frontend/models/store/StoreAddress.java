@@ -1,16 +1,15 @@
 package be.fooda.frontend.models.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreAddress {
 
     private Long id;
 
     private Long externalAddressId;
 
-
     private String postcode;
-
 
     private String municipality;
 

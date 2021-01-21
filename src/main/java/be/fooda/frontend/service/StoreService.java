@@ -29,24 +29,30 @@ public class StoreService {
     @Value("${fooda.store.service.url}")
     private String baseUrl;
 
+    private static final String DEFAULT_PAGE_NO = "1";
+    private static final String DEFAULT_PAGE_SIZE = "10";
+
+    private static final String GET_ALL = "get_all_stores";
+    private static final String SEARCH_BY_STORE_NAME = "search_by_store_name";
+
     public StoreService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     public ResponseEntity getAllStores(int pageNo, int pageSize) {
-        final String completeUrl = baseUrl + "get_All?pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + GET_ALL + "?pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 
     public ResponseEntity searchByStoreName(String name, int pageNo, int pageSize) {
-        final String completeUrl = baseUrl + "search_By_Store_Name?name={name}&pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + SEARCH_BY_STORE_NAME + "?name={name}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("name", name);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 
@@ -54,8 +60,8 @@ public class StoreService {
         final String completeUrl = baseUrl + "search?name={name}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("name", name);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 
@@ -76,8 +82,8 @@ public class StoreService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("postcode", postcode);
         queryParams.put("municipality", municipality);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
 
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
@@ -87,8 +93,8 @@ public class StoreService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("maxPrice", maxPrice);
         queryParams.put("minPrice", minPrice);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 
@@ -97,8 +103,8 @@ public class StoreService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("minDuration", minDuration);
         queryParams.put("maxDuration", maxDuration);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 
@@ -107,8 +113,8 @@ public class StoreService {
         Map<String, Object> queryParams = new HashMap<>();
 
         queryParams.put("menuItem", menuItem);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 
@@ -116,8 +122,8 @@ public class StoreService {
         final String completeUrl = baseUrl + "search_By_Cuisine?cuisine={cuisine}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("cuisine", cuisine);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 
@@ -132,8 +138,8 @@ public class StoreService {
         final String completeUrl = baseUrl + "search_By_Dietary?dietary={dietary}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("dietary", dietary);
-        queryParams.put("pageNo", pageNo);
-        queryParams.put("pageSize", pageSize);
+        queryParams.put("pageNo", DEFAULT_PAGE_NO);
+        queryParams.put("pageSize", DEFAULT_PAGE_SIZE);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
 

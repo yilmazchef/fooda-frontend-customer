@@ -13,8 +13,6 @@ import com.vaadin.flow.router.Route;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static be.fooda.frontend.views.main.MainView.DEFAULT_PAGE_NUMBER;
-import static be.fooda.frontend.views.main.MainView.RESULTS_PER_PAGE;
 
 @Route(value = "search_food", layout = MainView.class)
 @PageTitle("Search Food")
@@ -51,7 +49,7 @@ public class SearchFoodView extends VerticalLayout {
     }
 
     private void searchProductByName(String productName) {
-        final ResponseEntity<Product[]> responseEntity = productService.searchByName(productName, DEFAULT_PAGE_NUMBER, RESULTS_PER_PAGE);
+        final ResponseEntity<Product[]> responseEntity = productService.searchByName(productName, 1, 10);
         initProductsFromResponse(responseEntity);
     }
 

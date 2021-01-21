@@ -3,11 +3,10 @@ package be.fooda.frontend.views.searchrestaurant;
 import be.fooda.frontend.components.StoreCardLayout;
 import be.fooda.frontend.models.store.Store;
 import be.fooda.frontend.service.StoreService;
-import com.vaadin.flow.component.Text;
+import be.fooda.frontend.views.main.MainView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import be.fooda.frontend.views.main.MainView;
 import org.springframework.http.ResponseEntity;
 
 @Route(value = "search_restaurant", layout = MainView.class)
@@ -19,8 +18,6 @@ public class SearchRestaurantView extends Div {
     public SearchRestaurantView(StoreService storeService) {
         this.storeService = storeService;
         setId("search-restaurant-view");
-
-        add(new Text("Delete this line .. "));
 
         final ResponseEntity<Store[]> apiResponse = storeService.getAllStores(1, 5);
         if (apiResponse.getStatusCode().is2xxSuccessful()) {

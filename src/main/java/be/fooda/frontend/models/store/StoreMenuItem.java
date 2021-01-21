@@ -1,11 +1,11 @@
 package be.fooda.frontend.models.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.URL;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StoreMenuItem {
 
     private Long id;

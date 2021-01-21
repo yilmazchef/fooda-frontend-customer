@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static be.fooda.frontend.views.main.MainView.DEFAULT_PAGE_NUMBER;
-
 @Route(value = "main", layout = MainView.class)
 @PageTitle("Fooda | Main Menu")
 public class MainMenuView extends VerticalLayout {
@@ -38,7 +36,7 @@ public class MainMenuView extends VerticalLayout {
     }
 
     private void getProductsFromApi() {
-        final ResponseEntity<Product[]> responseEntity = productService.getAll(DEFAULT_PAGE_NUMBER, 2);
+        final ResponseEntity<Product[]> responseEntity = productService.getAll(1, 2);
         ConvertApiResponseToComponent(responseEntity);
     }
 
