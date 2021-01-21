@@ -24,7 +24,7 @@ public class ContactService {
     }
 
     public ResponseEntity getAllContacts(int pageNo, int pageSize) {
-        final String completeUrl = baseUrl + "get_All_Contacts?pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + "get_all_contacts?pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
@@ -32,22 +32,22 @@ public class ContactService {
     }
 
     public ResponseEntity contactExistsById(Long id) {
-        final String completeUrl = baseUrl + "contact_Exists_By_Id?id={id}";
+        final String completeUrl = baseUrl + "contact_exists_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, String.class, id);
     }
 
     public ResponseEntity getContactById(Long id) {
-        final String completeUrl = baseUrl + "get_Contact_By_Id?id={id}";
+        final String completeUrl = baseUrl + "get_contact_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Contact.class, id);
     }
 
     public ResponseEntity getContactByUserId(Long externalUserId) {
-        final String completeUrl = baseUrl + "get_Contact_details_By_user_Id?externalUserId={externalUserId}";
+        final String completeUrl = baseUrl + "get_contact_details_by_user_id?externalUserId={externalUserId}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Contact[].class, externalUserId);
     }
 
     public ResponseEntity addContact(Contact contact) {
-        final String completeUrl = baseUrl + "add_Contact";
+        final String completeUrl = baseUrl + "add_contact";
         return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(contact), String.class);
     }
 }
