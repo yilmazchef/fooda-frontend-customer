@@ -8,7 +8,7 @@
     --material-error-text-color: #44d000;
     --material-primary-button-background-color: #FF0066;
     --max-product-layout-width: 350px;
-    --max-product-category-width: 240px;
+    --max-product-category-width: 270px;
 }
 
 vaadin-vertical-layout vaading-horizontal-layout {
@@ -19,15 +19,18 @@ vaadin-vertical-layout vaading-horizontal-layout {
 #main-menu-view {
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 0;
+    padding: 0 4px 20px 4px;
     margin: 0;
     overflow: hidden;
+    vertical-align: center;
+    justify-content: center;
 }
 
-#product-category-layout {
+#product-categories-layout {
     width: 100vw;
-    height: 30px;
-    max-width: var(--max-product-layout-width);
+    height: auto;
+    max-width: var(--max-product-category-width);
+    align-items: end;
 }
 
 #product-layout {
@@ -36,7 +39,7 @@ vaadin-vertical-layout vaading-horizontal-layout {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    max-width: var(--max-product-layout-width)
+    max-width: var(--max-product-layout-width);
 }
 
 .product-image-layout,
@@ -47,7 +50,6 @@ vaadin-vertical-layout vaading-horizontal-layout {
     padding: 0 20px;
     margin: 0;
     width: 100vw;
-
     max-width: var(--max-product-layout-width);
 }
 
@@ -66,16 +68,6 @@ vaadin-vertical-layout vaading-horizontal-layout {
 
 }
 
-.product-add-to-basket-button {
-    border-radius: 0 0 20px 20px;
-    width: 100vw;
-    height: 70px;
-    font-size: medium;
-    background-color: var(--material-primary-button-background-color);
-    color: var(--material-secondary-text-color);
-    max-width: var(--max-product-layout-width)
-}
-
 .product-quantity-field {
     font-size: 18pt;
     padding-bottom: 20px;
@@ -88,8 +80,18 @@ vaadin-vertical-layout vaading-horizontal-layout {
 }
 
 .product-description-paragraph {
-    font-size: 10pt;
+    font-size: 12pt;
     max-width: var(--max-product-layout-width)
 
+}
+
+.product-add-to-basket-button {
+    border-radius: 0 0 20px 20px;
+    width: 100vw;
+    height: 70px;
+    font-size: medium;
+    background-color: var(--material-primary-button-background-color);
+    color: var(--material-secondary-text-color);
+    max-width: var(--max-product-layout-width)
 }
 
