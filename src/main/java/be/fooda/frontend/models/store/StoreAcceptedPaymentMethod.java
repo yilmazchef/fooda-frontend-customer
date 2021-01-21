@@ -15,7 +15,7 @@ public class StoreAcceptedPaymentMethod {
 
     private BigDecimal minOrderAmount;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+
     private LocalDate expiryDate;
 
     public Long getId() {
@@ -24,14 +24,6 @@ public class StoreAcceptedPaymentMethod {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 
     public BigDecimal getMinOrderAmount() {

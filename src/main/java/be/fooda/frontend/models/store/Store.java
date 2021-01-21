@@ -24,10 +24,10 @@ public class Store {
 
     private Boolean isActive = Boolean.TRUE;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+
     private LocalDateTime registryTime;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+
     private LocalDateTime updateTime;
 
     private StoreAuth auth;

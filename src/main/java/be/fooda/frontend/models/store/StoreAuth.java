@@ -14,8 +14,6 @@ public class StoreAuth {
 
     private String secret;
 
-
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
 
     private String siteUrl;
