@@ -1,9 +1,7 @@
 package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.DeliveryStatus;
-import be.fooda.frontend.models.OrderStatus;
 import be.fooda.frontend.models.delivery.Delivery;
-import be.fooda.frontend.models.order.Order;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -29,7 +27,7 @@ public class DeliveryService {
     }
 
     public ResponseEntity getAllDeliveries(int pageNo, int pageSize, boolean isActive) {
-        final String completeUrl = baseUrl + "get_All_Deliveries?pageNo={pageNo}&pageSize={pageSize}&isActive={isActive}";
+        final String completeUrl = baseUrl + "get_all_deliveries?pageNo={pageNo}&pageSize={pageSize}&isActive={isActive}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
@@ -38,7 +36,7 @@ public class DeliveryService {
     }
 
     public ResponseEntity getDeliveryById(long id, boolean isActive) {
-        final String completeUrl = baseUrl + "get-delivery-by-id?id={id}&isActive={isActive}";
+        final String completeUrl = baseUrl + "get_delivery_by_id?id={id}&isActive={isActive}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("id", id);
         queryParams.put("isActive", isActive);
@@ -123,7 +121,7 @@ public class DeliveryService {
         queryParams.put("pageSize", pageSize);
         queryParams.put("isActive", isActive);
 
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Order[].class, queryParams);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Delivery[].class, queryParams);
     }
 
     public ResponseEntity create (Delivery delivery) {
