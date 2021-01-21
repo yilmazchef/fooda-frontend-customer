@@ -15,7 +15,7 @@ public class ProductCategoriesLayout extends Accordion {
 
         getElement().setAttribute("theme", Material.DARK);
 
-        setId("product-categories-layout");
+        setId("product-categories-accordion");
 
         FormLayout categoriesSelectionForm = new FormLayout();
         categories.forEach(c -> {
@@ -26,7 +26,6 @@ public class ProductCategoriesLayout extends Accordion {
             categoriesSelectionForm.add(categoryCheckBox);
         });
 
-        setWidthFull();
         add("Categories", categoriesSelectionForm);
         close();
     }

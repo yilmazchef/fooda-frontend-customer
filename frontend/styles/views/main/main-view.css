@@ -16,6 +16,8 @@ vaadin-vertical-layout vaading-horizontal-layout {
     margin: 0;
 }
 
+/* CSS FOR MAIN VIEW */
+
 #main-menu-view {
     flex-direction: row;
     flex-wrap: wrap;
@@ -26,7 +28,7 @@ vaadin-vertical-layout vaading-horizontal-layout {
     justify-content: center;
 }
 
-#product-categories-layout {
+#product-categories-accordion {
     width: 100vw;
     height: auto;
     max-width: var(--max-product-category-width);
@@ -95,3 +97,54 @@ vaadin-vertical-layout vaading-horizontal-layout {
     max-width: var(--max-product-layout-width)
 }
 
+/* CSS FOR SEARCH RESTAURANT VIEW */
+
+#search-restaurant-view {
+    /*    page settings */
+}
+
+.store-layout {
+    /*    for each store layout */
+}
+
+.store-background {
+
+}
+
+.store-info-layout, .store-actions-layout {
+
+}
+
+.store-name {
+
+}
+
+.store-slogan {
+
+}
+
+.store-about {
+
+}
+
+.store-view-menu {
+
+}
+
+/*CSS FOR PRODUCT DETAILS VIEW*/
+
+.product-details-layout {
+
+}
+
+.product-details-info-layout {
+
+}
+
+.product-details-ingredients-layout {
+
+}
+
+.product-details-extra-ingredients-layout {
+
+}
