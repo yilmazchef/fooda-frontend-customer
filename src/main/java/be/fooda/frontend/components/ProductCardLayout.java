@@ -7,21 +7,27 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
+import com.vaadin.flow.theme.material.Material;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class ProductCard extends VerticalLayout {
+public class ProductCardLayout extends VerticalLayout {
 
-    public ProductCard(Product data) {
+    public ProductCardLayout(Product data) {
+
+        getElement().setAttribute("theme", Material.DARK);
+
+        setId("product-card-layout");
 
         // product card layout design settings ..
         setPadding(false);
-        setAlignItems(Alignment.CENTER);
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
         setWidthFull();
 
@@ -69,10 +75,16 @@ public class ProductCard extends VerticalLayout {
         final Paragraph descriptionParagraph = new Paragraph(data.getDescription());
         infoLayout.add(nameHeader, descriptionParagraph);
 
+        HorizontalLayout priceLayout = new HorizontalLayout();
+        priceLayout.setPadding(false);
+        priceLayout.setVerticalComponentAlignment(Alignment.CENTER);
+        priceLayout.setSpacing(true);
+        priceLayout.add(quantityField, priceField, taxParagraph);
+
         VerticalLayout actionLayout = new VerticalLayout();
         actionLayout.setPadding(false);
         actionLayout.setWidthFull();
-        Button addToBasketButton = new Button();
+        Button addToBasketButton = new Button(VaadinIcon.CHECK.create());
         actionLayout.add(addToBasketButton);
 
         add(imageLayout, infoLayout, actionLayout);

@@ -1,7 +1,7 @@
 package be.fooda.frontend.views.mainmenu;
 
-import be.fooda.frontend.components.ProductCard;
-import be.fooda.frontend.components.ProductCategoryAccordion;
+import be.fooda.frontend.components.ProductCardLayout;
+import be.fooda.frontend.components.ProductCategoryAccordionLayout;
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.service.ProductService;
@@ -28,25 +28,25 @@ public class MainMenuView extends VerticalLayout {
         this.productService = productService;
         setId("main-menu-view");
 
-        getProductCategories();
-        getProducts();
+        getProductCategoriesFromApi();
+        getProductsFromApi();
     }
 
-    private void getProductCategories() {
+    private void getProductCategoriesFromApi() {
         final ResponseEntity<ProductCategory[]> categories = productService.getAllCategories();
         initProductCategoriesFromResponse(categories);
     }
 
-    private void getProducts() {
+    private void getProductsFromApi() {
         final ResponseEntity<Product[]> responseEntity = productService.getAll(DEFAULT_PAGE_NUMBER, 2);
-        initProductsFromResponse(responseEntity);
+        ConvertApiResponseToComponent(responseEntity);
     }
 
-    private void initProductsFromResponse(ResponseEntity<Product[]> responseEntity) {
+    private void ConvertApiResponseToComponent(ResponseEntity<Product[]> responseEntity) {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
             for (Product product : products) {
-                add(new ProductCard(product));
+                add(new ProductCardLayout(product));
             }
         }
     }
@@ -54,7 +54,7 @@ public class MainMenuView extends VerticalLayout {
     private void initProductCategoriesFromResponse(ResponseEntity<ProductCategory[]> responseEntity) {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             Set<ProductCategory> categories = new HashSet<>(Arrays.asList(responseEntity.getBody()));
-            add(new ProductCategoryAccordion(categories));
+            add(new ProductCategoryAccordionLayout(categories));
         }
     }
 

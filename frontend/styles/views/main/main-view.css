@@ -1,7 +1,18 @@
 * {
     --material-background-color: #000000;
+    --material-secondary-color: #161616;
     --material-primary-color: #F2F2F2;
-    --material-primary-contrast-color: #FF0066;
-    --material-button-outline-color: #FF0066;
     --material-font-family: Source Code Pro;
+    --material-secondary-text-color: #F2F2F2;
+    --material-disabled-text-color: #323232;
+    --material-primary-text-color: #FF0066;
+    --material-error-text-color: #44d000
+}
+
+.product-category-accordion-layout {
+}
+
+.product-card-layout {
+    border: #99007c solid medium;
+    border-radius: 30px;
 }
