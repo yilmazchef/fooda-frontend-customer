@@ -26,12 +26,12 @@ public class AddressService {
     }
 
     public ResponseEntity getAll() {
-        final String completeUrl = baseUrl + "get_All_Addresses";
+        final String completeUrl = baseUrl + "get_all_addresses";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Address[].class);
     }
 
     public ResponseEntity getAddressById(Long id) {
-        final String completeUrl = baseUrl + "get_Address_by_id?id={id}";
+        final String completeUrl = baseUrl + "get_address_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Address.class, id);
     }
 
