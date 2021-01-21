@@ -1,6 +1,7 @@
 package be.fooda.frontend.models.customer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,9 +29,9 @@ public class Customer {
 
     private CustomerUser user;
 
-    private List<CustomerAddress> addresses;
+    private CustomerAddress currentAddress;
 
-    private List<CustomerContact> contacts;
+    private CustomerContact currentContact;
 
     private List<CustomerPayment> paymentOptions;
 
@@ -120,20 +121,20 @@ public class Customer {
         this.user = user;
     }
 
-    public List<CustomerAddress> getAddresses() {
-        return addresses;
+    public CustomerAddress getCurrentAddress() {
+        return currentAddress;
     }
 
-    public void setAddresses(List<CustomerAddress> addresses) {
-        this.addresses = addresses;
+    public void setCurrentAddress(CustomerAddress currentAddress) {
+        this.currentAddress = currentAddress;
     }
 
-    public List<CustomerContact> getContacts() {
-        return contacts;
+    public CustomerContact getCurrentContact() {
+        return currentContact;
     }
 
-    public void setContacts(List<CustomerContact> contacts) {
-        this.contacts = contacts;
+    public void setCurrentContact(CustomerContact currentContact) {
+        this.currentContact = currentContact;
     }
 
     public List<CustomerPayment> getPaymentOptions() {
