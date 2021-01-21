@@ -44,18 +44,29 @@ public class BasketService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalUserId", externalUserId);
         queryParams.put("userSession", userSession);
-        queryParams.put("externalStoreId", externalStoreId);
+
+            queryParams.put("externalStoreId", externalStoreId);
         final String completeUrl = baseUrl + "product/get_products_by_user_and_store?" +
                 "externalUserId={externalUserId}&userSession={userSession}&externalStoreId={externalStoreId}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketProduct[].class, queryParams);
     }
 
-    public ResponseEntity addProduct (BasketProduct product) {
+    public ResponseEntity getProductsByUser(Long externalUserId, String userSession) {
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("externalUserId", externalUserId);
+        queryParams.put("userSession", userSession);
+
+        final String completeUrl = baseUrl + "product/get_products_by_user_and_store?" +
+                "externalUserId={externalUserId}&userSession={userSession}";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketProduct[].class, queryParams);
+    }
+
+    public ResponseEntity addProduct(BasketProduct product) {
         final String completeUrl = baseUrl + "product/add_product";
         return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(product), String.class);
     }
 
-    public ResponseEntity updateProductQuantity (Long externalProductId, Long externalUserId, String userSession, Integer newQuantity){
+    public ResponseEntity updateProductQuantity(Long externalProductId, Long externalUserId, String userSession, Integer newQuantity) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalProductId", externalProductId);
         queryParams.put("externalUserId", externalUserId);
@@ -67,7 +78,7 @@ public class BasketService {
         return restTemplate.exchange(completeUrl, HttpMethod.PATCH, HttpEntity.EMPTY, String.class, queryParams);
     }
 
-    public ResponseEntity updateProductPrice (Long externalProductId, Long externalUserId, String userSession, BigDecimal newPrice){
+    public ResponseEntity updateProductPrice(Long externalProductId, Long externalUserId, String userSession, BigDecimal newPrice) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalProductId", externalProductId);
         queryParams.put("externalUserId", externalUserId);
@@ -79,22 +90,22 @@ public class BasketService {
         return restTemplate.exchange(completeUrl, HttpMethod.PATCH, HttpEntity.EMPTY, String.class, queryParams);
     }
 
-    public ResponseEntity deleteProductById (String id){
+    public ResponseEntity deleteProductById(String id) {
         final String completeUrl = baseUrl + "product/delete_product_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, id);
     }
 
-    public ResponseEntity deleteProductByUserAndExternalProductId (Long externalProductId, Long externalUserId, String userSession){
+    public ResponseEntity deleteProductByUserAndExternalProductId(Long externalProductId, Long externalUserId, String userSession) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalProductId", externalProductId);
         queryParams.put("externalUserId", externalUserId);
         queryParams.put("userSession", userSession);
         final String completeUrl = baseUrl + "product/delete_product_by_user_and_external_product_id?" +
-        "externalProductId={externalProductId}&externalUserId={externalUserId}&userSession={userSession}";
+                "externalProductId={externalProductId}&externalUserId={externalUserId}&userSession={userSession}";
         return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, queryParams);
     }
 
-    public ResponseEntity deleteProducts (Long externalStoreId, Long externalUserId, String userSession){
+    public ResponseEntity deleteProducts(Long externalStoreId, Long externalUserId, String userSession) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalStoreId", externalStoreId);
         queryParams.put("externalUserId", externalUserId);
@@ -116,22 +127,22 @@ public class BasketService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketAddress.class, addressId);
     }
 
-    public ResponseEntity getAddressesByExternalUserId (Long externalUserId){
+    public ResponseEntity getAddressesByExternalUserId(Long externalUserId) {
         final String completeUrl = baseUrl + "address/get_addresses_by_external_user_id?externalUserId={externalUserId}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketAddress[].class, externalUserId);
     }
 
-    public ResponseEntity createAddress (BasketAddress address) {
-            final String completeUrl = baseUrl + "address/create_address";
-            return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(address), String.class);
+    public ResponseEntity createAddress(BasketAddress address) {
+        final String completeUrl = baseUrl + "address/create_address";
+        return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(address), String.class);
     }
 
-    public ResponseEntity deleteAddressById (String id){
+    public ResponseEntity deleteAddressById(String id) {
         final String completeUrl = baseUrl + "address/delete_address_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, id);
     }
 
-    public ResponseEntity deleteAddress (Long externalUserId, String userSession, Long externalAddressId){
+    public ResponseEntity deleteAddress(Long externalUserId, String userSession, Long externalAddressId) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalUserId", externalUserId);
         queryParams.put("userSession", userSession);
@@ -153,22 +164,22 @@ public class BasketService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketContact.class, contactId);
     }
 
-    public ResponseEntity getContactsByExternalUserId (Long externalUserId){
+    public ResponseEntity getContactsByExternalUserId(Long externalUserId) {
         final String completeUrl = baseUrl + "contact/get_contacts_by_external_user_id?externalUserId={externalUserId}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketContact[].class, externalUserId);
     }
 
-    public ResponseEntity createContact (BasketContact contact) {
+    public ResponseEntity createContact(BasketContact contact) {
         final String completeUrl = baseUrl + "contact/create_contact";
         return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(contact), String.class);
     }
 
-    public ResponseEntity deleteContactById (String id){
+    public ResponseEntity deleteContactById(String id) {
         final String completeUrl = baseUrl + "contact/delete_contact_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, id);
     }
 
-    public ResponseEntity deleteContact ( Long externalUserId, String userSession, Long externalContactId){
+    public ResponseEntity deleteContact(Long externalUserId, String userSession, Long externalContactId) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalUserId", externalUserId);
         queryParams.put("userSession", userSession);
@@ -190,17 +201,17 @@ public class BasketService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketPayment.class, paymentId);
     }
 
-    public ResponseEntity getPaymentsByExternalUserId ( Long externalUserId){
+    public ResponseEntity getPaymentsByExternalUserId(Long externalUserId) {
         final String completeUrl = baseUrl + "payment/get_payments_by_external_user_id?externalUserId={externalUserId}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketPayment[].class, externalUserId);
     }
 
-    public ResponseEntity createPayment (BasketPayment payment) {
+    public ResponseEntity createPayment(BasketPayment payment) {
         final String completeUrl = baseUrl + "payment/create_payment";
         return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(payment), String.class);
     }
 
-    public ResponseEntity deletePaymentById (String id){
+    public ResponseEntity deletePaymentById(String id) {
         final String completeUrl = baseUrl + "payment/delete_payment_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, id);
     }
@@ -212,17 +223,17 @@ public class BasketService {
 
     //    ORDER END POINTS
 
-    public ResponseEntity createOrders (List<BasketOrder> orders) {
+    public ResponseEntity createOrders(List<BasketOrder> orders) {
         final String completeUrl = baseUrl + "order/create_orders";
         return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(orders), String.class);
     }
 
-    public ResponseEntity deleteOrderById (String id){
+    public ResponseEntity deleteOrderById(String id) {
         final String completeUrl = baseUrl + "order/delete_order_by_id?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, id);
     }
 
-    public ResponseEntity deleteOrders (Long externalStoreId, Long externalUserId, String userSession){
+    public ResponseEntity deleteOrders(Long externalStoreId, Long externalUserId, String userSession) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("externalStoreId", externalStoreId);
         queryParams.put("externalUserId", externalUserId);
@@ -236,5 +247,15 @@ public class BasketService {
         final String completeUrl = baseUrl + "order/order_exists?id={id}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, String.class, id);
 
+    }
+
+    public ResponseEntity getOrdersByUser(Long externalUserId, String userSession, Long externalStoreId) {
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("externalUserId", externalUserId);
+        queryParams.put("userSession", userSession);
+        queryParams.put("externalStoreId", externalStoreId);
+        final String completeUrl = baseUrl + "order/get_orders_by_user_and_store?" +
+                "externalUserId={externalUserId}&userSession={userSession}&externalStoreId={externalStoreId}";
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketOrder[].class, queryParams);
     }
 }

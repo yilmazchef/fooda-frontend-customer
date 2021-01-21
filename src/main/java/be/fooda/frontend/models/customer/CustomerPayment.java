@@ -1,5 +1,6 @@
 package be.fooda.frontend.models.customer;
 
+import be.fooda.frontend.models.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class CustomerPayment {
@@ -9,7 +10,7 @@ public class CustomerPayment {
 
     private Long externalPaymentId;
 
-    private String method;
+    private PaymentMethod method;
 
     private Boolean isDefault;
 
@@ -29,11 +30,11 @@ public class CustomerPayment {
         this.externalPaymentId = externalPaymentId;
     }
 
-    public String getMethod() {
+    public PaymentMethod getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    public void setMethod(PaymentMethod method) {
         this.method = method;
     }
 
