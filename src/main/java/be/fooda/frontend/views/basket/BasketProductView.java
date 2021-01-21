@@ -9,6 +9,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -32,7 +33,7 @@ public class BasketProductView extends VerticalLayout {
         final ResponseEntity<BasketProduct[]> apiResponse = basketService.getProductsByUser(externalUserId, session);
         BasketProduct[] basketProducts = apiResponse.getBody();
 
-        if (apiResponse.getStatusCode().is2xxSuccessful() && apiResponse.hasBody() && basketProducts.length > 0) {
+        if (apiResponse.getStatusCode().equals(HttpStatus.FOUND) && apiResponse.hasBody() && basketProducts.length > 0) {
             Map<BasketStore, List<BasketProduct>> storeGroup = Arrays
                     .stream(basketProducts)
                     .collect(Collectors.groupingBy(BasketProduct::getStore));
@@ -44,6 +45,7 @@ public class BasketProductView extends VerticalLayout {
                 storeName.addClassName("basket-products-store-name");
                 storeGroupLayout.add(storeName);
                 for (BasketProduct product : products) {
+                    System.out.println(product.getName());
                     storeGroupLayout.add(new BasketProductLayout(product));
                 }
 
