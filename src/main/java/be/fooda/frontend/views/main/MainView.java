@@ -18,7 +18,7 @@ import com.vaadin.flow.theme.material.Material;
  */
 @CssImport("./styles/views/main/main-view.css")
 @Viewport("width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes, viewport-fit=cover")
-@PWA(name = "Fooda", shortName = "Fooda", enableInstallPrompt = false)
+@PWA(name = "Fooda", shortName = "Fooda", enableInstallPrompt = true)
 @JsModule("./styles/shared-styles.js")
 @Theme(value = Material.class, variant = Material.DARK)
 public class MainView extends AppLayout {
