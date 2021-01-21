@@ -1,6 +1,5 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.Media.Media;
 import be.fooda.frontend.models.courier.Courier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
