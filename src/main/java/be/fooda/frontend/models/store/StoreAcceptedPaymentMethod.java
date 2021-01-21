@@ -1,7 +1,6 @@
 package be.fooda.frontend.models.store;
 
 import be.fooda.frontend.models.PaymentMethod;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
@@ -16,7 +15,7 @@ public class StoreAcceptedPaymentMethod {
 
     private BigDecimal minOrderAmount;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate expiryDate;
 
     public Long getId() {

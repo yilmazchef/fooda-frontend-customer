@@ -1,6 +1,5 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.store.Store;
 import be.fooda.frontend.models.store.StoreMenuItem;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +7,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -91,9 +89,9 @@ public class StoreService {
         queryParams.put("pageSize", pageSize);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
-//todo/ahmet
+
     public ResponseEntity filterByDeliveryLocations(Set<String> postcode, int pageNo,int pageSize ){
-        final String completeUrl = baseUrl + " filter_by_deliveryLocation?postcode=[{postcode}]&pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + " filter_by_deliveryLocation?postcode={postcodes}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("postcode", postcode);
         queryParams.put("pageNo", pageNo);
