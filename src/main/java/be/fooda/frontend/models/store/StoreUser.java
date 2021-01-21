@@ -49,9 +49,5 @@ public class StoreUser {
 
 
 
-    public enum StoreUserType {
-        CREATED,
-        UPDATED,
-        DELETED;
-    }
+
 }

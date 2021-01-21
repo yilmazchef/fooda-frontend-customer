@@ -9,7 +9,15 @@ public class StoreImage {
 
     private Long externalMediaId;
 
-    private StoreImage type;
+    public StoreImageType getType() {
+        return type;
+    }
+
+    public void setType(StoreImageType type) {
+        this.type = type;
+    }
+
+    private StoreImageType type;
 
     private String url;
 
@@ -29,13 +37,6 @@ public class StoreImage {
         this.externalMediaId = externalMediaId;
     }
 
-    public StoreImage getType() {
-        return type;
-    }
-
-    public void setType(StoreImage type) {
-        this.type = type;
-    }
 
     public String getUrl() {
         return url;
