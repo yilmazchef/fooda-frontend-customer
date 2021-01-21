@@ -47,7 +47,7 @@ public class ProductLayout extends VerticalLayout {
         priceField.addClassName("product-price-field");
 
         // tax info which is also recalculated every every time when price is changed ..
-        BigDecimalField taxField = new BigDecimalField("VAT:");
+        BigDecimalField taxField = new BigDecimalField("Tax:");
         taxField.setReadOnly(true);
         taxField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
         taxField.setPrefixComponent(new Icon(VaadinIcon.EURO));
