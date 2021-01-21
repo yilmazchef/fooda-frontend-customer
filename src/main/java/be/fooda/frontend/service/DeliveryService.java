@@ -1,9 +1,7 @@
 package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.DeliveryStatus;
-import be.fooda.frontend.models.OrderStatus;
 import be.fooda.frontend.models.delivery.Delivery;
-import be.fooda.frontend.models.order.Order;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -123,7 +121,7 @@ public class DeliveryService {
         queryParams.put("pageSize", pageSize);
         queryParams.put("isActive", isActive);
 
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Order[].class, queryParams);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Delivery[].class, queryParams);
     }
 
     public ResponseEntity create (Delivery delivery) {
