@@ -2,18 +2,17 @@ package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.store.Store;
+import be.fooda.frontend.models.store.StoreMenuItem;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class StoreService {
@@ -108,22 +107,50 @@ public class StoreService {
         queryParams.put("menuItem", menuItem);
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store.class, queryParams);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
-  /*  public ResponseEntity searchByCuisine(String cuisine,Integer pageNo,  Integer pageSize){
-        final String completeUrl = baseUrl + "search_By_Cuisine"
-    }*/
 
+    public ResponseEntity searchByCuisine(String cuisine,Integer pageNo,  Integer pageSize){
+        final String completeUrl = baseUrl + "search_By_Cuisine?cuisine={cuisine}&pageNo={pageNo}&pageSize={pageSize}";
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("cuisine", cuisine);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
+    }
+    public ResponseEntity getByMenuItemsPrice(BigDecimal maxPrice) {
+        final String completeUrl = baseUrl + "get_By_MenuItems_Price?maxPrice={maxPrice}";
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("maxPrice", maxPrice);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
+    }
 
+    public ResponseEntity searchByDietary(String dietary, Integer pageNo, Integer pageSize) {
+        final String completeUrl = baseUrl + "search_By_Dietary?dietary={dietary}&pageNo={pageNo}&pageSize={pageSize}";
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("dietary", dietary);
+        queryParams.put("pageNo", pageNo);
+        queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
+    }
 
+    public ResponseEntity addStore(Store store) {
+        final String completeUrl = baseUrl + "add_store";
+        return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(store), String.class);
+    }
 
+    public ResponseEntity addMenuItem(Long storeId, StoreMenuItem menuItem) {
+        final String completeUrl = baseUrl + "add_menuItem?storeId=" + storeId;
+        return restTemplate.exchange(completeUrl, HttpMethod.PATCH, new HttpEntity<>(menuItem), String.class);
+    }
 
+    public ResponseEntity removeMenuItem(Long menuItemId) {
+        final String completeUrl = baseUrl + "remove_MenuItem?menuItemId={menuItemId}";
+        return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, menuItemId);
+    }
 
-
-
-
-
-
-
-
+    public ResponseEntity deleteStoreById(Long id) {
+            final String completeUrl = baseUrl + "delete_Store?id={id}";
+            return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, id);
+    }
 }
