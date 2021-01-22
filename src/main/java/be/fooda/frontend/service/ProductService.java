@@ -21,9 +21,9 @@ import java.util.Set;
 public class ProductService {
 
     private static final String GET_ALL_PRODUCTS = "get_all_products";
-    private static final String GET_ALL_CATEGORIES = "get_all_categories";
+    private static final String GET_ALL_CATEGORIES = "category/get_all_categories";
     private static final String GET_ALL_TAGS = "get_all_tags";
-    private static final String GET_ALL_CATEGORIES_BY_PRODUCT_ID = "get_all_categories_by_product_id";
+    private static final String GET_ALL_CATEGORIES_BY_PRODUCT_ID = "category/get_all_categories_by_product_id";
     private static final String GET_ALL_TAGS_BY_PRODUCT_ID = "get_all_tags_by_product_id";
     private static final String SEARCH_BY_PRODUCT_NAME = "search_by_product_name";
     private static final String SEARCH_BY_DESCRIPTION = "search_by_description";
@@ -206,7 +206,7 @@ public class ProductService {
 
         return restTemplate.exchange(completeUrl, HttpMethod.PUT, HttpEntity.EMPTY, String.class, params);
     }
-    
+
 
     public ResponseEntity deleteProduct(Long id) {
         final String completeUrl = baseUrl + DELETE_PRODUCT_BY_ID + "/id=" + id;

@@ -26,7 +26,6 @@ public class StoreLayout extends HorizontalLayout {
         imageLayout.setHeight("200px");
 
         Image logo = new Image(data.getImages().get(0).getUrl(), data.getStoreName());
-        logo.setWidth("20vw");
         logo.setHeight("auto");
         imageLayout.add(logo);
 
