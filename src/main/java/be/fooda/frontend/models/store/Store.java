@@ -2,14 +2,13 @@ package be.fooda.frontend.models.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Store {
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String storeName;
@@ -24,10 +23,10 @@ public class Store {
 
     private Boolean isActive = Boolean.TRUE;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+
     private LocalDateTime registryTime;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+
     private LocalDateTime updateTime;
 
     private StoreAuth auth;
@@ -43,6 +42,12 @@ public class Store {
     private List<StoreMenuItem> menuItems;
 
     private List<StoreAcceptedPaymentMethod> acceptedPaymentMethods;
+
+    private List<StoreDeliveryLocation> deliveryLocations;
+
+
+    private List<StoreWorkingHours> workingHours;
+
 
     public Long getId() {
         return id;
@@ -188,10 +193,7 @@ public class Store {
         this.workingHours = workingHours;
     }
 
-    private List<StoreDeliveryLocation> deliveryLocations;
 
-
-    private List<StoreWorkingHours> workingHours;
 
 
 }
