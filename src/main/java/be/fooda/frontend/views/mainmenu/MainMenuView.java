@@ -12,6 +12,7 @@ import be.fooda.frontend.service.StoreService;
 import be.fooda.frontend.views.main.MainView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -42,7 +43,8 @@ public class MainMenuView extends VerticalLayout {
 
         setId("main-menu-view");
 
-        add(new H3("Current user:" + sessionUser.getLogin()));
+        if (this.sessionUser != null)
+            add(new Label("Current user:" + sessionUser.getLogin()));
 
         final ResponseEntity<ProductCategory[]> categoriesResponse = productService.getAllCategories();
         convertApiResponseToCategoryComponents(categoriesResponse);

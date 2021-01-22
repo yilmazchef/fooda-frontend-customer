@@ -1,10 +1,13 @@
 package be.fooda.frontend.components;
 
 import be.fooda.frontend.models.basket.BasketProduct;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
@@ -21,55 +24,63 @@ public class BasketProductLayout extends VerticalLayout {
         getElement().setAttribute("theme", Material.DARK);
         setId("basket-product-layout");
 
-        HorizontalLayout imageAndPriceLayout = new HorizontalLayout();
-        imageAndPriceLayout.addClassName("basket-product-horizontal-layout");
-
-        VerticalLayout imageLayout = new VerticalLayout();
-        imageLayout.addClassName("basket-product-info-layout");
-
-        Image productImage = new Image(data.getImageUrl(), data.getName());
-        productImage.addClassName("basket-product-image");
-
-        imageLayout.add(productImage);
-
-        VerticalLayout priceLayout = new VerticalLayout();
-        priceLayout.setAlignItems(Alignment.CENTER);
-        priceLayout.addClassName("basket-product-price-layout");
-
+        // number field for setting quantity  ..
         NumberField quantityField = new NumberField();
-        quantityField.addClassName("basket-product-quantity");
-        quantityField.setValue(data.getQuantity().doubleValue());
+        quantityField.setValue(1d);
         quantityField.setHasControls(true);
         quantityField.setMin(1);
+        quantityField.setMax(100);
+        quantityField.addClassName("basket-product-quantity-field");
 
-        BigDecimalField totalAmountField = new BigDecimalField("TOTAL:");
-        totalAmountField.addClassName("basket-product-amount");
-        totalAmountField.setReadOnly(true);
-        totalAmountField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
-        totalAmountField.setPrefixComponent(new Icon(VaadinIcon.EURO));
-        totalAmountField.setValue(data.getPrice().multiply(BigDecimal.valueOf(quantityField.getValue())));
+        // price field which automatically is calculated every time the qty changes ..
+        BigDecimalField priceField = new BigDecimalField("Total:");
+        priceField.setReadOnly(true);
+        priceField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
+        priceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         quantityField.addValueChangeListener(onQuantityChange -> {
-            totalAmountField.setValue(data.getPrice().multiply(BigDecimal.valueOf(quantityField.getValue())));
+            priceField.setValue(data.getPrice().multiply(BigDecimal.valueOf(quantityField.getValue())).setScale(2));
         });
+        priceField.addClassName("basket-product-price-field");
 
-        totalAmountField.setReadOnly(true);
-        totalAmountField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
-        totalAmountField.setPrefixComponent(new Icon(VaadinIcon.EURO));
+        Image productImage = new Image(data.getImageUrl(), data.getName());
+        productImage.addClassName("basket-product-image-field");
 
-        priceLayout.add(quantityField, totalAmountField);
+        VerticalLayout imageLayout = new VerticalLayout();
+        imageLayout.setAlignItems(Alignment.CENTER);
+        imageLayout.add(productImage);
+        imageLayout.addClassName("basket-product-image-layout");
 
         VerticalLayout infoLayout = new VerticalLayout();
-        Paragraph nameText = new Paragraph(data.getName());
-        nameText.addClassName("basket-product-name");
+        infoLayout.setAlignItems(Alignment.CENTER);
+        infoLayout.addClassName("basket-product-info-layout");
+        final H2 nameHeader = new H2(data.getName());
+        nameHeader.addClassName("basket-product-name-header");
+        final Paragraph descriptionParagraph = new Paragraph(data.getDescription());
+        descriptionParagraph.addClassName("basket-product-description-paragraph");
+        infoLayout.add(nameHeader, descriptionParagraph);
 
-        Paragraph descriptionText = new Paragraph(data.getDescription());
-        descriptionText.addClassName("basket-product-description");
-        infoLayout.add(nameText, descriptionText);
+        HorizontalLayout quantityLayout = new HorizontalLayout();
+        quantityLayout.setVerticalComponentAlignment(Alignment.CENTER);
+        quantityLayout.addClassName("basket-product-quantity-layout");
+        quantityLayout.add(quantityField);
 
+        HorizontalLayout priceLayout = new HorizontalLayout();
+        priceLayout.setVerticalComponentAlignment(Alignment.CENTER);
+        priceLayout.addClassName("basket-product-price-layout");
+        priceLayout.add(priceField);
 
-        imageAndPriceLayout.add(imageLayout, priceLayout);
+        VerticalLayout actionLayout = new VerticalLayout();
+        actionLayout.setAlignItems(Alignment.CENTER);
+        actionLayout.addClassName("basket-product-action-layout");
+        Button addToBasketButton = new Button("Add to Basket", onClick -> {
+            // TODO FOR AHMET .. ACTIVE THIS CODE BLOCK ..
+//            basketService.addProduct(mapProductToBasketItem(data));
+            new Notification(data.getName() + " is added to basket.").open();
+        });
+        addToBasketButton.addClassName("basket-product-add-to-basket-button");
+        actionLayout.add(addToBasketButton);
 
-        add(imageAndPriceLayout, infoLayout);
+        add(imageLayout, infoLayout, quantityLayout, priceLayout, actionLayout);
 
     }
 }

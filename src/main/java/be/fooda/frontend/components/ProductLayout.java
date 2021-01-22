@@ -104,7 +104,7 @@ public class ProductLayout extends VerticalLayout {
         Button addToBasketButton = new Button("Add to Basket", onClick -> {
             // TODO FOR AHMET .. ACTIVE THIS CODE BLOCK ..
 //            basketService.addProduct(mapProductToBasketItem(data));
-            new Notification(data.getProductName() + " is added to basket.");
+            new Notification(data.getProductName() + " is added to basket.").open();
         });
         addToBasketButton.addClassName("product-add-to-basket-button");
         actionLayout.add(addToBasketButton);
