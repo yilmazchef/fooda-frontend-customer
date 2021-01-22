@@ -42,6 +42,7 @@ vaadin-vertical-layout vaading-horizontal-layout {
     justify-content: center;
     flex-direction: column;
     max-width: var(--max-product-layout-width);
+    margin: 20px;
 }
 
 .product-image-layout,
@@ -97,54 +98,52 @@ vaadin-vertical-layout vaading-horizontal-layout {
     max-width: var(--max-product-layout-width)
 }
 
-/* CSS FOR SEARCH RESTAURANT VIEW */
 
-#search-restaurant-view {
-    /*    page settings */
+#store-layout {
+    background: var(--material-secondary-background-color);
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: var(--max-product-layout-width);
+    margin: 20px;
 }
 
-.store-layout {
-    /*    for each store layout */
+.store-image-layout,
+.store-info-layout,
+.store-action-layout {
+    padding: 0 20px;
+    margin: 0;
+    width: 100vw;
+    max-width: var(--max-product-layout-width);
 }
 
-.store-background {
-
+.store-image-field {
+    border-radius: 20px 20px 0 0;
+    width: 100vw;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+    max-width: var(--max-product-layout-width)
 }
 
-.store-info-layout, .store-actions-layout {
-
-}
-
-.store-name {
-
-}
-
-.store-slogan {
-
-}
-
-.store-about {
-
-}
-
-.store-view-menu {
-
-}
-
-/*CSS FOR PRODUCT DETAILS VIEW*/
-
-.product-details-layout {
+.store-name-header {
+    font-size: 30pt;
+    max-width: var(--max-product-layout-width)
 
 }
 
-.product-details-info-layout {
-
+.store-description-paragraph {
+    font-size: 12pt;
+    max-width: var(--max-product-layout-width)
 }
 
-.product-details-ingredients-layout {
-
-}
-
-.product-details-extra-ingredients-layout {
-
+.store-view-menu-button {
+    border-radius: 0 0 20px 20px;
+    width: 100vw;
+    height: 70px;
+    font-size: medium;
+    background-color: var(--material-primary-button-background-color);
+    color: var(--material-secondary-text-color);
+    max-width: var(--max-product-layout-width)
 }

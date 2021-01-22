@@ -1,65 +1,48 @@
 package be.fooda.frontend.components;
 
 import be.fooda.frontend.models.store.Store;
+import be.fooda.frontend.models.store.StoreImageType;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.theme.material.Material;
 
-import java.math.BigDecimal;
-
-public class StoreLayout extends HorizontalLayout {
+public class StoreLayout extends VerticalLayout {
 
     public StoreLayout(Store data) {
 
         getElement().setAttribute("theme", Material.DARK);
         setId("store-layout");
-        setWidthFull();
+
+        Image storeImage = new Image(data.getImages().stream().filter(img -> img.getType() == StoreImageType.BACKGROUND_IMAGE).findFirst().get().getUrl(), data.getStoreName());
+        storeImage.addClassName("store-image-field");
 
         VerticalLayout imageLayout = new VerticalLayout();
-        imageLayout.setWidth("20vw");
-        imageLayout.setHeight("200px");
-
-        Image logo = new Image(data.getImages().get(0).getUrl(), data.getStoreName());
-        logo.setHeight("auto");
-        imageLayout.add(logo);
+        imageLayout.setAlignItems(Alignment.CENTER);
+        imageLayout.add(storeImage);
+        imageLayout.addClassName("store-image-layout");
 
         VerticalLayout infoLayout = new VerticalLayout();
-        infoLayout.setWidth("70vw");
-        infoLayout.setHeight("200px");
+        infoLayout.setAlignItems(Alignment.CENTER);
+        infoLayout.addClassName("store-info-layout");
+        final H2 nameHeader = new H2(data.getStoreName());
+        nameHeader.addClassName("store-name-header");
+        final Paragraph descriptionParagraph = new Paragraph(data.getAbout());
+        descriptionParagraph.addClassName("store-description-paragraph");
+        infoLayout.add(nameHeader, descriptionParagraph);
 
-        H2 title = new H2();
-        Span address = new Span(data.getAddress().getMunicipality() + ", " + data.getAddress().getCity());
-        infoLayout.add(title, address);
+        VerticalLayout actionLayout = new VerticalLayout();
+        actionLayout.setAlignItems(Alignment.CENTER);
+        actionLayout.addClassName("store-action-layout");
+        Button viewMenuButton = new Button("View Menu", onClick -> {
+            new Notification("View Menu is clicked .. ");
+        });
+        viewMenuButton.addClassName("store-view-menu-button");
+        actionLayout.add(viewMenuButton);
 
-        HorizontalLayout otherInfo = new HorizontalLayout();
-        BigDecimalField ranking = new BigDecimalField("Ranking: ");
-        ranking.setValue(BigDecimal.valueOf(9.8));
-        Span cuisine = new Span();
-
-        Icon star = VaadinIcon.STAR.create();
-
-        BigDecimalField deliveryTime = new BigDecimalField("Delivery: ");
-        deliveryTime.setValue(new BigDecimal("35.00"));
-
-        BigDecimalField deliveryCost = new BigDecimalField("Cost: ");
-        deliveryCost.setValue(BigDecimal.ZERO);
-
-        otherInfo.add(ranking, cuisine, star, deliveryTime, deliveryCost);
-
-        Span matchScore = new Span("100%");
-
-        VerticalLayout scoreLayout = new VerticalLayout();
-        scoreLayout.setWidth("10vw");
-        scoreLayout.setHeight("200px");
-        scoreLayout.add(matchScore);
-
-        add(imageLayout, infoLayout, scoreLayout);
-
+        add(imageLayout, infoLayout, actionLayout);
     }
 }
