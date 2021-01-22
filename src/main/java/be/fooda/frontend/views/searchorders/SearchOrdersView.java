@@ -11,7 +11,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Route(value = "search_orders", layout = MainView.class)
@@ -57,12 +56,12 @@ public class SearchOrdersView extends VerticalLayout {
     }
 
     private void initProductsFromResponse(ResponseEntity<Order[]> responseEntity) {
-        if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
-            final Order[] products = responseEntity.getBody();
-            for (Order order : products) {
+//        if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
+            final Order[] orders = responseEntity.getBody();
+            for (Order order : orders) {
                 add(new OrderLayout(order));
             }
-        }
+//        }
     }
 
 }

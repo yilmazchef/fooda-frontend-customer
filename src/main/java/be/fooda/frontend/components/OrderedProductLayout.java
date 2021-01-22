@@ -19,26 +19,22 @@ public class OrderedProductLayout extends VerticalLayout {
         getElement().setAttribute("theme", Material.DARK);
         setId("ordered-item-layout");
 
-        VerticalLayout infoLayout = new VerticalLayout();
+        HorizontalLayout infoLayout = new HorizontalLayout();
         infoLayout.setAlignItems(Alignment.CENTER);
         infoLayout.addClassName("ordered-item-info-layout");
         final H2 nameHeader = new H2(data.getProductName());
         nameHeader.addClassName("ordered-item-name-header");
-        infoLayout.add(nameHeader);
 
         // price field which automatically is calculated every time the qty changes ..
-        BigDecimalField priceField = new BigDecimalField("Total:");
+        BigDecimalField priceField = new BigDecimalField("Product Price:");
         priceField.setReadOnly(true);
         priceField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
         priceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         priceField.addClassName("ordered-item-price-field");
         priceField.setValue(data.getPrice().multiply(BigDecimal.valueOf(data.getQuantity())));
 
-        HorizontalLayout priceLayout = new HorizontalLayout();
-        priceLayout.setVerticalComponentAlignment(Alignment.CENTER);
-        priceLayout.addClassName("ordered-item-price-layout");
-        priceLayout.add(priceField);
+        infoLayout.add(nameHeader, priceField);
 
-        add(infoLayout, priceLayout);
+        add(infoLayout);
     }
 }

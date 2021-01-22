@@ -40,7 +40,7 @@ public class SearchRestaurantView extends VerticalLayout {
 
         searchButton.setText("Search by Name");
         searchButton.addClickListener(onClick -> {
-            searchProductByName(this.searchField.getValue());
+            searchStoresByName(this.searchField.getValue());
         });
 
         searchLayout.setWidthFull();
@@ -50,9 +50,14 @@ public class SearchRestaurantView extends VerticalLayout {
 
     }
 
-    private void searchProductByName(String productName) {
-        final ResponseEntity<Store[]> responseEntity = storeService.searchByStoreName(productName, 1, 10);
-        initProductsFromResponse(responseEntity);
+    private void searchStoresByName(String productName) {
+        if (productName.equals("*")) {
+            final ResponseEntity<Store[]> responseEntity = storeService.getAllStores(1, 10);
+            initProductsFromResponse(responseEntity);
+        } else {
+            final ResponseEntity<Store[]> responseEntity = storeService.searchByStoreName(productName, 1, 10);
+            initProductsFromResponse(responseEntity);
+        }
     }
 
     private void initProductsFromResponse(ResponseEntity<Store[]> responseEntity) {
