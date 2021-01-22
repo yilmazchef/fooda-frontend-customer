@@ -7,6 +7,7 @@ import be.fooda.frontend.views.main.MainView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Route(value = "search_restaurant", layout = MainView.class)
@@ -20,7 +21,7 @@ public class SearchRestaurantView extends Div {
         setId("search-restaurant-view");
 
         final ResponseEntity<Store[]> apiResponse = storeService.getAllStores(1, 5);
-        if (apiResponse.getStatusCode().is2xxSuccessful()) {
+        if (apiResponse.getStatusCode().equals(HttpStatus.FOUND)) {
             Store[] stores = apiResponse.getBody();
             if (stores != null && stores.length > 0) {
                 for (Store store : stores) {

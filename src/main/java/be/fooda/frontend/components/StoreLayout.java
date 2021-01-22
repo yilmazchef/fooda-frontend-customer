@@ -1,52 +1,66 @@
 package be.fooda.frontend.components;
 
 import be.fooda.frontend.models.store.Store;
-import be.fooda.frontend.models.store.StoreImage;
-import be.fooda.frontend.models.store.StoreImageType;
-import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.theme.material.Material;
 
-public class StoreLayout extends VerticalLayout {
+import java.math.BigDecimal;
+
+public class StoreLayout extends HorizontalLayout {
 
     public StoreLayout(Store data) {
+
         getElement().setAttribute("theme", Material.DARK);
         setId("store-layout");
+        setWidthFull();
 
-        StoreImage defaultBackgroundImage = new StoreImage();
-        defaultBackgroundImage.setUrl("images/default_store_bg.png");
-        Image backgroundImage = new Image(data.getImages()
-                .stream()
-                .filter(storeImage -> storeImage.getType() == StoreImageType.BACKGROUND_IMAGE)
-                .findFirst().orElse(defaultBackgroundImage)
-                .getUrl(),
-                data.getStoreName()
-        );
-        backgroundImage.addClassName("store-background");
-        getStyle().set("background-image", backgroundImage.getSrc());
+        VerticalLayout imageLayout = new VerticalLayout();
+        imageLayout.setWidth("20vw");
+        imageLayout.setHeight("200px");
+
+        Image logo = new Image(data.getImages().get(0).getUrl(), data.getStoreName());
+        logo.setWidth("20vw");
+        logo.setHeight("auto");
+        imageLayout.add(logo);
 
         VerticalLayout infoLayout = new VerticalLayout();
-        infoLayout.addClassName("store-info-layout");
-        H3 storeNameHeader = new H3(data.getStoreName());
-        storeNameHeader.addClassName("store-name");
-        Paragraph sloganParagraph = new Paragraph(data.getSlogan());
-        sloganParagraph.addClassName("store-slogan");
-        Span aboutSpan = new Span(data.getAbout());
-        aboutSpan.addClassNames("store-about");
-        infoLayout.add(storeNameHeader, sloganParagraph, aboutSpan);
+        infoLayout.setWidth("70vw");
+        infoLayout.setHeight("200px");
 
-        HorizontalLayout actionsLayout = new HorizontalLayout();
-        actionsLayout.addClassName("store-actions-layout");
-        NativeButton viewMenuButton = new NativeButton("View Menu");
-        viewMenuButton.addClassName("store-view-menu");
-        viewMenuButton.addClickListener(onClick -> {
-            new Notification(data.getStoreName() + " is clicked .. ");
-        });
-        actionsLayout.add(viewMenuButton);
+        H2 title = new H2();
+        Span address = new Span(data.getAddress().getMunicipality() + ", " + data.getAddress().getCity());
+        infoLayout.add(title, address);
 
-        // Add all layouts to parent layout ..
-        add(infoLayout, actionsLayout);
+        HorizontalLayout otherInfo = new HorizontalLayout();
+        BigDecimalField ranking = new BigDecimalField("Ranking: ");
+        ranking.setValue(BigDecimal.valueOf(9.8));
+        Span cuisine = new Span();
+
+        Icon star = VaadinIcon.STAR.create();
+
+        BigDecimalField deliveryTime = new BigDecimalField("Delivery: ");
+        deliveryTime.setValue(new BigDecimal("35.00"));
+
+        BigDecimalField deliveryCost = new BigDecimalField("Cost: ");
+        deliveryCost.setValue(BigDecimal.ZERO);
+
+        otherInfo.add(ranking, cuisine, star, deliveryTime, deliveryCost);
+
+        Span matchScore = new Span("100%");
+
+        VerticalLayout scoreLayout = new VerticalLayout();
+        scoreLayout.setWidth("10vw");
+        scoreLayout.setHeight("200px");
+        scoreLayout.add(matchScore);
+
+        add(imageLayout, infoLayout, scoreLayout);
+
     }
 }

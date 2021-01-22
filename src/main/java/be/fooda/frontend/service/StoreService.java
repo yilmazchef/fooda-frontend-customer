@@ -43,22 +43,22 @@ public class StoreService {
 
     private static final String GET_ALL = "get_all_stores";
     private static final String SEARCH_BY_STORE_NAME = "search_by_store_name";
-    private static final String SEARCH = "search" ;
-    private static final String STORE_EXISTS_BY_ID  = "store_exists_by_id" ;
+    private static final String SEARCH = "search";
+    private static final String STORE_EXISTS_BY_ID = "store_exists_by_id";
     private static final String STORE_EXISTS = "store_exists";
-    private static final String SEARCH_BY_ADDRESS ="search_by_address";
-    private static final String  FILTER_BY_DELIVERY_COSTS = "filter_by_delivery_costs" ;
-    private static final String  FILTER_BY_DELIVERY_LOCATIONS = "filter_by_delivery_locations";
-    private static final String  FILTER_BY_DELIVERY_DURATION = "filter_by_delivery_duration";
-    private static final String  SEARCH_BY_MENU_ITEM_NAME = "search_by_menu_item_name" ;
-    private static final String  SEARCH_BY_CUISINE ="search_by_cuisine";
-    private static final String GET_BY_MENU_ITEMS_PRICE ="get_by_menu_item_price";
-    private static final String  SEARCH_BY_DIETERY = "search_by_dietary";
-    private static final String  ADD_STORE = "add_store";
-    private static final String   ADD_MENU_ITEM ="add_menu_item";
-    private static final String REMOVE_MENU_ITEM ="remove_menu_item";
-    private static final String DELETE_STORE="delete_store";
-    private static final String SEARCH_BY_RANGE = "search_by_range" ;
+    private static final String SEARCH_BY_ADDRESS = "search_by_address";
+    private static final String FILTER_BY_DELIVERY_COSTS = "filter_by_delivery_costs";
+    private static final String FILTER_BY_DELIVERY_LOCATIONS = "filter_by_delivery_locations";
+    private static final String FILTER_BY_DELIVERY_DURATION = "filter_by_delivery_duration";
+    private static final String SEARCH_BY_MENU_ITEM_NAME = "search_by_menu_item_name";
+    private static final String SEARCH_BY_CUISINE = "search_by_cuisine";
+    private static final String GET_BY_MENU_ITEMS_PRICE = "get_by_menu_item_price";
+    private static final String SEARCH_BY_DIETERY = "search_by_dietary";
+    private static final String ADD_STORE = "add_store";
+    private static final String ADD_MENU_ITEM = "add_menu_item";
+    private static final String REMOVE_MENU_ITEM = "remove_menu_item";
+    private static final String DELETE_STORE = "delete_store";
+    private static final String SEARCH_BY_RANGE = "search_by_range";
 
     public ResponseEntity getAllStores(int pageNo, int pageSize) {
         final String completeUrl = baseUrl + GET_ALL + "?pageNo={pageNo}&pageSize={pageSize}";
@@ -89,9 +89,8 @@ public class StoreService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("keyword", keyword);
 
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class,queryParams);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Store[].class, queryParams);
     }
-
 
 
     public ResponseEntity storeExistsById(Long id) {
@@ -107,7 +106,7 @@ public class StoreService {
     }
 
     public ResponseEntity searchByAddress(String postcode, String municipality, int pageNo, int pageSize) {
-        final String completeUrl = baseUrl + SEARCH_BY_ADDRESS  + "?postcode={postcode}&municipality={municipality}&pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + SEARCH_BY_ADDRESS + "?postcode={postcode}&municipality={municipality}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("postcode", postcode);
         queryParams.put("municipality", municipality);
@@ -118,7 +117,7 @@ public class StoreService {
     }
 
     public ResponseEntity filterByDeliveryCosts(BigDecimal minPrice, BigDecimal maxPrice, int pageNo, int pageSize) {
-        final String completeUrl = baseUrl + FILTER_BY_DELIVERY_COSTS+ "?minPrice={minPrice}&maxPrice={maxPrice}&pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + FILTER_BY_DELIVERY_COSTS + "?minPrice={minPrice}&maxPrice={maxPrice}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("maxPrice", maxPrice);
         queryParams.put("minPrice", minPrice);
@@ -128,7 +127,7 @@ public class StoreService {
     }
 
     public ResponseEntity filterByDeliveryLocations(Set<String> postcode, int pageNo, int pageSize) {
-        final String completeUrl = baseUrl +FILTER_BY_DELIVERY_LOCATIONS +" ?postcode={postcodes}&pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + FILTER_BY_DELIVERY_LOCATIONS + " ?postcode={postcodes}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("postcode", postcode);
         queryParams.put("pageNo", pageNo);
@@ -157,7 +156,7 @@ public class StoreService {
     }
 
     public ResponseEntity searchByCuisine(String cuisine, Integer pageNo, Integer pageSize) {
-        final String completeUrl = baseUrl +  SEARCH_BY_CUISINE +"?cuisine={cuisine}&pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = baseUrl + SEARCH_BY_CUISINE + "?cuisine={cuisine}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("cuisine", cuisine);
         queryParams.put("pageNo", pageNo);
@@ -190,7 +189,7 @@ public class StoreService {
         final String completeUrl = baseUrl + ADD_MENU_ITEM + "?storeId={storeId}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("storeId", storeId);
-        return restTemplate.exchange(completeUrl, HttpMethod.PATCH, new HttpEntity<>(menuItem), String.class,queryParams);
+        return restTemplate.exchange(completeUrl, HttpMethod.PATCH, new HttpEntity<>(menuItem), String.class, queryParams);
     }
 
     public ResponseEntity removeMenuItem(Long menuItemId) {
