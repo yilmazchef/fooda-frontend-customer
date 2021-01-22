@@ -2,7 +2,6 @@ package be.fooda.frontend.views.searchrestaurant;
 
 import be.fooda.frontend.components.StoreLayout;
 import be.fooda.frontend.models.store.Store;
-import be.fooda.frontend.service.BasketService;
 import be.fooda.frontend.service.StoreService;
 import be.fooda.frontend.views.main.MainView;
 import com.vaadin.flow.component.button.Button;
@@ -20,16 +19,14 @@ import org.springframework.http.ResponseEntity;
 public class SearchRestaurantView extends VerticalLayout {
 
     private final StoreService storeService;
-    private final BasketService basketService;
 
     private final HorizontalLayout searchLayout = new HorizontalLayout();
     private final TextField searchField = new TextField();
     private final Button searchButton = new Button();
 
 
-    public SearchRestaurantView(StoreService storeService, BasketService basketService) {
+    public SearchRestaurantView(StoreService storeService) {
         this.storeService = storeService;
-        this.basketService = basketService;
         setId("search-restaurant-view");
 
         setPadding(false);
