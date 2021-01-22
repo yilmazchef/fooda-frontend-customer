@@ -1,5 +1,6 @@
 package be.fooda.frontend.views.searchorderdetails;
 
+import be.fooda.frontend.service.OrderService;
 import be.fooda.frontend.views.main.MainView;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.accordion.AccordionPanel;
@@ -14,7 +15,10 @@ import com.vaadin.flow.router.Route;
 @PageTitle("Search Order Details")
 public class SearchOrderDetailsView extends Div {
 
-    public SearchOrderDetailsView() {
+    private final OrderService orderService;
+
+    public SearchOrderDetailsView(OrderService orderService) {
+        this.orderService = orderService;
         setId("search-order-details-view");
 
         TextField searchField = new TextField();
