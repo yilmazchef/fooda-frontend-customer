@@ -23,10 +23,13 @@ import com.vaadin.flow.theme.material.Material;
 @Theme(value = Material.class, variant = Material.DARK)
 public class MainView extends AppLayout {
 
+    public static final String HOME_PAGE = "home";
+
     public MainView() {
 
         setDrawerOpened(false);
         setId("main-view");
+
 
         Image logoForTabs = new Image("images/logo.svg", "Fooda Logo");
         logoForTabs.setWidth("128px");

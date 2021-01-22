@@ -1,6 +1,5 @@
 package be.fooda.frontend.views.login;
 
-import be.fooda.frontend.models.user.User;
 import be.fooda.frontend.service.UserService;
 import be.fooda.frontend.views.main.MainView;
 import com.vaadin.flow.component.UI;
@@ -15,7 +14,10 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.material.Material;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import static be.fooda.frontend.views.main.MainView.HOME_PAGE;
 
 @Route(value = "login", layout = MainView.class)
 @PageTitle("Fooda | SMS Login")
@@ -93,8 +95,13 @@ public class LoginView extends VerticalLayout {
                 final Notification codeIsValidNotification = new Notification(VaadinIcon.CHECK.create());
                 codeIsValidNotification.setDuration(2000);
                 codeIsValidNotification.open();
-                UI.getCurrent().getSession().setAttribute(User.class, );
-                UI.getCurrent().navigate("main");
+                final ResponseEntity userResponse = userService.getUserByUsername(phoneField.getValue());
+                if (userResponse.getStatusCode().equals(HttpStatus.FOUND) && userResponse.hasBody()) {
+                    UI.getCurrent().getSession().setAttribute(be.fooda.frontend.models.user.User.class, (be.fooda.frontend.models.user.User) userResponse.getBody());
+                    UI.getCurrent().navigate(HOME_PAGE);
+                } else {
+                    new Notification("User could not login").open();
+                }
             }
         });
         validateLayout.add(smsCodeField, validateCodeButton);

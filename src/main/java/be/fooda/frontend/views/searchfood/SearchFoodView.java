@@ -57,7 +57,7 @@ public class SearchFoodView extends VerticalLayout {
         if (!responseEntity.getStatusCode().equals(HttpStatus.SERVICE_UNAVAILABLE) && responseEntity.getBody() != null) {
             final Product[] products = responseEntity.getBody();
             for (Product product : products) {
-                add(new ProductLayout(product));
+                add(new ProductLayout(product, basketService));
             }
         }
     }
