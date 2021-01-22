@@ -1,8 +1,10 @@
 package be.fooda.frontend.components;
 
+import be.fooda.frontend.models.basket.BasketProduct;
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductPrice;
 import be.fooda.frontend.models.product.ProductTax;
+import be.fooda.frontend.service.BasketService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -22,7 +24,7 @@ import java.math.RoundingMode;
 
 public class ProductLayout extends VerticalLayout {
 
-    public ProductLayout(Product data) {
+    public ProductLayout(Product data, BasketService basketService) {
 
         getElement().setAttribute("theme", Material.DARK);
         setId("product-layout");
@@ -100,11 +102,26 @@ public class ProductLayout extends VerticalLayout {
         actionLayout.setAlignItems(Alignment.CENTER);
         actionLayout.addClassName("product-action-layout");
         Button addToBasketButton = new Button("Add to Basket", onClick -> {
-            new Notification("Add to basket is clicked .. ");
+            // TODO FOR AHMET .. ACTIVE THIS CODE BLOCK ..
+//            basketService.addProduct(mapProductToBasketItem(data));
+            new Notification(data.getProductName() + " is added to basket.");
         });
         addToBasketButton.addClassName("product-add-to-basket-button");
         actionLayout.add(addToBasketButton);
 
         add(imageLayout, infoLayout, quantityLayout, priceLayout, actionLayout);
+    }
+
+    private BasketProduct mapProductToBasketItem(Product product) {
+        BasketProduct basketProduct = new BasketProduct();
+        basketProduct.setExternalProductId(product.getId());
+        basketProduct.setDescription(product.getDescription());
+        ProductPrice priceUnknown = new ProductPrice();
+        priceUnknown.setAmount(new BigDecimal("0.00"));
+        basketProduct.setPrice(product.getPrices().stream().filter(productPrice -> productPrice.getDefault().equals(Boolean.TRUE)).findFirst().orElse(priceUnknown).getAmount());
+        basketProduct.setName(product.getProductName());
+        basketProduct.setImageUrl(product.getImages().get(0).getUrl());
+
+        return basketProduct;
     }
 }

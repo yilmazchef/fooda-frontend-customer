@@ -2,13 +2,12 @@ package be.fooda.frontend.service;
 
 import be.fooda.frontend.models.basket.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,15 @@ public class BasketService {
 
     public BasketService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    private HttpHeaders createHttpHeaders(String user, String password) {
+        String notEncoded = user + ":" + password;
+        String encodedAuth = "Bearer " + Base64.getEncoder().encodeToString(notEncoded.getBytes());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", encodedAuth);
+        return headers;
     }
 
     public ResponseEntity getProductById(String productId) {
@@ -45,7 +53,7 @@ public class BasketService {
         queryParams.put("externalUserId", externalUserId);
         queryParams.put("userSession", userSession);
 
-            queryParams.put("externalStoreId", externalStoreId);
+        queryParams.put("externalStoreId", externalStoreId);
         final String completeUrl = baseUrl + "product/get_products_by_user_and_store?" +
                 "externalUserId={externalUserId}&userSession={userSession}&externalStoreId={externalStoreId}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketProduct[].class, queryParams);

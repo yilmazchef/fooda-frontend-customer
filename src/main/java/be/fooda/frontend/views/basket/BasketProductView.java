@@ -5,6 +5,8 @@ import be.fooda.frontend.models.basket.BasketProduct;
 import be.fooda.frontend.models.basket.BasketStore;
 import be.fooda.frontend.service.BasketService;
 import be.fooda.frontend.views.main.MainView;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -26,6 +28,7 @@ public class BasketProductView extends VerticalLayout {
     private Long externalUserId = 1L;
     private String session = "1";
     private Long externalStoreId = 1L;
+    private boolean hasProductsInBasket = false;
 
     public BasketProductView(BasketService basketService) {
         setId("basket-products-view");
@@ -34,6 +37,7 @@ public class BasketProductView extends VerticalLayout {
         BasketProduct[] basketProducts = apiResponse.getBody();
 
         if (apiResponse.getStatusCode().equals(HttpStatus.FOUND) && apiResponse.hasBody() && basketProducts.length > 0) {
+            hasProductsInBasket = true;
             Map<BasketStore, List<BasketProduct>> storeGroup = Arrays
                     .stream(basketProducts)
                     .collect(Collectors.groupingBy(BasketProduct::getStore));
@@ -53,6 +57,14 @@ public class BasketProductView extends VerticalLayout {
             });
 
         }
+
+        Button nextButton = new Button("Next >");
+        nextButton.addClickListener(onClick -> {
+            if (hasProductsInBasket)
+                UI.getCurrent().navigate("basket_address");
+        });
+
+        add(nextButton);
 
     }
 

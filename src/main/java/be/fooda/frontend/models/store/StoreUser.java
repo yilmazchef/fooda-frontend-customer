@@ -1,10 +1,11 @@
 package be.fooda.frontend.models.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class StoreUser {
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
 
 
@@ -49,9 +50,5 @@ public class StoreUser {
 
 
 
-    public enum StoreUserType {
-        CREATED,
-        UPDATED,
-        DELETED;
-    }
+
 }

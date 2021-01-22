@@ -1,6 +1,6 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.basket.BasketUser;
+import be.fooda.frontend.models.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -54,12 +54,12 @@ public class UserService {
 
     public ResponseEntity getUserById(Long id) {
         final String completeUrl = baseUrl + "get_user_by_id?id={id}";
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketUser.class, id);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, User.class, id);
     }
 
     public ResponseEntity getUserByUsername(String username) {
         final String completeUrl = baseUrl + "get_user_by_username?username={username}";
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, BasketUser.class, username);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, User.class, username);
     }
 
     @PatchMapping("delete_user_by_username")

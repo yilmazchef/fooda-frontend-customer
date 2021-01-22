@@ -5,6 +5,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.BigDecimalField;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -20,14 +21,20 @@ public class BasketProductLayout extends VerticalLayout {
         getElement().setAttribute("theme", Material.DARK);
         setId("basket-product-layout");
 
+        HorizontalLayout imageAndPriceLayout = new HorizontalLayout();
+        imageAndPriceLayout.addClassName("basket-product-horizontal-layout");
+
+        VerticalLayout imageLayout = new VerticalLayout();
+        imageLayout.addClassName("basket-product-info-layout");
+
         Image productImage = new Image(data.getImageUrl(), data.getName());
         productImage.addClassName("basket-product-image");
 
-        Paragraph nameText = new Paragraph(data.getName());
-        nameText.addClassName("basket-product-name");
+        imageLayout.add(productImage);
 
-        Paragraph descriptionText = new Paragraph(data.getDescription());
-        descriptionText.addClassName("basket-product-description");
+        VerticalLayout priceLayout = new VerticalLayout();
+        priceLayout.setAlignItems(Alignment.CENTER);
+        priceLayout.addClassName("basket-product-price-layout");
 
         NumberField quantityField = new NumberField();
         quantityField.addClassName("basket-product-quantity");
@@ -49,7 +56,20 @@ public class BasketProductLayout extends VerticalLayout {
         totalAmountField.addThemeVariants(TextFieldVariant.MATERIAL_ALWAYS_FLOAT_LABEL);
         totalAmountField.setPrefixComponent(new Icon(VaadinIcon.EURO));
 
+        priceLayout.add(quantityField, totalAmountField);
 
-        add(productImage, nameText, descriptionText, quantityField, totalAmountField);
+        VerticalLayout infoLayout = new VerticalLayout();
+        Paragraph nameText = new Paragraph(data.getName());
+        nameText.addClassName("basket-product-name");
+
+        Paragraph descriptionText = new Paragraph(data.getDescription());
+        descriptionText.addClassName("basket-product-description");
+        infoLayout.add(nameText, descriptionText);
+
+
+        imageAndPriceLayout.add(imageLayout, priceLayout);
+
+        add(imageAndPriceLayout, infoLayout);
+
     }
 }

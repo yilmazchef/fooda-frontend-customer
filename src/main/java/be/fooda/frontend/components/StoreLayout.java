@@ -1,52 +1,48 @@
 package be.fooda.frontend.components;
 
 import be.fooda.frontend.models.store.Store;
-import be.fooda.frontend.models.store.StoreImage;
 import be.fooda.frontend.models.store.StoreImageType;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.theme.material.Material;
 
 public class StoreLayout extends VerticalLayout {
 
     public StoreLayout(Store data) {
+
         getElement().setAttribute("theme", Material.DARK);
         setId("store-layout");
 
-        StoreImage defaultBackgroundImage = new StoreImage();
-        defaultBackgroundImage.setUrl("images/default_store_bg.png");
-        Image backgroundImage = new Image(data.getImages()
-                .stream()
-                .filter(storeImage -> storeImage.getType() == StoreImageType.BACKGROUND_IMAGE)
-                .findFirst().orElse(defaultBackgroundImage)
-                .getUrl(),
-                data.getStoreName()
-        );
-        backgroundImage.addClassName("store-background");
-        getStyle().set("background-image", backgroundImage.getSrc());
+        Image storeImage = new Image(data.getImages().stream().filter(img -> img.getType() == StoreImageType.BACKGROUND_IMAGE).findFirst().get().getUrl(), data.getStoreName());
+        storeImage.addClassName("store-image-field");
+
+        VerticalLayout imageLayout = new VerticalLayout();
+        imageLayout.setAlignItems(Alignment.CENTER);
+        imageLayout.add(storeImage);
+        imageLayout.addClassName("store-image-layout");
 
         VerticalLayout infoLayout = new VerticalLayout();
+        infoLayout.setAlignItems(Alignment.CENTER);
         infoLayout.addClassName("store-info-layout");
-        H3 storeNameHeader = new H3(data.getStoreName());
-        storeNameHeader.addClassName("store-name");
-        Paragraph sloganParagraph = new Paragraph(data.getSlogan());
-        sloganParagraph.addClassName("store-slogan");
-        Span aboutSpan = new Span(data.getAbout());
-        aboutSpan.addClassNames("store-about");
-        infoLayout.add(storeNameHeader, sloganParagraph, aboutSpan);
+        final H2 nameHeader = new H2(data.getStoreName());
+        nameHeader.addClassName("store-name-header");
+        final Paragraph descriptionParagraph = new Paragraph(data.getAbout());
+        descriptionParagraph.addClassName("store-description-paragraph");
+        infoLayout.add(nameHeader, descriptionParagraph);
 
-        HorizontalLayout actionsLayout = new HorizontalLayout();
-        actionsLayout.addClassName("store-actions-layout");
-        NativeButton viewMenuButton = new NativeButton("View Menu");
-        viewMenuButton.addClassName("store-view-menu");
-        viewMenuButton.addClickListener(onClick -> {
-            new Notification(data.getStoreName() + " is clicked .. ");
+        VerticalLayout actionLayout = new VerticalLayout();
+        actionLayout.setAlignItems(Alignment.CENTER);
+        actionLayout.addClassName("store-action-layout");
+        Button viewMenuButton = new Button("View Menu", onClick -> {
+            new Notification("View Menu is clicked .. ");
         });
-        actionsLayout.add(viewMenuButton);
+        viewMenuButton.addClassName("store-view-menu-button");
+        actionLayout.add(viewMenuButton);
 
-        // Add all layouts to parent layout ..
-        add(infoLayout, actionsLayout);
+        add(imageLayout, infoLayout, actionLayout);
     }
 }
