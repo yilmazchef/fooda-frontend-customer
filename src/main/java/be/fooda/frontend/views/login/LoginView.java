@@ -1,5 +1,6 @@
 package be.fooda.frontend.views.login;
 
+import be.fooda.frontend.models.user.User;
 import be.fooda.frontend.service.UserService;
 import be.fooda.frontend.views.main.MainView;
 import com.vaadin.flow.component.UI;
@@ -7,6 +8,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -27,8 +29,9 @@ public class LoginView extends VerticalLayout {
         getElement().setAttribute("theme", Material.DARK);
         setId("login-layout");
 
+        setHorizontalComponentAlignment(Alignment.CENTER);
+
         VerticalLayout infoLayout = new VerticalLayout();
-        infoLayout.setAlignItems(Alignment.CENTER);
         infoLayout.addClassName("login-info-layout");
         final H2 nameHeader = new H2("Login with SMS");
         nameHeader.addClassName("login-name-header");
@@ -52,8 +55,6 @@ public class LoginView extends VerticalLayout {
             final ResponseEntity<String> sendSmsResponse = userService.sendSmsCode(phoneField.getValue());
             if (sendSmsResponse.getStatusCode().is2xxSuccessful()) {
                 final Notification codeIsValidNotification = new Notification("SMS Code is sent.");
-                codeIsValidNotification.getElement().getStyle()
-                        .set("color", "#29ED6C");
                 codeIsValidNotification.setDuration(2000);
                 codeIsValidNotification.open();
             }
@@ -77,27 +78,22 @@ public class LoginView extends VerticalLayout {
         validateCodeButton.addClickListener(validateClick -> {
             if (phoneField.getValue().isEmpty()) {
                 final Notification requiredPhoneNumberNotification = new Notification("Phone number is required");
-                requiredPhoneNumberNotification.getElement().getStyle()
-                        .set("color", "#FFCC00");
                 requiredPhoneNumberNotification.setDuration(2000);
                 requiredPhoneNumberNotification.open();
             }
 
             if (smsCodeField.getValue().isEmpty()) {
                 final Notification requiredSmsCodeNotification = new Notification("Sms Code is required");
-                requiredSmsCodeNotification.getElement().getStyle()
-                        .set("color", "#FFCC00");
                 requiredSmsCodeNotification.setDuration(2000);
                 requiredSmsCodeNotification.open();
             }
 
             final ResponseEntity<String> codeValidationResponse = userService.validateSmsCode(phoneField.getValue(), smsCodeField.getValue());
             if (codeValidationResponse.getStatusCode().is2xxSuccessful()) {
-                final Notification codeIsValidNotification = new Notification("User is valid.");
-                codeIsValidNotification.getElement().getStyle()
-                        .set("color", "#29ED6C");
+                final Notification codeIsValidNotification = new Notification(VaadinIcon.CHECK.create());
                 codeIsValidNotification.setDuration(2000);
                 codeIsValidNotification.open();
+                UI.getCurrent().getSession().setAttribute(User.class, );
                 UI.getCurrent().navigate("main");
             }
         });

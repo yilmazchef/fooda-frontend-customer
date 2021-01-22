@@ -198,24 +198,22 @@ vaadin-vertical-layout vaading-horizontal-layout {
     max-width: var(--max-product-layout-width)
 }
 
-/* LOGIN CSS */
-
 /* USER LAYOUT CSS */
 #login-layout {
     background: var(--material-secondary-background-color);
     border-radius: 20px;
+    margin-top: 40px;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
+    width: var(--max-product-layout-width);
     flex-wrap: wrap;
-    max-width: var(--max-product-layout-width);
-    margin: 20px;
 }
 
 .login-info-layout,
-.login-form-layout,
+.login-send-layout,
+.login-validate-layout,
 .login-action-layout {
-    padding: 0 20px;
+    padding: 40px 20px 20px 40px;
     /*margin: 0;*/
     width: 100vw;
     max-width: var(--max-product-layout-width);
@@ -231,24 +229,4 @@ vaadin-vertical-layout vaading-horizontal-layout {
     margin: 4px;
     font-size: 12pt;
     max-width: var(--max-product-layout-width);
-}
-
-.login-send-sms-code-button {
-    border-radius: 0 0 20px 20px;
-    width: 100vw;
-    height: 70px;
-    font-size: medium;
-    background-color: var(--material-seconday-button-background-color);
-    color: var(--material-secondary-text-color);
-    max-width: var(--max-product-layout-width)
-}
-
-.login-validate-sms-code-button {
-    border-radius: 0 0 20px 20px;
-    width: 100vw;
-    height: 70px;
-    font-size: medium;
-    background-color: var(--material-seconday-button-background-color);
-    color: var(--material-secondary-text-color);
-    max-width: var(--max-product-layout-width)
 }
