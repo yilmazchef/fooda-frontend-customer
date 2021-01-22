@@ -18,8 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static be.fooda.frontend.views.main.MainView.HOME_PAGE;
+import static be.fooda.frontend.views.main.MainView.LOGIN_PAGE;
 
-@Route(value = "login", layout = MainView.class)
+@Route(value = LOGIN_PAGE, layout = MainView.class)
 @PageTitle("Fooda | SMS Login")
 public class LoginView extends VerticalLayout {
 

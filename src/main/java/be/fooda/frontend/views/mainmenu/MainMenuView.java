@@ -6,6 +6,7 @@ import be.fooda.frontend.components.StoreLayout;
 import be.fooda.frontend.models.product.Product;
 import be.fooda.frontend.models.product.ProductCategory;
 import be.fooda.frontend.models.store.Store;
+import be.fooda.frontend.service.BasketService;
 import be.fooda.frontend.service.ProductService;
 import be.fooda.frontend.service.StoreService;
 import be.fooda.frontend.views.main.MainView;
@@ -29,12 +30,14 @@ public class MainMenuView extends VerticalLayout {
 
     private final ProductService productService;
     private final StoreService storeService;
+    private final BasketService basketService;
 
     private final be.fooda.frontend.models.user.User sessionUser;
 
-    public MainMenuView(ProductService productService, StoreService storeService) {
+    public MainMenuView(ProductService productService, StoreService storeService, BasketService basketService) {
         this.productService = productService;
         this.storeService = storeService;
+        this.basketService = basketService;
         this.sessionUser = UI.getCurrent().getSession().getAttribute(be.fooda.frontend.models.user.User.class);
 
         setId("main-menu-view");

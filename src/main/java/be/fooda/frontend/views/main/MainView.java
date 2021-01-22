@@ -24,12 +24,16 @@ import com.vaadin.flow.theme.material.Material;
 public class MainView extends AppLayout {
 
     public static final String HOME_PAGE = "home";
+    public static final String LOGIN_PAGE = "login";
+    public static final String BASKET_PRODUCTS_PAGE = "basket_products";
+    public static final String SEARCH_PRODUCTS_PAGE = "search_food";
+    public static final String SEARCH_RESTAURANTS_PAGE = "search_restaurant";
+    public static final String SEARCH_ORDERS_PAGE = "search_orders";
 
     public MainView() {
 
         setDrawerOpened(false);
         setId("main-view");
-
 
         Image logoForTabs = new Image("images/logo.svg", "Fooda Logo");
         logoForTabs.setWidth("128px");
@@ -45,12 +49,12 @@ public class MainView extends AppLayout {
 
         Tabs tabs = new Tabs(
                 new Tab(logoForTabs),
-                new Tab(new Anchor("login", "Login")),
-                new Tab(new Anchor("basket", "Basket")),
-                new Tab(new Anchor("search_food", "Foods")),
-                new Tab(new Anchor("search_restaurant", "Restaurants")),
-                new Tab(new Anchor("search_map", "Maps")),
-                new Tab(new Anchor("search_orders", "Orders"))
+                new Tab(new Anchor("", "Home")),
+                new Tab(new Anchor(LOGIN_PAGE, "Login")),
+                new Tab(new Anchor(BASKET_PRODUCTS_PAGE, "Basket")),
+                new Tab(new Anchor(SEARCH_PRODUCTS_PAGE, "Foods")),
+                new Tab(new Anchor(SEARCH_RESTAURANTS_PAGE, "Restaurants")),
+                new Tab(new Anchor(SEARCH_ORDERS_PAGE, "Orders"))
         );
 
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
