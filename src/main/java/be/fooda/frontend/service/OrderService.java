@@ -135,10 +135,29 @@ public class OrderService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Order[].class, queryParams);
     }
 
-    public ResponseEntity getByProductId(Long externalProductId, boolean isActive) {
-        final String completeUrl = baseUrl + "get_by_product_id?externalProductId={externalProductId}&isActive={isActive}";
+    public ResponseEntity getByCustomerPhone(Long phone, boolean isActive) {
+        final String completeUrl = baseUrl + "get_by_customer_phone?phone={phone}&isActive={isActive}";
         Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("externalProductId", externalProductId);
+        queryParams.put("phone", phone);
+        queryParams.put("isActive", isActive);
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Order[].class, queryParams);
+    }
+
+    public ResponseEntity getByPaymentId(Long externalCustomerId,Long externalPaymentId, boolean isActive) {
+        final String completeUrl = baseUrl + "get_by_payment_id?externalCustomerId={externalCustomerId}&externalPaymentId={externalPaymentId}&isActive={isActive}";
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("externalCustomerId", externalCustomerId);
+        queryParams.put("externalPaymentId", externalPaymentId);
+        queryParams.put("isActive", isActive);
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Order[].class, queryParams);
+    }
+
+    public ResponseEntity getByCustomerId(Long externalCustomerId, boolean isActive) {
+        final String completeUrl = baseUrl + "get_by_customer_id?externalCustomerId={externalCustomerId}&isActive={isActive}";
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("externalCustomerId", externalCustomerId);
         queryParams.put("isActive", isActive);
 
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Order[].class, queryParams);
