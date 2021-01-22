@@ -103,7 +103,7 @@ public class ProductLayout extends VerticalLayout {
         actionLayout.addClassName("product-action-layout");
         Button addToBasketButton = new Button("Add to Basket", onClick -> {
             // TODO FOR AHMET .. ACTIVE THIS CODE BLOCK ..
-            basketService.addProduct(mapProductToBasketItem(data));
+//            basketService.addProduct(mapProductToBasketItem(data));
             new Notification(data.getProductName() + " is added to basket.");
         });
         addToBasketButton.addClassName("product-add-to-basket-button");
@@ -120,7 +120,7 @@ public class ProductLayout extends VerticalLayout {
         priceUnknown.setAmount(new BigDecimal("0.00"));
         basketProduct.setPrice(product.getPrices().stream().filter(productPrice -> productPrice.getDefault().equals(Boolean.TRUE)).findFirst().orElse(priceUnknown).getAmount());
         basketProduct.setName(product.getProductName());
-
+        basketProduct.setImageUrl(product.getImages().get(0).getUrl());
 
         return basketProduct;
     }
