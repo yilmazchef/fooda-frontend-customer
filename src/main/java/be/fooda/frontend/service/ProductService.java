@@ -20,10 +20,14 @@ import java.util.Set;
 @Service
 public class ProductService {
 
-    private static final String GET_ALL_PRODUCTS = "get_all_products";
     private static final String GET_ALL_CATEGORIES = "category/get_all_categories";
-    private static final String GET_ALL_TAGS = "get_all_tags";
     private static final String GET_ALL_CATEGORIES_BY_PRODUCT_ID = "category/get_all_categories_by_product_id";
+    private static final String ADD_CATEGORY_TO_PRODUCT = "category/add_category_to_product";
+    private static final String DELETE_CATEGORY_BY_ID = "category/delete_category_by_id";
+    private static final String DELETE_CATEGORY_BY_PRODUCT_ID = "category/delete_category_by_product_id";
+
+    private static final String GET_ALL_PRODUCTS = "get_all_products";
+    private static final String GET_ALL_TAGS = "get_all_tags";
     private static final String GET_ALL_TAGS_BY_PRODUCT_ID = "get_all_tags_by_product_id";
     private static final String SEARCH_BY_PRODUCT_NAME = "search_by_product_name";
     private static final String SEARCH_BY_DESCRIPTION = "search_by_description";
