@@ -7,6 +7,7 @@
     --material-primary-text-color: #FF0066;
     --material-error-text-color: #44d000;
     --material-primary-button-background-color: #FF0066;
+    --material-seconday-button-background-color: #003fac;
     --max-product-layout-width: 350px;
     --max-product-category-width: 270px;
 }
@@ -67,6 +68,7 @@ vaadin-vertical-layout vaading-horizontal-layout {
 
 .product-name-header {
     font-size: 30pt;
+    margin: 4px;
     max-width: var(--max-product-layout-width)
 
 }
@@ -74,17 +76,21 @@ vaadin-vertical-layout vaading-horizontal-layout {
 .product-quantity-field {
     font-size: 18pt;
     padding-bottom: 20px;
+    margin: 4px;
+
 }
 
 .product-price-field, .product-tax-field {
     font-size: 12pt;
     padding-bottom: 20px;
+    margin: 4px;
 
 }
 
 .product-description-paragraph {
     font-size: 12pt;
-    max-width: var(--max-product-layout-width)
+    max-width: var(--max-product-layout-width);
+    margin: 4px;
 
 }
 
@@ -121,21 +127,22 @@ vaadin-vertical-layout vaading-horizontal-layout {
 .store-image-field {
     border-radius: 20px 20px 0 0;
     width: 100vw;
-    height: 200px;
+    height: 100px;
     object-fit: cover;
     object-position: center;
-    max-width: var(--max-product-layout-width)
+    max-width: var(--max-product-layout-width);
 }
 
 .store-name-header {
     font-size: 30pt;
-    max-width: var(--max-product-layout-width)
-
+    max-width: var(--max-product-layout-width);
+    margin: 4px;
 }
 
 .store-description-paragraph {
+    margin: 4px;
     font-size: 12pt;
-    max-width: var(--max-product-layout-width)
+    max-width: var(--max-product-layout-width);
 }
 
 .store-view-menu-button {
@@ -143,7 +150,7 @@ vaadin-vertical-layout vaading-horizontal-layout {
     width: 100vw;
     height: 70px;
     font-size: medium;
-    background-color: var(--material-primary-button-background-color);
+    background-color: var(--material-seconday-button-background-color);
     color: var(--material-secondary-text-color);
     max-width: var(--max-product-layout-width)
 }
