@@ -9,6 +9,7 @@
     --material-primary-button-background-color: #FF0066;
     --max-product-layout-width: 350px;
     --max-product-category-width: 270px;
+    --max-basket-layout-width:450px;
 }
 
 vaadin-vertical-layout vaading-horizontal-layout {
