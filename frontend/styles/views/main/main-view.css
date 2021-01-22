@@ -6,6 +6,7 @@
     --material-disabled-text-color: #323232;
     --material-primary-text-color: #FF0066;
     --material-error-text-color: #44d000;
+    --material-success-text-color: #38791f;
     --material-primary-button-background-color: #FF0066;
     --material-seconday-button-background-color: #003fac;
     --max-product-layout-width: 350px;
@@ -146,6 +147,103 @@ vaadin-vertical-layout vaading-horizontal-layout {
 }
 
 .store-view-menu-button {
+    border-radius: 0 0 20px 20px;
+    width: 100vw;
+    height: 70px;
+    font-size: medium;
+    background-color: var(--material-seconday-button-background-color);
+    color: var(--material-secondary-text-color);
+    max-width: var(--max-product-layout-width)
+}
+
+/* USER LAYOUT CSS */
+#user-layout {
+    background: var(--material-secondary-background-color);
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: var(--max-product-layout-width);
+    margin: 20px;
+}
+
+.user-info-layout,
+.user-profile-layout,
+.user-action-layout {
+    padding: 0 20px;
+    margin: 0;
+    width: 100vw;
+    max-width: var(--max-product-layout-width);
+}
+
+.user-name-header {
+    font-size: 30pt;
+    max-width: var(--max-product-layout-width);
+    margin: 4px;
+}
+
+.user-description-paragraph {
+    margin: 4px;
+    font-size: 12pt;
+    max-width: var(--max-product-layout-width);
+}
+
+.user-save-profile-button {
+    border-radius: 0 0 20px 20px;
+    width: 100vw;
+    height: 70px;
+    font-size: medium;
+    background-color: var(--material-seconday-button-background-color);
+    color: var(--material-secondary-text-color);
+    max-width: var(--max-product-layout-width)
+}
+
+/* LOGIN CSS */
+
+/* USER LAYOUT CSS */
+#login-layout {
+    background: var(--material-secondary-background-color);
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-width: var(--max-product-layout-width);
+    margin: 20px;
+}
+
+.login-info-layout,
+.login-form-layout,
+.login-action-layout {
+    padding: 0 20px;
+    /*margin: 0;*/
+    width: 100vw;
+    max-width: var(--max-product-layout-width);
+}
+
+.login-name-header {
+    font-size: 30pt;
+    max-width: var(--max-product-layout-width);
+    margin: 4px;
+}
+
+.login-description-paragraph {
+    margin: 4px;
+    font-size: 12pt;
+    max-width: var(--max-product-layout-width);
+}
+
+.login-send-sms-code-button {
+    border-radius: 0 0 20px 20px;
+    width: 100vw;
+    height: 70px;
+    font-size: medium;
+    background-color: var(--material-seconday-button-background-color);
+    color: var(--material-secondary-text-color);
+    max-width: var(--max-product-layout-width)
+}
+
+.login-validate-sms-code-button {
     border-radius: 0 0 20px 20px;
     width: 100vw;
     height: 70px;
