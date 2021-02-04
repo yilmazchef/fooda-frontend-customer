@@ -44,6 +44,7 @@ public class MainView extends AppLayout {
 
         Image logoForDrawer = new Image("images/logo.svg", "Fooda Logo");
         logoForDrawer.setWidth("32px");
+        logoForDrawer.getStyle().set("float", "right");
 
         addToNavbar(new DrawerToggle(), logoForDrawer);
 

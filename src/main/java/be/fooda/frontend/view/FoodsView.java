@@ -19,6 +19,7 @@ public class FoodsView extends VerticalLayout {
     public FoodsView(ProductService productService, BasketService basketService) {
         this.productService = productService;
         this.basketService = basketService;
+        addClassName("page");
 
         final ResponseEntity response = productService.getAll(1, 10);
         Product[] products = (Product[]) response.getBody();

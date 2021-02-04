@@ -14,6 +14,7 @@ public class OrdersView extends VerticalLayout {
 
     public OrdersView(OrderService orderService) {
         this.orderService = orderService;
+        addClassName("page");
 
         add(new Text("Orders Page.."));
 

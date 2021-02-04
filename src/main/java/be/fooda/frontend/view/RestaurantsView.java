@@ -14,6 +14,7 @@ public class RestaurantsView extends VerticalLayout {
 
     public RestaurantsView(StoreService storeService) {
         this.storeService = storeService;
+        addClassName("page");
 
         add(new Text("Restaurants Page.."));
 

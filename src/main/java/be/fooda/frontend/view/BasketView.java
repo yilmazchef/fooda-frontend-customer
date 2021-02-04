@@ -14,6 +14,7 @@ public class BasketView extends VerticalLayout {
 
     public BasketView(BasketService basketService) {
         this.basketService = basketService;
+        addClassName("page");
 
         add(new Text("Basket Page.."));
 

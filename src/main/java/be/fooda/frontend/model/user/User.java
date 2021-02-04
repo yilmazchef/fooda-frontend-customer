@@ -1,10 +1,11 @@
 package be.fooda.frontend.model.user;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
 
     public User() {
     }

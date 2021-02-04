@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
@@ -48,17 +47,17 @@ public class UserService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers), String.class, params);
     }
 
-    public ResponseEntity validateSmsCodeForUpdate(String existingPhoneNumber, String newPhoneNumber,
-                                                   String smsCodeFromExistingPhone, String smsCodeFromNewPhone) {
-        Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("existingPhoneNumber", existingPhoneNumber);
-        queryParams.put("newPhoneNumber", newPhoneNumber);
-        queryParams.put("smsCodeFromExistingPhone", smsCodeFromExistingPhone);
-        queryParams.put("smsCodeFromNewPhone", smsCodeFromNewPhone);
-        final String completeUrl = baseUrl + "validate_sms_code_for_update?" +
-                "existingPhoneNumber={existingPhoneNumber}&newPhoneNumber={newPhoneNumber}&" +
-                "smsCodeFromExistingPhone={smsCodeFromExistingPhone}&smsCodeFromNewPhone={smsCodeFromNewPhone}";
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, String.class, queryParams);
+    public ResponseEntity<String> loginWithPassword(String phone, String password) {
+        final String completeUrl = "https://fooda-backend-user.herokuapp.com/login?phone={phone}&password={password}";
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("phone", phone);
+        params.put("password", password);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers), String.class, params);
     }
 
     public ResponseEntity existByUserId(Long id) {
@@ -75,11 +74,4 @@ public class UserService {
         final String completeUrl = baseUrl + "get_user_by_username?username={username}";
         return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, User.class, username);
     }
-
-    @PatchMapping("delete_user_by_username")
-    public ResponseEntity deleteUserById(String username) {
-        final String completeUrl = baseUrl + "delete_user_by_username?username={username}";
-        return restTemplate.exchange(completeUrl, HttpMethod.DELETE, HttpEntity.EMPTY, String.class, username);
-    }
-
 }

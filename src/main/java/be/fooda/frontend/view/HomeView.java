@@ -22,6 +22,7 @@ public class HomeView extends VerticalLayout {
         this.productService = productService;
         this.storeService = storeService;
         this.basketService = basketService;
+        addClassName("page");
 
         add(new Text("Home Page.."));
 
