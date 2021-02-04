@@ -66,6 +66,7 @@ public class LoginView extends VerticalLayout {
             ResponseEntity<String> response = userService.validateSmsCode(loginWithSmsPhoneField.getValue(), loginWithSmsCodeField.getValue());
             logDisplay.log(response.getBody());
             if (response.getStatusCode().equals(HttpStatus.ACCEPTED)) {
+                UI.getCurrent().getSession().setAttribute("login", loginWithSmsPhoneField.getValue());
                 UI.getCurrent().navigate(REDIRECT_ON_SUCCESS_ROUTE);
             }
         });
@@ -82,6 +83,7 @@ public class LoginView extends VerticalLayout {
             ResponseEntity<String> response = userService.loginWithPassword(loginWithPwdPhoneField.getValue(), loginWithPwdPasswordField.getValue());
             logDisplay.log(response.getBody());
             if (response.getStatusCode().equals(HttpStatus.ACCEPTED)) {
+                UI.getCurrent().getSession().setAttribute("login", loginWithPwdPhoneField.getValue());
                 UI.getCurrent().navigate(REDIRECT_ON_SUCCESS_ROUTE);
             }
         });
