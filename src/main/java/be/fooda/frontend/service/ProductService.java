@@ -1,15 +1,17 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.product.Product;
-import be.fooda.frontend.models.product.ProductCategory;
-import be.fooda.frontend.models.product.ProductIngredient;
-import be.fooda.frontend.models.product.ProductTag;
+import be.fooda.frontend.model.product.Category;
+import be.fooda.frontend.model.product.Ingredient;
+import be.fooda.frontend.model.product.Product;
+import be.fooda.frontend.model.product.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -60,21 +62,27 @@ public class ProductService {
     }
 
     public ResponseEntity getAll(int pageNo, int pageSize) {
-        final String completeUrl = baseUrl + GET_ALL_PRODUCTS + "?pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = "https://fooda-backend-product.herokuapp.com/get_all_products?pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Product[].class, queryParams);
+
+        UriComponentsBuilder.fromHttpUrl(completeUrl);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(httpHeaders), Product[].class, queryParams);
     }
 
     public ResponseEntity getAllCategories() {
         final String completeUrl = baseUrl + GET_ALL_CATEGORIES;
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, ProductCategory[].class);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Category[].class);
     }
 
     public ResponseEntity getAllTags() {
         final String completeUrl = baseUrl + GET_ALL_TAGS;
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, ProductTag[].class);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Tag[].class);
     }
 
     public ResponseEntity searchByName(String productName, int pageNo, int pageSize) {
@@ -187,7 +195,7 @@ public class ProductService {
         final String completeUrl = baseUrl + GET_ALL_INGREDIENTS_BY_PRODUCT_ID + "?productId={productId}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("productId", productId);
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, ProductIngredient[].class, queryParams);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Ingredient[].class, queryParams);
     }
 
     public ResponseEntity updateProductInfo(Long id, String productName, String productDescription,

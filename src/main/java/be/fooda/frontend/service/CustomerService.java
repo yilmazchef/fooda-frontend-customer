@@ -1,6 +1,6 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.customer.Customer;
+import be.fooda.frontend.model.customer.Customer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

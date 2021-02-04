@@ -1,7 +1,7 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.store.Store;
-import be.fooda.frontend.models.store.StoreMenuItem;
+import be.fooda.frontend.model.store.Store;
+import be.fooda.frontend.model.store.StoreMenuItem;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

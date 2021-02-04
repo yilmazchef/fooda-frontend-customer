@@ -1,6 +1,6 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.contact.Contact;
+import be.fooda.frontend.model.contact.Contact;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

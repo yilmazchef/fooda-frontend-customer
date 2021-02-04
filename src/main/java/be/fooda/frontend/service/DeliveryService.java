@@ -1,7 +1,7 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.DeliveryStatus;
-import be.fooda.frontend.models.delivery.Delivery;
+import be.fooda.frontend.model.DeliveryStatus;
+import be.fooda.frontend.model.delivery.Delivery;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

@@ -1,8 +1,8 @@
 package be.fooda.frontend.service;
 
 
-import be.fooda.frontend.models.OrderStatus;
-import be.fooda.frontend.models.order.Order;
+import be.fooda.frontend.model.OrderStatus;
+import be.fooda.frontend.model.order.Order;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

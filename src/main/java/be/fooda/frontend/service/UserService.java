@@ -1,8 +1,9 @@
 package be.fooda.frontend.service;
 
-import be.fooda.frontend.models.user.User;
+import be.fooda.frontend.model.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,18 +25,31 @@ public class UserService {
         this.restTemplate = restTemplate;
     }
 
-    public ResponseEntity<String> sendSmsCode(String phoneNumber) {
-        final String completeUrl = baseUrl + "send_sms_code?phoneNumber={phoneNumber}";
-        return restTemplate.getForEntity(completeUrl, String.class, phoneNumber);
+    public ResponseEntity<String> sendSmsCode(String phone) {
+
+        final String completeUrl = "https://fooda-backend-user.herokuapp.com/code?phone={phone}";
+        Map<String, Object> params = new HashMap<>();
+        params.put("phone", phone);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers), String.class, params);
     }
 
-    public ResponseEntity<String> validateSmsCode(String phoneNumber, String smsCode) {
-        final String completeUrl = baseUrl + "validate_sms_code?phoneNumber={phoneNumber}&smsCode={smsCode}";
-        return restTemplate.getForEntity(completeUrl, String.class, phoneNumber, smsCode);
+    public ResponseEntity<String> validateSmsCode(String phone, String code) {
+        final String completeUrl = "https://fooda-backend-user.herokuapp.com/validate?phone={phone}&code={code}";
+        Map<String, Object> params = new HashMap<>();
+        params.put("phone", phone);
+        params.put("code", code);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers), String.class, params);
     }
 
-    public ResponseEntity validateSmsCodeForUpdate(String existingPhoneNumber,String newPhoneNumber,
-                                                   String smsCodeFromExistingPhone,String smsCodeFromNewPhone) {
+    public ResponseEntity validateSmsCodeForUpdate(String existingPhoneNumber, String newPhoneNumber,
+                                                   String smsCodeFromExistingPhone, String smsCodeFromNewPhone) {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("existingPhoneNumber", existingPhoneNumber);
         queryParams.put("newPhoneNumber", newPhoneNumber);
