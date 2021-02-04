@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.html.H2;
@@ -117,19 +118,6 @@ public class ProductLayout extends Component implements HasComponents, Serializa
 
 //        END -> PRODUCT PRICE LAYOUT COMPONENTS
 
-//        CONTINUE -> PRODUCT QUANTITY LAYOUT COMPONENTS
-
-        quantityField.addValueChangeListener(onQuantityChange -> {
-            final BigDecimal newPriceValue = productPriceValue.multiply(BigDecimal.valueOf(onQuantityChange.getValue()));
-            productPriceField.setValue(newPriceValue);
-            productTaxField.setValue(newPriceValue.multiply(BigDecimal.valueOf(defaultTax.getPercentage())));
-            totalPriceField.setValue(newPriceValue);
-        });
-        quantityLayout.add(quantityField);
-
-//        END -> PRODUCT QUANTITY LAYOUT COMPONENTS
-
-
 //        START -> DETAILS LAYOUT COMPONENTS
 
         ingredientsCheckBoxGroup.setLabel("Ingredients");
@@ -145,9 +133,43 @@ public class ProductLayout extends Component implements HasComponents, Serializa
         extraIngredientsCheckBoxGroup.setItems(extraIngredients);
         extraIngredientsCheckBoxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
+        Checkbox selectAllExtraIngredients = new Checkbox("Select all");
+        extraIngredientsCheckBoxGroup.addValueChangeListener(onCheckChange -> {
+            if (onCheckChange.getValue().size() == extraIngredients.size()) {
+                selectAllExtraIngredients.setValue(true);
+                selectAllExtraIngredients.setIndeterminate(false);
+            } else if (onCheckChange.getValue().isEmpty()) {
+                selectAllExtraIngredients.setValue(false);
+                selectAllExtraIngredients.setIndeterminate(false);
+            } else
+                selectAllExtraIngredients.setIndeterminate(true);
+        });
+
         detailsLayout.add(ingredientsCheckBoxGroup, extraIngredientsCheckBoxGroup);
 
 //        END -> DETAILS LAYOUT COMPONENTS
+
+//        CONTINUE -> PRODUCT QUANTITY LAYOUT COMPONENTS
+
+        quantityField.addValueChangeListener(onQuantityChange -> {
+            double subTotalOfExtraIngredients = extraIngredientsCheckBoxGroup.getSelectedItems().stream().mapToDouble(ingredient -> ingredient.getPrice().doubleValue()).sum();
+            double totalCostOfExistingIngredients = ingredientsCheckBoxGroup.getSelectedItems().stream().mapToDouble(ingredient -> ingredient.getPrice().doubleValue()).sum();
+            double totalCostOfAllExistingIngredients = ingredients.stream().mapToDouble(ingredient -> ingredient.getPrice().doubleValue()).sum();
+            double reductionCostFromIngredients = totalCostOfAllExistingIngredients - totalCostOfExistingIngredients;
+
+            final BigDecimal newPriceValue = productPriceValue
+                    .multiply(BigDecimal.valueOf(onQuantityChange.getValue()))
+                    .add(BigDecimal.valueOf(subTotalOfExtraIngredients))
+                    .subtract(BigDecimal.valueOf(reductionCostFromIngredients));
+
+            productPriceField.setValue(newPriceValue.setScale(2, RoundingMode.HALF_EVEN));
+            productTaxField.setValue(newPriceValue.multiply(BigDecimal.valueOf(defaultTax.getPercentage())).setScale(2, RoundingMode.HALF_EVEN));
+            totalPriceField.setValue(newPriceValue.setScale(2, RoundingMode.HALF_EVEN));
+        });
+        quantityLayout.add(quantityField);
+
+//        END -> PRODUCT QUANTITY LAYOUT COMPONENTS
+
 
 //        START -> ACTIONS  LAYOUT COMPONENTS
 
@@ -155,6 +177,7 @@ public class ProductLayout extends Component implements HasComponents, Serializa
         basketButton.getStyle()
                 .set("background", "transparent")
                 .set("vertical-align", "center")
+                .set("margin-top", "10px")
                 .set("color", "black")
                 .set("border", "2px solid #161616");
         basketButton.addClickListener(onClick -> new Notification(data.getName() + " is added.", 2000, Notification.Position.BOTTOM_CENTER).open());
@@ -162,6 +185,6 @@ public class ProductLayout extends Component implements HasComponents, Serializa
 
 //        END -> ACTIONS LAYOUT COMPONENTS
 
-        add(imageLayout, infoLayout, priceLayout, detailsLayout, actionsLayout);
+        add(imageLayout, infoLayout, quantityLayout, priceLayout, detailsLayout, actionsLayout);
     }
 }
