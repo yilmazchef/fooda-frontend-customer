@@ -1,10 +1,24 @@
 package be.fooda.frontend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.UUID;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Category implements Serializable {
+
+    public Category() {
+    }
+
+    public Category(String title) {
+        this.title = title;
+    }
+
+    public Category(String title, Byte[] icon) {
+        this.title = title;
+        this.icon = icon;
+    }
 
     private UUID id;
 

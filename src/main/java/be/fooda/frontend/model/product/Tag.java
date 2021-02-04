@@ -1,13 +1,23 @@
 package be.fooda.frontend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Tag implements Serializable {
 
     private UUID id;
 
     private String value;
+
+    public Tag() {
+    }
+
+    public Tag(String value) {
+        this.value = value;
+    }
 
     public UUID getId() {
         return id;

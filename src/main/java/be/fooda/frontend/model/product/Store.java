@@ -1,8 +1,11 @@
 package be.fooda.frontend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Store implements Serializable {
 
     private UUID id;
@@ -11,6 +14,18 @@ public class Store implements Serializable {
 
     private UUID eStoreId;
 
+
+    public Store() {
+    }
+
+    public Store(UUID eStoreId) {
+        this.eStoreId = eStoreId;
+    }
+
+    public Store(String name, UUID eStoreId) {
+        this.name = name;
+        this.eStoreId = eStoreId;
+    }
 
     public UUID getId() {
         return id;

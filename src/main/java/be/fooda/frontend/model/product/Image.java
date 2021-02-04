@@ -1,8 +1,11 @@
 package be.fooda.frontend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Image implements Serializable {
 
     private UUID id;
@@ -12,6 +15,20 @@ public class Image implements Serializable {
     private String url;
 
     private Boolean isDefault;
+
+    public Image() {
+    }
+
+    public Image(UUID eImageId, String url) {
+        this.eImageId = eImageId;
+        this.url = url;
+    }
+
+    public Image(UUID eImageId, String url, Boolean isDefault) {
+        this.eImageId = eImageId;
+        this.url = url;
+        this.isDefault = isDefault;
+    }
 
     public UUID getId() {
         return id;

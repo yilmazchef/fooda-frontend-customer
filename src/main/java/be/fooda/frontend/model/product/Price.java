@@ -1,11 +1,14 @@
 package be.fooda.frontend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Price implements Serializable {
 
     private UUID id;
@@ -21,6 +24,24 @@ public class Price implements Serializable {
     private Boolean isDefault;
 
     private String currency;
+
+    public Price() {
+    }
+
+    public Price(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public Price(BigDecimal amount, String currency) {
+        this.amount = amount;
+        this.currency = currency;
+    }
+
+    public Price(String title, BigDecimal amount, String currency) {
+        this.title = title;
+        this.amount = amount;
+        this.currency = currency;
+    }
 
     public UUID getId() {
         return id;

@@ -1,11 +1,14 @@
 package be.fooda.frontend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Product implements Serializable {
 
     private UUID id;
@@ -45,6 +48,32 @@ public class Product implements Serializable {
     private List<Tag> tags = new ArrayList<>();
 
     private List<Ingredient> ingredients = new ArrayList<>();
+
+    public Product() {
+    }
+
+    public Product(String name, String description, Store store, Type type, List<Price> prices, List<Tax> taxes, Image defaultImage, List<Category> categories) {
+        this.name = name;
+        this.description = description;
+        this.store = store;
+        this.type = type;
+        this.prices = prices;
+        this.taxes = taxes;
+        this.defaultImage = defaultImage;
+        this.categories = categories;
+    }
+
+    public Product(String name, String description, Store store, Type type, List<Price> prices, List<Tax> taxes, Image defaultImage, List<Category> categories, List<Tag> tags) {
+        this.name = name;
+        this.description = description;
+        this.store = store;
+        this.type = type;
+        this.prices = prices;
+        this.taxes = taxes;
+        this.defaultImage = defaultImage;
+        this.categories = categories;
+        this.tags = tags;
+    }
 
     public UUID getId() {
         return id;

@@ -1,7 +1,10 @@
 package be.fooda.frontend.model.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public enum Type implements Serializable {
 
     SIMPLE("A product which have no variations"),
