@@ -9,9 +9,8 @@ import be.fooda.frontend.service.BasketService;
 import be.fooda.frontend.service.ProductService;
 import com.vaadin.componentfactory.Autocomplete;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -30,8 +29,9 @@ public class FoodsView extends VerticalLayout {
     private final ProductService productService;
     private final BasketService basketService;
 
-    private final HorizontalLayout searchLayout = new HorizontalLayout();
-    private final Autocomplete searchFieldWithAutoComplete = new Autocomplete(5);
+    private final VerticalLayout searchLayout = new VerticalLayout();
+    private final static String SEARCH_SLOGAN = "May the food be with you!";
+    private final Autocomplete searchFieldWithAutoComplete = new Autocomplete(10);
     private final Button searchButton = new Button(VaadinIcon.SEARCH.create());
 
     private final VerticalLayout productsLayout = new VerticalLayout();
@@ -78,23 +78,28 @@ public class FoodsView extends VerticalLayout {
 
         List<String> autocompleteDataDuplicatesRemoved = autocompleteData.stream().distinct().collect(Collectors.toList());
 
-        Span searchCriteriaEntrySpan = new Span("Selection: ");
-        searchFieldWithAutoComplete.addChangeListener(event -> {
-            searchFieldWithAutoComplete.setOptions(autocompleteDataDuplicatesRemoved);
+        searchFieldWithAutoComplete.addChangeListener(event -> searchFieldWithAutoComplete.setOptions(autocompleteDataDuplicatesRemoved));
+        searchFieldWithAutoComplete.addAutocompleteValueAppliedListener(event -> {
+            if (!event.getValue().isEmpty()) {
+                final String hashTagValue = " " + "#" + event.getValue();
+                final String previousHasTagValues = searchFieldWithAutoComplete.getLabel().contentEquals(SEARCH_SLOGAN) ? "" : searchFieldWithAutoComplete.getLabel();
+                searchFieldWithAutoComplete.setLabel(previousHasTagValues + hashTagValue);
+            }
         });
-
-        searchFieldWithAutoComplete.addAutocompleteValueAppliedListener(event -> searchCriteriaEntrySpan.setText(searchCriteriaEntrySpan.getText() + " #" + event.getValue()));
-        searchFieldWithAutoComplete.addValueClearListener(event -> searchCriteriaEntrySpan.setText("Selection: " + ""));
-
-        searchFieldWithAutoComplete.setCaseSensitive(true);
+        searchFieldWithAutoComplete.addValueClearListener(event -> {
+            searchFieldWithAutoComplete.setValue("");
+        });
+        searchFieldWithAutoComplete.setCaseSensitive(false);
         searchFieldWithAutoComplete.setWidth("50vw");
-        searchFieldWithAutoComplete.setLabel("May the food be with you!");
+        searchFieldWithAutoComplete.setMaxWidth("65vw");
+        searchFieldWithAutoComplete.setLabel(SEARCH_SLOGAN);
         searchFieldWithAutoComplete.setPlaceholder("search ...");
         searchFieldWithAutoComplete.getElement().getStyle()
                 .set("font-size", "medium")
                 .set("background", "transparent");
 
         searchButton.setWidth("15vw");
+        searchButton.setMaxWidth("25vw");
         searchButton.getStyle()
                 .set("font-size", "medium")
                 .set("background", "transparent");
@@ -103,15 +108,18 @@ public class FoodsView extends VerticalLayout {
             productsLayout.removeAll();
 
             if (!searchFieldWithAutoComplete.getValue().isEmpty()) {
-                final String[] keywords = searchFieldWithAutoComplete.getValue().split("#");
+                final String[] keywords = Arrays.stream(searchFieldWithAutoComplete.getLabel().split("#")).toArray(String[]::new);
                 List<Product> searchResults = new ArrayList<>();
                 for (String keyword : keywords) {
-                    final ResponseEntity searchResponse = productService.searchByName(keyword, 1, 25);
+                    final String simplifiedKeyword = keyword.replace("#", "").replace(" ", "");
+                    final ResponseEntity searchResponse = productService.searchByName(simplifiedKeyword, 1, 25);
                     if (searchResponse.getStatusCode().equals(HttpStatus.FOUND) && searchResponse.hasBody()) {
                         Product[] searchResultsByKeyword = (Product[]) searchResponse.getBody();
                         if (searchResultsByKeyword != null) {
                             searchResults.addAll(Arrays.asList(searchResultsByKeyword));
                         }
+                    } else {
+                        new Notification("Nothing is found with this search..", 2000, Notification.Position.BOTTOM_CENTER).open();
                     }
                 }
 

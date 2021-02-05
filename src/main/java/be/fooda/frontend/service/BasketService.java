@@ -1,13 +1,14 @@
 package be.fooda.frontend.service;
 
 import be.fooda.frontend.model.basket.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,20 +18,11 @@ public class BasketService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${fooda.basket.service.url}")
-    private String baseUrl;
+    //    @Value("${fooda.basket.service.url}")
+    private final String baseUrl = "https://fooda-backend-basket.herokuapp.com/";
 
     public BasketService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-    }
-
-    private HttpHeaders createHttpHeaders(String user, String password) {
-        String notEncoded = user + ":" + password;
-        String encodedAuth = "Bearer " + Base64.getEncoder().encodeToString(notEncoded.getBytes());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization", encodedAuth);
-        return headers;
     }
 
     public ResponseEntity getProductById(String productId) {
@@ -71,7 +63,11 @@ public class BasketService {
 
     public ResponseEntity addProduct(BasketProduct product) {
         final String completeUrl = baseUrl + "product/add_product";
-        return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(product), String.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.POST, new HttpEntity<>(product, headers), String.class);
     }
 
     public ResponseEntity updateProductQuantity(Long externalProductId, Long externalUserId, String userSession, Integer newQuantity) {
