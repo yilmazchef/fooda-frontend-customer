@@ -11,6 +11,7 @@ import com.vaadin.componentfactory.Autocomplete;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -29,7 +30,7 @@ public class FoodsView extends VerticalLayout {
     private final ProductService productService;
     private final BasketService basketService;
 
-    private final VerticalLayout searchLayout = new VerticalLayout();
+    private final HorizontalLayout searchLayout = new HorizontalLayout();
     private final Autocomplete searchFieldWithAutoComplete = new Autocomplete(5);
     private final Button searchButton = new Button(VaadinIcon.SEARCH.create());
 
@@ -89,8 +90,14 @@ public class FoodsView extends VerticalLayout {
         searchFieldWithAutoComplete.setWidth("50vw");
         searchFieldWithAutoComplete.setLabel("May the food be with you!");
         searchFieldWithAutoComplete.setPlaceholder("search ...");
+        searchFieldWithAutoComplete.getElement().getStyle()
+                .set("font-size", "medium")
+                .set("background", "transparent");
 
         searchButton.setWidth("15vw");
+        searchButton.getStyle()
+                .set("font-size", "medium")
+                .set("background", "transparent");
         searchButton.addClickListener(onSearchClick -> {
 
             productsLayout.removeAll();
