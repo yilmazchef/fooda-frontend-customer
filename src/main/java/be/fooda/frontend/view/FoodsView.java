@@ -35,10 +35,10 @@ public class FoodsView extends VerticalLayout {
     private final BasketService basketService;
 
     private final HorizontalLayout searchLayout = new HorizontalLayout();
-    private final TextField searchField = new TextField("May the food be with you!");
+    private final TextField searchField = new TextField();
     private final Button searchButton = new Button(VaadinIcon.SEARCH.create());
-    private final Button addCriteriaButton = new Button(VaadinIcon.PLUS.create());
-    private final Button clearCriteriaButton = new Button(VaadinIcon.MINUS.create());
+    private final Button addCriteriaButton = new Button(VaadinIcon.PLUS_CIRCLE_O.create());
+    private final Button clearCriteriaButton = new Button(VaadinIcon.ERASER.create());
 
     private final HorizontalLayout criteriaLayout = new HorizontalLayout();
     private final Paragraph criteriaSetP = new Paragraph();
@@ -87,6 +87,9 @@ public class FoodsView extends VerticalLayout {
 
         List<String> autocompleteDataDuplicatesRemoved = autocompleteData.stream().distinct().collect(Collectors.toList());
         addCriteriaButton.setWidth("20px");
+        addCriteriaButton.getStyle()
+                .set("font-size", "medium")
+                .set("background", "transparent");
         addCriteriaButton.addClickListener(onAddCriteria -> {
             if (!searchField.getValue().isEmpty()) {
                 final String hashTagValue = " #" + searchField.getValue();
@@ -95,9 +98,13 @@ public class FoodsView extends VerticalLayout {
             }
         });
         addCriteriaButton.addClickShortcut(Key.ENTER);
+
         criteriaLayout.add(criteriaSetP);
 
         clearCriteriaButton.setWidth("20px");
+        clearCriteriaButton.getStyle()
+                .set("font-size", "medium")
+                .set("background", "transparent");
         clearCriteriaButton.addClickListener(onClearClick -> {
             criteriaSetP.setText("");
         });
@@ -115,6 +122,7 @@ public class FoodsView extends VerticalLayout {
         searchButton.getStyle()
                 .set("font-size", "medium")
                 .set("background", "transparent");
+        searchButton.setIconAfterText(true);
         searchButton.addClickListener(onSearchClick -> {
 
             productsLayout.removeAll();

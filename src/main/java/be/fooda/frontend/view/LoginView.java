@@ -1,5 +1,6 @@
 package be.fooda.frontend.view;
 
+import be.fooda.frontend.layout.PhoneNumberField;
 import be.fooda.frontend.service.UserService;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
@@ -30,9 +31,11 @@ public class LoginView extends VerticalLayout {
     private final VerticalLayout loginWithSmsLayout = new VerticalLayout();
     private final VerticalLayout loginWithPasswordLayout = new VerticalLayout();
 
-    private final TextField loginWithSmsPhoneField = new TextField("Phone");
+    private final PhoneNumberField loginWithSmsPhoneField = new PhoneNumberField("Phone");
+    //    private final TextField loginWithSmsPhoneField = new TextField("Phone");
     private final TextField loginWithSmsCodeField = new TextField("Validation Code");
-    private final TextField loginWithPwdPhoneField = new TextField("Phone");
+    private final PhoneNumberField loginWithPwdPhoneField = new PhoneNumberField("Phone");
+    //    private final TextField loginWithPwdPhoneField = new TextField("Phone");
     private final TextField loginWithPwdPasswordField = new TextField("Password");
     private final UserService userService;
     private final LogDisplay logDisplay = new LogDisplay();
