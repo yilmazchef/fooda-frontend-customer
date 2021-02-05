@@ -1,197 +1,209 @@
 package be.fooda.frontend.model.store;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+import be.fooda.backend.store.service.validation.Name;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Indexed
 public class Store {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
 
-    private String storeName;
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id;
 
+    @Field
+    @Name
+    private String name;
+
+    @Field
+    @Lob
     private String slogan;
 
+    @Field
     private String type;
 
-    private Long parentId;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID parentId;
 
+    @Field
+    @Lob
     private String about;
 
     private Boolean isActive = Boolean.TRUE;
 
+    private String eTrackingId;
 
-    private LocalDateTime registryTime;
+    @CreatedBy
+    private String createdBy;
 
+    @LastModifiedBy
+    private String lastModifiedBy;
 
-    private LocalDateTime updateTime;
+    @Field
+    @CreationTimestamp
+    private LocalDateTime registeredAt;
 
-    private StoreAuth auth;
+    @Field
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
-    private StoreUser user;
+    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private be.fooda.backend.store.model.entity.ImageEntity bgImage;
 
-    private List<StoreImage> images;
-
-    private StoreAddress address;
-
-    private StoreContact contact;
-
-    private List<StoreMenuItem> menuItems;
-
-    private List<StoreAcceptedPaymentMethod> acceptedPaymentMethods;
-
-    private List<StoreDeliveryLocation> deliveryLocations;
-
-
-    private List<StoreWorkingHours> workingHours;
-
-
-    public Long getId() {
-        return id;
+    public void setBgImage(be.fooda.backend.store.model.entity.ImageEntity bgImage) {
+        bgImage.setStore(this);
+        this.bgImage = bgImage;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private be.fooda.backend.store.model.entity.AddressEntity address;
 
-    public String getStoreName() {
-        return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
-    public String getSlogan() {
-        return slogan;
-    }
-
-    public void setSlogan(String slogan) {
-        this.slogan = slogan;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getAbout() {
-        return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public LocalDateTime getRegistryTime() {
-        return registryTime;
-    }
-
-    public void setRegistryTime(LocalDateTime registryTime) {
-        this.registryTime = registryTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public StoreAuth getAuth() {
-        return auth;
-    }
-
-    public void setAuth(StoreAuth auth) {
-        this.auth = auth;
-    }
-
-    public StoreUser getUser() {
-        return user;
-    }
-
-    public void setUser(StoreUser user) {
-        this.user = user;
-    }
-
-    public List<StoreImage> getImages() {
-        return images;
-    }
-
-    public void setImages(List<StoreImage> images) {
-        this.images = images;
-    }
-
-    public StoreAddress getAddress() {
-        return address;
-    }
-
-    public void setAddress(StoreAddress address) {
+    public void setAddress(be.fooda.backend.store.model.entity.AddressEntity address) {
+        address.setStore(this);
         this.address = address;
     }
 
-    public StoreContact getContact() {
-        return contact;
-    }
+    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private be.fooda.backend.store.model.entity.ContactEntity contact;
 
-    public void setContact(StoreContact contact) {
+    public void setContact(be.fooda.backend.store.model.entity.ContactEntity contact) {
+        contact.setStore(this);
         this.contact = contact;
     }
 
-    public List<StoreMenuItem> getMenuItems() {
-        return menuItems;
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private List<be.fooda.backend.store.model.entity.ProductEntity> products = new ArrayList<>();
+
+    public void setProducts(List<be.fooda.backend.store.model.entity.ProductEntity> products) {
+        this.products = products.stream()
+                .map(this::setOneProduct).collect(Collectors.toList());
     }
 
-    public void setMenuItems(List<StoreMenuItem> menuItems) {
-        this.menuItems = menuItems;
+    private be.fooda.backend.store.model.entity.ProductEntity setOneProduct(be.fooda.backend.store.model.entity.ProductEntity menuItem) {
+        menuItem.setStore(this);
+        return menuItem;
     }
 
-    public List<StoreAcceptedPaymentMethod> getAcceptedPaymentMethods() {
-        return acceptedPaymentMethods;
+    public void addProduct(be.fooda.backend.store.model.entity.ProductEntity product) {
+        product.setStore(this);
+        this.products.add(product);
     }
 
-    public void setAcceptedPaymentMethods(List<StoreAcceptedPaymentMethod> acceptedPaymentMethods) {
-        this.acceptedPaymentMethods = acceptedPaymentMethods;
+    public void removeProduct(be.fooda.backend.store.model.entity.ProductEntity product) {
+        product.setStore(null);
+        this.products.remove(product);
     }
 
-    public List<StoreDeliveryLocation> getDeliveryLocations() {
-        return deliveryLocations;
+    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private be.fooda.backend.store.model.entity.AuthEntity auth;
+
+    public void setAuth(be.fooda.backend.store.model.entity.AuthEntity auth) {
+        auth.setStore(this);
+        this.auth = auth;
     }
 
-    public void setDeliveryLocations(List<StoreDeliveryLocation> deliveryLocations) {
-        this.deliveryLocations = deliveryLocations;
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private List<be.fooda.backend.store.model.entity.PaymentEntity> payments = new ArrayList<>();
+
+    public void setPayments(List<be.fooda.backend.store.model.entity.PaymentEntity> acceptedPaymentMethods) {
+        this.payments = acceptedPaymentMethods.stream()
+                .map(this::setOnePayment)
+                .collect(Collectors.toList());
     }
 
-    public List<StoreWorkingHours> getWorkingHours() {
-        return workingHours;
+    private be.fooda.backend.store.model.entity.PaymentEntity setOnePayment(be.fooda.backend.store.model.entity.PaymentEntity acceptedPaymentMethod) {
+        acceptedPaymentMethod.setStore(this);
+        return acceptedPaymentMethod;
     }
 
-    public void setWorkingHours(List<StoreWorkingHours> workingHours) {
-        this.workingHours = workingHours;
+    public void addPayment(be.fooda.backend.store.model.entity.PaymentEntity payment) {
+        payment.setStore(this);
+        this.payments.add(payment);
     }
 
+    public void removePayment(be.fooda.backend.store.model.entity.PaymentEntity payment) {
+        payment.setStore(null);
+        this.payments.remove(payment);
+    }
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private List<be.fooda.backend.store.model.entity.DeliveryEntity> deliveries = new ArrayList<>();
+
+    public void setDeliveries(List<be.fooda.backend.store.model.entity.DeliveryEntity> deliveryLocations) {
+        this.deliveries = deliveryLocations.stream()
+                .map(this::setOneDelivery).collect(Collectors.toList());
+    }
+
+    private be.fooda.backend.store.model.entity.DeliveryEntity setOneDelivery(be.fooda.backend.store.model.entity.DeliveryEntity deliveryLocation) {
+        deliveryLocation.setStore(this);
+        return deliveryLocation;
+    }
+
+    public void addDelivery(be.fooda.backend.store.model.entity.DeliveryEntity delivery) {
+        delivery.setStore(this);
+        this.deliveries.add(delivery);
+    }
+
+    public void removeDelivery(be.fooda.backend.store.model.entity.DeliveryEntity delivery) {
+        delivery.setStore(null);
+        this.deliveries.remove(delivery);
+    }
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @IndexedEmbedded
+    private List<be.fooda.backend.store.model.entity.ScheduleEntity> schedules;
 
 
+    public void setSchedules(List<be.fooda.backend.store.model.entity.ScheduleEntity> workingHours) {
+        this.schedules = workingHours.stream()
+                .map(this::setOneSchedule)
+                .collect(Collectors.toList());
+    }
+
+    private be.fooda.backend.store.model.entity.ScheduleEntity setOneSchedule(be.fooda.backend.store.model.entity.ScheduleEntity foodaStoreWorkingHours) {
+        foodaStoreWorkingHours.setStore(this);
+        return foodaStoreWorkingHours;
+    }
+
+    public void addSchedule(be.fooda.backend.store.model.entity.ScheduleEntity schedule) {
+        schedule.setStore(this);
+        this.schedules.add(schedule);
+    }
+
+    public void removeSchedule(be.fooda.backend.store.model.entity.ScheduleEntity schedule) {
+        schedule.setStore(this);
+        this.schedules.remove(schedule);
+    }
 
 }
