@@ -75,18 +75,35 @@ public class ProductService {
         return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(httpHeaders), Product[].class, queryParams);
     }
 
+    public ResponseEntity getAllIngredients() {
+        final String completeUrl = "https://fooda-backend-product.herokuapp.com/ingredient/get_all_tags";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers), Ingredient[].class);
+    }
+
     public ResponseEntity getAllCategories() {
-        final String completeUrl = baseUrl + GET_ALL_CATEGORIES;
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Category[].class);
+        final String completeUrl = "https://fooda-backend-product.herokuapp.com/category/get_all_categories";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers), Category[].class);
     }
 
     public ResponseEntity getAllTags() {
-        final String completeUrl = baseUrl + GET_ALL_TAGS;
-        return restTemplate.exchange(completeUrl, HttpMethod.GET, HttpEntity.EMPTY, Tag[].class);
+        final String completeUrl = "https://fooda-backend-product.herokuapp.com/tag/get_all_tags";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "true");
+
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers), Tag[].class);
     }
 
     public ResponseEntity searchByName(String productName, int pageNo, int pageSize) {
-        final String completeUrl = baseUrl + SEARCH_BY_PRODUCT_NAME + "?productName={productName}&pageNo={pageNo}&pageSize={pageSize}";
+        final String completeUrl = "https://fooda-backend-product.herokuapp.com/search_by_product_name?productName={productName}&pageNo={pageNo}&pageSize={pageSize}";
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("productName", productName);
         queryParams.put("pageNo", pageNo);

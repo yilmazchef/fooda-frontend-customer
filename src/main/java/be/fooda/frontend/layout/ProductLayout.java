@@ -66,6 +66,7 @@ public class ProductLayout extends Component implements HasComponents, Serializa
 
 //        END -> PRODUCT IMAGE LAYOUT COMPONENTS
 
+
 //        START -> PRODUCT INFO LAYOUT COMPONENTS
         productNameH2.setText(data.getName());
         productDescriptionP.setText(data.getDescription());
