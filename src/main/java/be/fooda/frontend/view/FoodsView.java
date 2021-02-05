@@ -7,11 +7,15 @@ import be.fooda.frontend.model.product.Product;
 import be.fooda.frontend.model.product.Tag;
 import be.fooda.frontend.service.BasketService;
 import be.fooda.frontend.service.ProductService;
-import com.vaadin.componentfactory.Autocomplete;
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Route(value = "foods", layout = MainView.class)
@@ -29,10 +34,14 @@ public class FoodsView extends VerticalLayout {
     private final ProductService productService;
     private final BasketService basketService;
 
-    private final VerticalLayout searchLayout = new VerticalLayout();
-    private final static String SEARCH_SLOGAN = "May the food be with you!";
-    private final Autocomplete searchFieldWithAutoComplete = new Autocomplete(10);
+    private final HorizontalLayout searchLayout = new HorizontalLayout();
+    private final TextField searchField = new TextField("May the food be with you!");
     private final Button searchButton = new Button(VaadinIcon.SEARCH.create());
+    private final Button addCriteriaButton = new Button(VaadinIcon.PLUS.create());
+    private final Button clearCriteriaButton = new Button(VaadinIcon.MINUS.create());
+
+    private final HorizontalLayout criteriaLayout = new HorizontalLayout();
+    private final Paragraph criteriaSetP = new Paragraph();
 
     private final VerticalLayout productsLayout = new VerticalLayout();
 
@@ -77,29 +86,32 @@ public class FoodsView extends VerticalLayout {
         }
 
         List<String> autocompleteDataDuplicatesRemoved = autocompleteData.stream().distinct().collect(Collectors.toList());
-
-        searchFieldWithAutoComplete.addChangeListener(event -> searchFieldWithAutoComplete.setOptions(autocompleteDataDuplicatesRemoved));
-        searchFieldWithAutoComplete.addAutocompleteValueAppliedListener(event -> {
-            if (!event.getValue().isEmpty()) {
-                final String hashTagValue = " " + "#" + event.getValue();
-                final String previousHasTagValues = searchFieldWithAutoComplete.getLabel().contentEquals(SEARCH_SLOGAN) ? "" : searchFieldWithAutoComplete.getLabel();
-                searchFieldWithAutoComplete.setLabel(previousHasTagValues + hashTagValue);
+        addCriteriaButton.setWidth("20px");
+        addCriteriaButton.addClickListener(onAddCriteria -> {
+            if (!searchField.getValue().isEmpty()) {
+                final String hashTagValue = " #" + searchField.getValue();
+                criteriaSetP.setText(criteriaSetP.getText() + hashTagValue);
+                searchField.focus();
             }
         });
-        searchFieldWithAutoComplete.addValueClearListener(event -> {
-            searchFieldWithAutoComplete.setValue("");
+        addCriteriaButton.addClickShortcut(Key.ENTER);
+        criteriaLayout.add(criteriaSetP);
+
+        clearCriteriaButton.setWidth("20px");
+        clearCriteriaButton.addClickListener(onClearClick -> {
+            criteriaSetP.setText("");
         });
-        searchFieldWithAutoComplete.setCaseSensitive(false);
-        searchFieldWithAutoComplete.setWidth("50vw");
-        searchFieldWithAutoComplete.setMaxWidth("65vw");
-        searchFieldWithAutoComplete.setLabel(SEARCH_SLOGAN);
-        searchFieldWithAutoComplete.setPlaceholder("search ...");
-        searchFieldWithAutoComplete.getElement().getStyle()
+
+        searchField.setWidth("40vw");
+        searchField.setMaxWidth("55vw");
+        searchField.getStyle()
                 .set("font-size", "medium")
                 .set("background", "transparent");
+        searchField.focus();
+        searchField.setClearButtonVisible(true);
 
         searchButton.setWidth("15vw");
-        searchButton.setMaxWidth("25vw");
+        searchButton.setMaxWidth("20vw");
         searchButton.getStyle()
                 .set("font-size", "medium")
                 .set("background", "transparent");
@@ -107,19 +119,26 @@ public class FoodsView extends VerticalLayout {
 
             productsLayout.removeAll();
 
-            if (!searchFieldWithAutoComplete.getValue().isEmpty()) {
-                final String[] keywords = Arrays.stream(searchFieldWithAutoComplete.getLabel().split("#")).toArray(String[]::new);
+            if (!criteriaSetP.getText().isEmpty()) {
+
+                final String[] keywords = Arrays
+                        .stream(criteriaSetP.getText().split("#"))
+                        .map(keyword -> keyword.replace("#", "").trim().toLowerCase(Locale.ROOT))
+                        .distinct()
+                        .toArray(String[]::new);
+
                 List<Product> searchResults = new ArrayList<>();
                 for (String keyword : keywords) {
-                    final String simplifiedKeyword = keyword.replace("#", "").replace(" ", "");
-                    final ResponseEntity searchResponse = productService.searchByName(simplifiedKeyword, 1, 25);
-                    if (searchResponse.getStatusCode().equals(HttpStatus.FOUND) && searchResponse.hasBody()) {
-                        Product[] searchResultsByKeyword = (Product[]) searchResponse.getBody();
-                        if (searchResultsByKeyword != null) {
-                            searchResults.addAll(Arrays.asList(searchResultsByKeyword));
+                    if (!keyword.isEmpty()) {
+                        final ResponseEntity searchResponse = productService.searchByName(keyword, 1, 25);
+                        if (searchResponse.getStatusCode().equals(HttpStatus.FOUND) && searchResponse.hasBody()) {
+                            Product[] searchResultsByKeyword = (Product[]) searchResponse.getBody();
+                            if (searchResultsByKeyword != null) {
+                                searchResults.addAll(Arrays.asList(searchResultsByKeyword));
+                            }
+                        } else {
+                            new Notification("Nothing is found with this search..", 2000, Notification.Position.BOTTOM_CENTER).open();
                         }
-                    } else {
-                        new Notification("Nothing is found with this search..", 2000, Notification.Position.BOTTOM_CENTER).open();
                     }
                 }
 
@@ -130,8 +149,9 @@ public class FoodsView extends VerticalLayout {
                 }
             }
         });
+        searchButton.addClickShortcut(Key.ENTER, KeyModifier.ALT);
 
-        searchLayout.add(searchFieldWithAutoComplete, searchButton);
+        searchLayout.add(searchField, addCriteriaButton, clearCriteriaButton, searchButton);
 
 //        END -> SEARCH LAYOUT COMPONENTS
 
@@ -148,7 +168,7 @@ public class FoodsView extends VerticalLayout {
 
 //        END -> PRODUCTS LAYOUT COMPONENTS
 
-        add(searchLayout, productsLayout);
+        add(searchLayout, criteriaLayout, productsLayout);
 
     }
 }

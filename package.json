@@ -62,7 +62,7 @@
       "webpack-merge": "4.2.2",
       "webpack-dev-server": "3.11.0"
     },
-    "hash": "9f69add1861114b04999f97180c747a6bc4d5822665f40307ba195cb8af3db74"
+    "hash": "2c2a550f833de620c43fd46584fa84dfb39857d3c327fc335f4d15c467accee3"
   },
   "dependencies": {
     "lit-element": "^2.2.1",
@@ -109,8 +109,7 @@
     "@vaadin/vaadin-lumo-styles": "1.6.0",
     "@vaadin/vaadin-material-styles": "1.3.2",
     "@vaadin/vaadin-rich-text-editor": "1.3.0",
-    "open": "^7.2.1",
-    "@vaadin-component-factory/vcf-autocomplete": "1.2.7"
+    "open": "^7.2.1"
   },
   "devDependencies": {
     "webpack-babel-multi-target-plugin": "2.3.3",
