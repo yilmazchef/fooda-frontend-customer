@@ -1,42 +1,67 @@
 package be.fooda.frontend.model.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.SortableField;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Schedule {
+public class Schedule implements Serializable {
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-    @Field
-    @SortableField
     private LocalDateTime openTime;
 
-    //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-    @Field
-    @SortableField
     private LocalDateTime closeTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    @ToString.Exclude
-    @ContainedIn
-    private Store store;
+    public Schedule() {
+    }
+
+    public Schedule(LocalDateTime openTime, LocalDateTime closeTime) {
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+    }
+
+    public Schedule(UUID id, LocalDateTime openTime, LocalDateTime closeTime) {
+        this.id = id;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(LocalDateTime openTime) {
+        this.openTime = openTime;
+    }
+
+    public LocalDateTime getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(LocalDateTime closeTime) {
+        this.closeTime = closeTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Schedule schedule = (Schedule) o;
+        return Objects.equals(id, schedule.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
 

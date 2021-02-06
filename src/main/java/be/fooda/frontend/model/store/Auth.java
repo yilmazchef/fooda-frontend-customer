@@ -1,55 +1,105 @@
 package be.fooda.frontend.model.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.SortableField;
-import org.hibernate.validator.constraints.URL;
-
-import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Auth {
+public class Auth implements Serializable {
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Field
-    @EqualsAndHashCode.Include
-    @NotNull
     private String authKey;
 
-    @Field
-    @EqualsAndHashCode.Include
     private String secret;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @FutureOrPresent
-    @Field
-    @SortableField
     private LocalDate expiryDate;
 
-    @URL(protocol = "https")
     private String siteUrl;
 
-    @URL(protocol = "https")
     private String storeUrl;
 
-    @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    @ContainedIn
-    private Store store;
+    public Auth() {
+    }
+
+    public Auth(String authKey, String secret) {
+        this.authKey = authKey;
+        this.secret = secret;
+    }
+
+    public Auth(String authKey, String secret, String siteUrl, String storeUrl) {
+        this.authKey = authKey;
+        this.secret = secret;
+        this.siteUrl = siteUrl;
+        this.storeUrl = storeUrl;
+    }
+
+    public Auth(String authKey, String secret, LocalDate expiryDate, String siteUrl, String storeUrl) {
+        this.authKey = authKey;
+        this.secret = secret;
+        this.expiryDate = expiryDate;
+        this.siteUrl = siteUrl;
+        this.storeUrl = storeUrl;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getAuthKey() {
+        return authKey;
+    }
+
+    public void setAuthKey(String authKey) {
+        this.authKey = authKey;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public LocalDate getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getSiteUrl() {
+        return siteUrl;
+    }
+
+    public void setSiteUrl(String siteUrl) {
+        this.siteUrl = siteUrl;
+    }
+
+    public String getStoreUrl() {
+        return storeUrl;
+    }
+
+    public void setStoreUrl(String storeUrl) {
+        this.storeUrl = storeUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Auth auth = (Auth) o;
+        return Objects.equals(id, auth.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

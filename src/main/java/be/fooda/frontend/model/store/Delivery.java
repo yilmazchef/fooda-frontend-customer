@@ -1,56 +1,109 @@
 package be.fooda.frontend.model.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.SortableField;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Delivery {
+public class Delivery implements Serializable {
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Field
-    @SortableField
     private String postcode;
 
-    @Basic
-    @Field
-    @SortableField
     private Duration deliveryDuration;
 
-    @Field
-    @SortableField
-    @Column(columnDefinition = "DECIMAL(8,2)")
     private BigDecimal minOrderPrice;
 
-    @Field
-    @SortableField
-    @Column(columnDefinition = "DECIMAL(8,2)")
     private BigDecimal maxOrderPrice;
 
-    @Field
-    @SortableField
-    @Column(columnDefinition = "DECIMAL(8,2)")
     private BigDecimal deliveryCost;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    @ToString.Exclude
-    @ContainedIn
-    private Store store;
+    public Delivery() {
+    }
+
+    public Delivery(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public Delivery(String postcode, BigDecimal deliveryCost) {
+        this.postcode = postcode;
+        this.deliveryCost = deliveryCost;
+    }
+
+    public Delivery(String postcode, BigDecimal minOrderPrice, BigDecimal deliveryCost) {
+        this.postcode = postcode;
+        this.minOrderPrice = minOrderPrice;
+        this.deliveryCost = deliveryCost;
+    }
+
+    public Delivery(String postcode, Duration deliveryDuration, BigDecimal minOrderPrice, BigDecimal maxOrderPrice, BigDecimal deliveryCost) {
+        this.postcode = postcode;
+        this.deliveryDuration = deliveryDuration;
+        this.minOrderPrice = minOrderPrice;
+        this.maxOrderPrice = maxOrderPrice;
+        this.deliveryCost = deliveryCost;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public Duration getDeliveryDuration() {
+        return deliveryDuration;
+    }
+
+    public void setDeliveryDuration(Duration deliveryDuration) {
+        this.deliveryDuration = deliveryDuration;
+    }
+
+    public BigDecimal getMinOrderPrice() {
+        return minOrderPrice;
+    }
+
+    public void setMinOrderPrice(BigDecimal minOrderPrice) {
+        this.minOrderPrice = minOrderPrice;
+    }
+
+    public BigDecimal getMaxOrderPrice() {
+        return maxOrderPrice;
+    }
+
+    public void setMaxOrderPrice(BigDecimal maxOrderPrice) {
+        this.maxOrderPrice = maxOrderPrice;
+    }
+
+    public BigDecimal getDeliveryCost() {
+        return deliveryCost;
+    }
+
+    public void setDeliveryCost(BigDecimal deliveryCost) {
+        this.deliveryCost = deliveryCost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Delivery delivery = (Delivery) o;
+        return Objects.equals(id, delivery.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

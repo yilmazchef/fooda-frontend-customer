@@ -1,43 +1,65 @@
 package be.fooda.frontend.model.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.validator.constraints.URL;
-
-import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Image {
+public class Image implements Serializable {
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Field
-    @EqualsAndHashCode.Include
-    @Column(columnDefinition = "BINARY(16)")
     private UUID eMediaId;
 
     private String type;
 
-    @Field
-    @URL
     private String url;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    @ToString.Exclude
-    @ContainedIn
-    private Store store;
+    public Image() {
+    }
 
+    public Image(UUID eMediaId) {
+        this.eMediaId = eMediaId;
+    }
 
+    public Image(UUID eMediaId, String url) {
+        this.eMediaId = eMediaId;
+        this.url = url;
+    }
+
+    public Image(UUID eMediaId, String type, String url) {
+        this.eMediaId = eMediaId;
+        this.type = type;
+        this.url = url;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID geteMediaId() {
+        return eMediaId;
+    }
+
+    public void seteMediaId(UUID eMediaId) {
+        this.eMediaId = eMediaId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

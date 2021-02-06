@@ -1,45 +1,85 @@
 package be.fooda.frontend.model.store;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.SortableField;
-
-import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Address {
+public class Address implements Serializable {
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Field
-    @EqualsAndHashCode.Include
-    @Column(columnDefinition = "BINARY(16)")
     private UUID eAddressId;
 
-    @Field
-    @SortableField
     private String postcode;
 
-    @Field
     private String municipality;
 
-    @Field
     private String city;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    @ToString.Exclude
-    @ContainedIn
-    private Store store;
+    public Address() {
+    }
+
+    public Address(UUID eAddressId) {
+        this.eAddressId = eAddressId;
+    }
+
+    public Address(UUID eAddressId, String postcode, String municipality, String city) {
+        this.eAddressId = eAddressId;
+        this.postcode = postcode;
+        this.municipality = municipality;
+        this.city = city;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID geteAddressId() {
+        return eAddressId;
+    }
+
+    public void seteAddressId(UUID eAddressId) {
+        this.eAddressId = eAddressId;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) && Objects.equals(eAddressId, address.eAddressId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, eAddressId);
+    }
 }
