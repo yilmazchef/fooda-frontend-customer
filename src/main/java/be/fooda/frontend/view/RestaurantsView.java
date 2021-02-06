@@ -5,7 +5,6 @@ import be.fooda.frontend.model.store.Store;
 import be.fooda.frontend.service.StoreService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -43,8 +42,7 @@ public class RestaurantsView extends VerticalLayout {
     public RestaurantsView(StoreService storeService) {
         this.storeService = storeService;
         addClassName("page");
-
-        add(new Text("Restaurants Page.."));
+        searchLayout.addClassName("search-box");
 
         addCriteriaButton.setWidth("20px");
         addCriteriaButton.getStyle()

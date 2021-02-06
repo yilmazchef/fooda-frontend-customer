@@ -6,6 +6,7 @@ import be.fooda.frontend.model.product.Product;
 import be.fooda.frontend.model.product.Tax;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -30,7 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Tag("vaadin-product-layout")
-public class ProductLayout extends Component implements HasComponents, Serializable {
+public class ProductLayout extends Component implements HasComponents, HasStyle, Serializable {
 
     private final VerticalLayout imageLayout = new VerticalLayout();
     private final Image productImg = new Image();
@@ -56,6 +57,8 @@ public class ProductLayout extends Component implements HasComponents, Serializa
 
 
     public ProductLayout(Product data) {
+
+        addClassName("product");
 
 //        START -> PRODUCT IMAGE LAYOUT COMPONENTS
         productImg.setWidth("100%");

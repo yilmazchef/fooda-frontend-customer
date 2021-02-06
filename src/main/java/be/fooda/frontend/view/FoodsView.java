@@ -49,6 +49,7 @@ public class FoodsView extends VerticalLayout {
         this.productService = productService;
         this.basketService = basketService;
         addClassName("page");
+        searchLayout.addClassName("search-box");
 
         //        START -> SEARCH LAYOUT COMPONENTS
 

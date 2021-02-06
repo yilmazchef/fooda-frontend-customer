@@ -1,10 +1,7 @@
 package be.fooda.frontend.layout;
 
 import be.fooda.frontend.model.store.Store;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasComponents;
-import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -15,7 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import java.io.Serializable;
 
 @Tag("vaadin-store-layout")
-public class StoreLayout extends Component implements HasComponents, Serializable {
+public class StoreLayout extends Component implements HasComponents, HasStyle, Serializable {
 
     private final VerticalLayout imageLayout = new VerticalLayout();
     private final Image storeLogoImage = new Image();
@@ -29,6 +26,8 @@ public class StoreLayout extends Component implements HasComponents, Serializabl
 
 
     public StoreLayout(Store data) {
+
+        addClassName("store");
 
 //        START -> STORE IMAGE LAYOUT COMPONENTS
         storeLogoImage.setWidth("100%");
