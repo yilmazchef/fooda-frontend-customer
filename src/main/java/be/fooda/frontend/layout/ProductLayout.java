@@ -12,6 +12,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -48,6 +49,8 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
     private final VerticalLayout quantityLayout = new VerticalLayout();
     private final NumberField quantityField = new NumberField("Quantity");
 
+    private final Details detailsSection = new Details();
+
     private final HorizontalLayout detailsLayout = new HorizontalLayout();
     private final CheckboxGroup<Ingredient> ingredientsCheckBoxGroup = new CheckboxGroup<>();
     private final CheckboxGroup<Ingredient> extraIngredientsCheckBoxGroup = new CheckboxGroup<>();
@@ -72,8 +75,20 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
 //        START -> PRODUCT INFO LAYOUT COMPONENTS
         productNameH2.setText(data.getName());
+        productNameH2.getStyle()
+                .set("background", "#161616")
+                .set("color", "#F2F2F2")
+                .set("text-align", "center")
+                .set("font-size", "2em")
+                .set("opacity", "0.6")
+                .set("width", "100vw")
+                .set("margin-top", "-20px");
         productDescriptionP.setText(data.getDescription());
-        productDescriptionP.getStyle().set("font-size", "medium");
+        productDescriptionP.getStyle()
+                .set("margin-top", "-20px")
+                .set("padding-left", "10px")
+                .set("padding-right", "10px")
+                .set("font-size", "1em");
         infoLayout.add(productNameH2, productDescriptionP);
 
 //        END -> PRODUCT INFO LAYOUT COMPONENTS
@@ -85,6 +100,7 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         quantityField.setMin(1);
         quantityField.setWidth("25vw");
         quantityField.getStyle()
+                .set("font-size", "2em")
                 .set("background", "transparent");
         final Integer limitPerOrderValue = data.getLimitPerOrder();
         quantityField.setMax(limitPerOrderValue != null && limitPerOrderValue > 0 ? limitPerOrderValue : Integer.MAX_VALUE);
@@ -102,20 +118,20 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         productPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         productPriceField.setReadOnly(true);
-        productPriceField.setWidth("25vw");
+        productPriceField.setWidth("20vw");
         productPriceField.getStyle().set("background", "transparent");
         final BigDecimal productTaxValue = productPriceValue.multiply(BigDecimal.valueOf(defaultTax.getPercentage()));
         productTaxField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         productTaxField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productTaxField.setValue(productTaxValue.setScale(2, RoundingMode.HALF_EVEN));
         productTaxField.setReadOnly(true);
-        productTaxField.setWidth("25vw");
+        productTaxField.setWidth("20vw");
         productTaxField.getStyle().set("background", "transparent");
         totalPriceField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         totalPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         totalPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         totalPriceField.setReadOnly(true);
-        totalPriceField.setWidth("35vw");
+        totalPriceField.setWidth("30vw");
         totalPriceField.getStyle().set("background", "transparent");
 
         priceLayout.add(productPriceField, productTaxField, totalPriceField);
@@ -150,6 +166,8 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         });
 
         detailsLayout.add(ingredientsCheckBoxGroup, extraIngredientsCheckBoxGroup);
+        detailsSection.setSummaryText("Details");
+        detailsSection.addContent(detailsLayout);
 
 //        END -> DETAILS LAYOUT COMPONENTS
 
@@ -189,6 +207,6 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
 //        END -> ACTIONS LAYOUT COMPONENTS
 
-        add(imageLayout, infoLayout, quantityLayout, priceLayout, detailsLayout, actionsLayout);
+        add(imageLayout, infoLayout, quantityLayout, priceLayout, detailsSection, actionsLayout);
     }
 }

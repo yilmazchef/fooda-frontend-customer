@@ -24,6 +24,11 @@ vaadin-horizontal-layout {
     margin: 0;
 }
 
+vaadin-details {
+    padding: 0;
+    margin: 0;
+}
+
 vaadin-app-layout * {
     align-items: center;
     justify-content: center;
