@@ -81,10 +81,11 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
                 .set("text-align", "center")
                 .set("font-size", "2em")
                 .set("opacity", "0.6")
-                .set("width", "100vw")
+                .set("width", "90vw")
                 .set("margin-top", "-20px");
         productDescriptionP.setText(data.getDescription());
         productDescriptionP.getStyle()
+                .set("width", "90vw")
                 .set("margin-top", "-20px")
                 .set("padding-left", "10px")
                 .set("padding-right", "10px")
@@ -98,9 +99,8 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         quantityField.setValue(1d);
         quantityField.setHasControls(true);
         quantityField.setMin(1);
-        quantityField.setWidth("25vw");
+        quantityField.setWidth("20vw");
         quantityField.getStyle()
-                .set("font-size", "2em")
                 .set("background", "transparent");
         final Integer limitPerOrderValue = data.getLimitPerOrder();
         quantityField.setMax(limitPerOrderValue != null && limitPerOrderValue > 0 ? limitPerOrderValue : Integer.MAX_VALUE);
