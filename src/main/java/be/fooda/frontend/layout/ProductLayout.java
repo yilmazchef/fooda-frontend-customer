@@ -30,6 +30,8 @@ import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.List;
 
+import static be.fooda.frontend.layout.CardStyleDefinitions.*;
+
 @Tag("vaadin-product-layout")
 public class ProductLayout extends Component implements HasComponents, HasStyle, Serializable {
 
@@ -54,17 +56,17 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
     private final HorizontalLayout actionsLayout = new HorizontalLayout();
     private final Button basketButton = new Button("Add to Basket");
-    private final Button detailsButton = new Button("View Details");
+    private final Button detailsButton = new Button("Details");
 
 
     public ProductLayout(Product data) {
 
-        addClassName("card");
+        addClassName(CARD.getValue());
 
 //        START -> PRODUCT IMAGE LAYOUT COMPONENTS
         productImg.setSrc(data.getDefaultImage().getUrl());
         productImg.setAlt(data.getName());
-        productImg.addClassName("card-image");
+        productImg.addClassName(CARD_IMAGE.getValue());
         imageLayout.add(productImg);
 
 //        END -> PRODUCT IMAGE LAYOUT COMPONENTS
@@ -72,10 +74,10 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
 //        START -> PRODUCT INFO LAYOUT COMPONENTS
         productNameH2.setText(data.getName());
-        productNameH2.addClassName("card-title");
+        productNameH2.addClassName(CARD_TITLE.getValue());
         final String descriptionValue = data.getDescription();
         productDescriptionP.setText(descriptionValue.length() > 50 ? descriptionValue.substring(0, 49) + "..." : descriptionValue);
-        productDescriptionP.addClassName("card-description");
+        productDescriptionP.addClassName(CARD_DESCRIPTION.getValue());
         productDescriptionP.addClickListener(onClick -> {
             productDescriptionP.setText(data.getDescription());
         });
@@ -88,7 +90,7 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         quantityField.setValue(1d);
         quantityField.setHasControls(true);
         quantityField.setMin(1);
-        quantityField.addClassName("card-number");
+        quantityField.addClassName(CARD_NUMBER.getValue());
         final Integer limitPerOrderValue = data.getLimitPerOrder();
         quantityField.setMax(limitPerOrderValue != null && limitPerOrderValue > 0 ? limitPerOrderValue : Integer.MAX_VALUE);
 
@@ -104,18 +106,18 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         productPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         productPriceField.setReadOnly(true);
-        productPriceField.addClassName("card-number");
+        productPriceField.addClassName(CARD_NUMBER.getValue());
         final BigDecimal productTaxValue = productPriceValue.multiply(BigDecimal.valueOf(defaultTax.getPercentage()));
         productTaxField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         productTaxField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productTaxField.setValue(productTaxValue.setScale(2, RoundingMode.HALF_EVEN));
         productTaxField.setReadOnly(true);
-        productTaxField.addClassName("card-number");
+        productTaxField.addClassName(CARD_NUMBER.getValue());
         totalPriceField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         totalPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         totalPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         totalPriceField.setReadOnly(true);
-        totalPriceField.addClassName("card-number");
+        totalPriceField.addClassName(CARD_NUMBER.getValue());
 
         priceLayout.add(productPriceField, productTaxField, totalPriceField);
 
@@ -128,13 +130,13 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         ingredientsCheckBoxGroup.setItems(ingredients);
         ingredientsCheckBoxGroup.setValue(new HashSet<>(ingredients));
         ingredientsCheckBoxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-        ingredientsCheckBoxGroup.addClassName("card-checks");
+        ingredientsCheckBoxGroup.addClassName(CARD_CHECKBOX.getValue());
 
         extraIngredientsCheckBoxGroup.setLabel("Extras");
         List<Ingredient> extraIngredients = data.getIngredients();
         extraIngredientsCheckBoxGroup.setItems(extraIngredients);
         extraIngredientsCheckBoxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-        extraIngredientsCheckBoxGroup.addClassName("card-checks");
+        extraIngredientsCheckBoxGroup.addClassName(CARD_CHECKBOX.getValue());
 
         Checkbox selectAllExtraIngredients = new Checkbox("Select all");
         extraIngredientsCheckBoxGroup.addValueChangeListener(onCheckChange -> {
@@ -177,13 +179,13 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         basketButton.addClickListener(onClick -> {
             new Notification(data.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
         });
-        basketButton.addClassName("card-button");
+        basketButton.addClassName(CARD_BUTTON_WITH_TEXT.getValue());
 
         detailsButton.addClickListener(onClick -> {
             final boolean layoutVisible = detailsLayout.isVisible();
             detailsLayout.setVisible(!layoutVisible);
         });
-        detailsButton.addClassName("card-button");
+        detailsButton.addClassName(CARD_BUTTON_WITH_TEXT.getValue());
 
 //        START -> ACTIONS  LAYOUT COMPONENTS
 

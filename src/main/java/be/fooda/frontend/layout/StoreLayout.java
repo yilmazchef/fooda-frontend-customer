@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import static be.fooda.frontend.layout.CardStyleDefinitions.*;
+
 @Tag("vaadin-store-layout")
 public class StoreLayout extends Component implements HasComponents, HasStyle, Serializable {
 
@@ -40,48 +42,45 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
     private final VerticalLayout commentsLayout = new VerticalLayout();
 
     private final HorizontalLayout actionsLayout = new HorizontalLayout();
-    private final Button menuButton = new Button("Menu");
-    private final Button detailsButton = new Button("Delivery");
-    private final Button commentsButton = new Button("Comments");
+    private final Button menuButton = new Button(VaadinIcon.CUTLERY.create());
+    private final Button detailsButton = new Button(VaadinIcon.CHART_GRID.create());
+    private final Button commentsButton = new Button(VaadinIcon.COMMENTS_O.create());
 
     public StoreLayout(Store data) {
 
-        addClassName("card");
+        addClassName(CARD.getValue());
 
         storeImg.setSrc(data.getBgImage().getUrl());
         storeImg.setAlt(data.getName());
-        storeImg.addClassName("card-image");
+        storeImg.addClassName(CARD_IMAGE.getValue());
         imageLayout.add(storeImg);
 
         storeNameH2.setText(data.getName());
-        storeNameH2.addClassName("card-title");
+        storeNameH2.addClassName(CARD_TITLE.getValue());
         storeDescriptionP.setText(data.getAbout());
-        storeDescriptionP.addClassName("card-description");
+        storeDescriptionP.addClassName(CARD_DESCRIPTION.getValue());
         infoLayout.add(storeNameH2, storeDescriptionP);
 
         List<Product> products = data.getProducts();
         for (Product product : products) {
 
             HorizontalLayout productLayout = new HorizontalLayout();
-
-            Image productImage = new Image(product.getImageUrl(), product.getName());
-            productImage.addClassName("card-image-small");
             Label productNameLabel = new Label(product.getName());
-            productNameLabel.addClassName("card-title-small");
+            productNameLabel.addClassName(CARD_TITLE_SMALL.getValue());
             BigDecimalField productPriceField = new BigDecimalField();
             final BigDecimal productPriceValue = product.getPrice();
             productPriceField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
             productPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
             productPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
             productPriceField.setReadOnly(true);
-            productPriceField.addClassName("card-number-small");
+            productPriceField.addClassName(CARD_NUMBER_SMALL.getValue());
             Button addButton = new Button(VaadinIcon.CART.create(), onClick -> {
                 new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
             });
             productLayout.setAlignItems(FlexComponent.Alignment.END);
-            addButton.addClassName("card-button-small");
+            addButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
 
-            productLayout.addAndExpand(productImage, productNameLabel, productPriceField, addButton);
+            productLayout.addAndExpand(productNameLabel, productPriceField, addButton);
             menuLayout.add(productLayout);
         }
 
@@ -89,11 +88,11 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
         detailsLayout.setVisible(false);
         commentsLayout.setVisible(false);
 
-        menuButton.addClassName("card-button");
+        menuButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
         menuButton.addClickListener(onClick -> menuLayout.setVisible(!menuLayout.isVisible()));
-        detailsButton.addClassName("card-button");
+        detailsButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
         detailsButton.addClickListener(onClick -> detailsLayout.setVisible(!detailsLayout.isVisible()));
-        commentsButton.addClassName("card-button");
+        commentsButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
         commentsButton.addClickListener(onClick -> commentsLayout.setVisible(!commentsLayout.isVisible()));
 
         actionsLayout.add(menuButton, detailsButton, commentsButton);

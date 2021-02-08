@@ -1,5 +1,6 @@
 * {
     --max-with-for-desktop: 425px;
+    --max-with-for-search-box: 1000px;
     --fooda-button-background: #FF0066;
     --fooda-button-foreground: #F2F2F2;
     --fooda-button-secondary-background: #003399;
@@ -8,11 +9,12 @@
     --fooda-text-field-foreground: #FFCC00;
     --fooda-text-field-secondary-background: #003399;
     --fooda-text-field-secondary-foreground: #FFCC00;
+    --fooda-font-family: "Source Code Pro";
 }
 
 body, html {
     font-size: 1em;
-    font-family: "Source Code Pro";
+    font-family: var(--fooda-font-family);
     font-weight: bold;
     overflow-x: hidden;
     overflow-y: auto;
@@ -59,6 +61,14 @@ vaadin-app-layout * {
     width: 100vw;
     max-width: var(--max-with-for-desktop);
     height: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-image-small {
+    width: 75px;
+    max-width: 75px;
+    height: auto;
 }
 
 .card-title {
@@ -75,6 +85,16 @@ vaadin-app-layout * {
     border-radius: 5px;
 }
 
+.card-title-small {
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    background-color: #F2F2F2;
+    opacity: 0.75;
+    max-width: var(--max-with-for-desktop);
+    border-radius: 5px;
+}
+
 .card-description {
     font-size: 1em;
     font-weight: bold;
@@ -86,8 +106,21 @@ vaadin-app-layout * {
     text-align: center;
 }
 
+.card-description-small {
+    font-size: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    width: 90vw;
+    max-width: var(--max-with-for-desktop);
+}
+
 .card-number {
     width: 25vw;
+    max-width: 100px;
+}
+
+.card-number-small {
+    width: 25px;
     max-width: 100px;
 }
 
@@ -98,6 +131,13 @@ vaadin-app-layout * {
     color: var(--fooda-button-foreground);
     width: 40vw;
     max-width: 150px;
+}
+
+.card-icon-button {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background: var(--fooda-button-background);
+    color: var(--fooda-button-foreground);
 }
 
 .page {
@@ -112,6 +152,7 @@ vaadin-app-layout * {
     padding: 0;
     width: 100vw;
     border-radius: 10px;
+    max-width: var(--max-with-for-search-box);
 }
 
 @media screen and (min-width: 576px) {
@@ -122,16 +163,10 @@ vaadin-app-layout * {
     }
 
     .card {
-        margin: 10px 20px 5px;
+        margin: 30px 20px 5px;
     }
 
     .card-image {
         margin-top: 0;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-
-    .search-box {
-        width: var(--max-with-for-desktop)
     }
 }
