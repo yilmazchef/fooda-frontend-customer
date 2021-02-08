@@ -91,6 +91,7 @@ vaadin-app-layout * {
     font-size: 1em;
     background-color: #F2F2F2;
     opacity: 0.75;
+    width: 120px;
     max-width: var(--max-with-for-desktop);
     border-radius: 5px;
 }
@@ -110,7 +111,7 @@ vaadin-app-layout * {
     font-size: 1em;
     margin-left: 0;
     margin-right: 0;
-    width: 90vw;
+    width: 40vw;
     max-width: var(--max-with-for-desktop);
 }
 
@@ -120,7 +121,7 @@ vaadin-app-layout * {
 }
 
 .card-number-small {
-    width: 25px;
+    width: 10vw;
     max-width: 100px;
 }
 
@@ -134,8 +135,6 @@ vaadin-app-layout * {
 }
 
 .card-icon-button {
-    margin-top: 20px;
-    margin-bottom: 10px;
     background: var(--fooda-button-background);
     color: var(--fooda-button-foreground);
 }

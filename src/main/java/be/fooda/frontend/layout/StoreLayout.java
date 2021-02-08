@@ -7,22 +7,16 @@ import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.BigDecimalField;
-import com.vaadin.flow.component.textfield.TextFieldVariant;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 import static be.fooda.frontend.layout.CardStyleDefinitions.*;
@@ -62,27 +56,25 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
         infoLayout.add(storeNameH2, storeDescriptionP);
 
         List<Product> products = data.getProducts();
-        for (Product product : products) {
+        Grid<Product> productGrid = new Grid<>(Product.class);
+        productGrid.setItems(products);
+        productGrid.removeAllColumns();
+        productGrid.addColumn(Product::getName).setHeader("Name");
+        productGrid.addColumn(Product::getPrice).setHeader("Price");
 
-            HorizontalLayout productLayout = new HorizontalLayout();
-            Label productNameLabel = new Label(product.getName());
-            productNameLabel.addClassName(CARD_TITLE_SMALL.getValue());
-            BigDecimalField productPriceField = new BigDecimalField();
-            final BigDecimal productPriceValue = product.getPrice();
-            productPriceField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-            productPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
-            productPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
-            productPriceField.setReadOnly(true);
-            productPriceField.addClassName(CARD_NUMBER_SMALL.getValue());
-            Button addButton = new Button(VaadinIcon.CART.create(), onClick -> {
-                new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
+        productGrid.addComponentColumn(product -> {
+            final Button addButton = new Button(VaadinIcon.PLUS.create(), onClick -> {
+                new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER);
             });
-            productLayout.setAlignItems(FlexComponent.Alignment.END);
             addButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
+            return addButton;
+        }).setHeader("Add");
 
-            productLayout.addAndExpand(productNameLabel, productPriceField, addButton);
-            menuLayout.add(productLayout);
-        }
+        productGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        productGrid.setVerticalScrollingEnabled(true);
+        productGrid.setHeight("100px");
+        productGrid.setMaxHeight("250px");
+        menuLayout.add(productGrid);
 
         menuLayout.setVisible(false);
         detailsLayout.setVisible(false);
