@@ -46,7 +46,7 @@ public class MainView extends AppLayout {
         logoForDrawer.setWidth("32px");
         logoForDrawer.getStyle().set("float", "right");
 
-        addToNavbar(new DrawerToggle(), logoForDrawer);
+        addToNavbar(true, new DrawerToggle(), logoForDrawer);
 
         Tabs tabs = new Tabs(
                 new Tab(logoForTabs),
