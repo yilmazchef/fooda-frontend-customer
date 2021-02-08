@@ -2,16 +2,13 @@ package be.fooda.frontend.layout;
 
 import be.fooda.frontend.model.store.Product;
 import be.fooda.frontend.model.store.Store;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasComponents;
-import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -61,18 +58,21 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
 //        START -> MENU LAYOUT COMPONENTS
 
         List<Product> products = data.getProducts();
-
-
+        menuGrid.setItems(products);
         menuGrid.addColumn(Product::getName).setHeader("Name");
         menuGrid.addColumn(Product::getPrice).setHeader("Price");
-        menuGrid.addColumn(product -> {
-            Button add = new Button(VaadinIcon.CART.create());
-            add.addClickListener(onClick -> {
-                new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
-            });
-            return add;
-        }).setHeader("Company");
-        menuGrid.setItems(products);
+        menuGrid.addItemDoubleClickListener(onDoubleClick -> {
+            Dialog addDialog = new Dialog();
+            addDialog.add(
+                    new Button("Add to Basket", onClick -> {
+                        new Notification(onDoubleClick.getItem().getName() + " is added", 1000, Notification.Position.BOTTOM_CENTER);
+                    }),
+                    new Button("Cancel", e -> addDialog.close())
+            );
+            addDialog.setModal(false);
+            addDialog.setDraggable(true);
+            addDialog.setResizable(true);
+        });
 
         menuLayout.add(menuGrid);
         menuLayout.setVisible(false);
