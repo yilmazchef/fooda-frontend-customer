@@ -59,12 +59,10 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
     public ProductLayout(Product data) {
 
-        addClassName("product");
-
 //        START -> PRODUCT IMAGE LAYOUT COMPONENTS
         productImg.setSrc(data.getDefaultImage().getUrl());
         productImg.setAlt(data.getName());
-        productImg.addClassName("product-image");
+        productImg.addClassName("image");
         imageLayout.add(productImg);
 
 //        END -> PRODUCT IMAGE LAYOUT COMPONENTS
@@ -72,9 +70,13 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
 //        START -> PRODUCT INFO LAYOUT COMPONENTS
         productNameH2.setText(data.getName());
-        productNameH2.addClassName("product-name");
-        productDescriptionP.setText(data.getDescription());
-        productDescriptionP.addClassName("product-description");
+        productNameH2.addClassName("name");
+        final String descriptionValue = data.getDescription();
+        productDescriptionP.setText(descriptionValue.length() > 50 ? descriptionValue.substring(0, 49) + "..." : descriptionValue);
+        productDescriptionP.addClassName("description");
+        productDescriptionP.addClickListener(onClick -> {
+            productDescriptionP.setText(data.getDescription());
+        });
         infoLayout.add(productNameH2, productDescriptionP);
 
 //        END -> PRODUCT INFO LAYOUT COMPONENTS
@@ -84,7 +86,7 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         quantityField.setValue(1d);
         quantityField.setHasControls(true);
         quantityField.setMin(1);
-        quantityField.addClassName("product-quantity");
+        quantityField.addClassName("quantity");
         final Integer limitPerOrderValue = data.getLimitPerOrder();
         quantityField.setMax(limitPerOrderValue != null && limitPerOrderValue > 0 ? limitPerOrderValue : Integer.MAX_VALUE);
 
@@ -100,18 +102,18 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         productPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         productPriceField.setReadOnly(true);
-        productPriceField.addClassName("product-price");
+        productPriceField.addClassName("price");
         final BigDecimal productTaxValue = productPriceValue.multiply(BigDecimal.valueOf(defaultTax.getPercentage()));
         productTaxField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         productTaxField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productTaxField.setValue(productTaxValue.setScale(2, RoundingMode.HALF_EVEN));
         productTaxField.setReadOnly(true);
-        productTaxField.addClassName("product-tax");
+        productTaxField.addClassName("tax");
         totalPriceField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         totalPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         totalPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         totalPriceField.setReadOnly(true);
-        totalPriceField.addClassName("product-total");
+        totalPriceField.addClassName("total");
 
         priceLayout.add(productPriceField, productTaxField, totalPriceField);
 
@@ -124,13 +126,13 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         ingredientsCheckBoxGroup.setItems(ingredients);
         ingredientsCheckBoxGroup.setValue(new HashSet<>(ingredients));
         ingredientsCheckBoxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-        ingredientsCheckBoxGroup.addClassName("product-ingredients");
+        ingredientsCheckBoxGroup.addClassName("ingredients");
 
         extraIngredientsCheckBoxGroup.setLabel("Extras");
         List<Ingredient> extraIngredients = data.getIngredients();
         extraIngredientsCheckBoxGroup.setItems(extraIngredients);
         extraIngredientsCheckBoxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-        extraIngredientsCheckBoxGroup.addClassName("product-extras");
+        extraIngredientsCheckBoxGroup.addClassName("extras");
 
         Checkbox selectAllExtraIngredients = new Checkbox("Select all");
         extraIngredientsCheckBoxGroup.addValueChangeListener(onCheckChange -> {
@@ -173,12 +175,14 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         basketButton.addClickListener(onClick -> {
             new Notification(data.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
         });
-        basketButton.addClassName("product-basket-button");
+        basketButton.addClassName("basket-button");
 
         detailsButton.addClickListener(onClick -> {
-            detailsLayout.setVisible(true);
+            final boolean layoutVisible = detailsLayout.isVisible();
+            detailsButton.setText(layoutVisible ? "Hide Details" : "View Details");
+            detailsLayout.setVisible(!layoutVisible);
         });
-        detailsButton.addClassName("product-details-button");
+        detailsButton.addClassName("details-button");
 
 //        START -> ACTIONS  LAYOUT COMPONENTS
 

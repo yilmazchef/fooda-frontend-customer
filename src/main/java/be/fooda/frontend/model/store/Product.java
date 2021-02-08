@@ -158,4 +158,9 @@ public class Product implements Serializable {
     public int hashCode() {
         return Objects.hash(id, eProductId);
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
