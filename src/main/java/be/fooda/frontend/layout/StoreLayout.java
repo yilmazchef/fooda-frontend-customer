@@ -72,6 +72,7 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
             addDialog.setModal(false);
             addDialog.setDraggable(true);
             addDialog.setResizable(true);
+            addDialog.open();
         });
 
         menuLayout.add(menuGrid);
