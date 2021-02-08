@@ -12,7 +12,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
-import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -49,14 +48,13 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
     private final VerticalLayout quantityLayout = new VerticalLayout();
     private final NumberField quantityField = new NumberField("Quantity");
 
-    private final Details detailsSection = new Details();
-
     private final HorizontalLayout detailsLayout = new HorizontalLayout();
     private final CheckboxGroup<Ingredient> ingredientsCheckBoxGroup = new CheckboxGroup<>();
     private final CheckboxGroup<Ingredient> extraIngredientsCheckBoxGroup = new CheckboxGroup<>();
 
     private final HorizontalLayout actionsLayout = new HorizontalLayout();
     private final Button basketButton = new Button("Add to Basket");
+    private final Button detailsButton = new Button("View Details");
 
 
     public ProductLayout(Product data) {
@@ -64,10 +62,9 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         addClassName("product");
 
 //        START -> PRODUCT IMAGE LAYOUT COMPONENTS
-        productImg.setWidth("100%");
-        productImg.setHeight("auto");
         productImg.setSrc(data.getDefaultImage().getUrl());
         productImg.setAlt(data.getName());
+        productImg.addClassName("product-image");
         imageLayout.add(productImg);
 
 //        END -> PRODUCT IMAGE LAYOUT COMPONENTS
@@ -75,21 +72,9 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
 //        START -> PRODUCT INFO LAYOUT COMPONENTS
         productNameH2.setText(data.getName());
-        productNameH2.getStyle()
-                .set("background", "#161616")
-                .set("color", "#F2F2F2")
-                .set("text-align", "center")
-                .set("font-size", "2em")
-                .set("opacity", "0.6")
-                .set("width", "90vw")
-                .set("margin-top", "-20px");
+        productNameH2.addClassName("product-name");
         productDescriptionP.setText(data.getDescription());
-        productDescriptionP.getStyle()
-                .set("width", "90vw")
-                .set("margin-top", "-20px")
-                .set("padding-left", "10px")
-                .set("padding-right", "10px")
-                .set("font-size", "1em");
+        productDescriptionP.addClassName("product-description");
         infoLayout.add(productNameH2, productDescriptionP);
 
 //        END -> PRODUCT INFO LAYOUT COMPONENTS
@@ -99,14 +84,11 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         quantityField.setValue(1d);
         quantityField.setHasControls(true);
         quantityField.setMin(1);
-        quantityField.setWidth("20vw");
-        quantityField.getStyle()
-                .set("background", "transparent");
+        quantityField.addClassName("product-quantity");
         final Integer limitPerOrderValue = data.getLimitPerOrder();
         quantityField.setMax(limitPerOrderValue != null && limitPerOrderValue > 0 ? limitPerOrderValue : Integer.MAX_VALUE);
 
 //        PARTIAL_END -> PRODUCT QUANTITY LAYOUT COMPONENTS
-
 
 //        START -> PRODUCT PRICE LAYOUT COMPONENTS
 
@@ -118,21 +100,18 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         productPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         productPriceField.setReadOnly(true);
-        productPriceField.setWidth("20vw");
-        productPriceField.getStyle().set("background", "transparent");
+        productPriceField.addClassName("product-price");
         final BigDecimal productTaxValue = productPriceValue.multiply(BigDecimal.valueOf(defaultTax.getPercentage()));
         productTaxField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         productTaxField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         productTaxField.setValue(productTaxValue.setScale(2, RoundingMode.HALF_EVEN));
         productTaxField.setReadOnly(true);
-        productTaxField.setWidth("20vw");
-        productTaxField.getStyle().set("background", "transparent");
+        productTaxField.addClassName("product-tax");
         totalPriceField.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
         totalPriceField.setPrefixComponent(new Icon(VaadinIcon.EURO));
         totalPriceField.setValue(productPriceValue.setScale(2, RoundingMode.HALF_EVEN));
         totalPriceField.setReadOnly(true);
-        totalPriceField.setWidth("30vw");
-        totalPriceField.getStyle().set("background", "transparent");
+        totalPriceField.addClassName("product-total");
 
         priceLayout.add(productPriceField, productTaxField, totalPriceField);
 
@@ -141,17 +120,17 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 //        START -> DETAILS LAYOUT COMPONENTS
 
         ingredientsCheckBoxGroup.setLabel("Ingredients");
-        ingredientsCheckBoxGroup.setWidth("40vw");
         List<Ingredient> ingredients = data.getIngredients();
         ingredientsCheckBoxGroup.setItems(ingredients);
         ingredientsCheckBoxGroup.setValue(new HashSet<>(ingredients));
         ingredientsCheckBoxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+        ingredientsCheckBoxGroup.addClassName("product-ingredients");
 
         extraIngredientsCheckBoxGroup.setLabel("Extras");
-        extraIngredientsCheckBoxGroup.setWidth("40vw");
         List<Ingredient> extraIngredients = data.getIngredients();
         extraIngredientsCheckBoxGroup.setItems(extraIngredients);
         extraIngredientsCheckBoxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+        extraIngredientsCheckBoxGroup.addClassName("product-extras");
 
         Checkbox selectAllExtraIngredients = new Checkbox("Select all");
         extraIngredientsCheckBoxGroup.addValueChangeListener(onCheckChange -> {
@@ -166,8 +145,7 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
         });
 
         detailsLayout.add(ingredientsCheckBoxGroup, extraIngredientsCheckBoxGroup);
-        detailsSection.setSummaryText("Details");
-        detailsSection.addContent(detailsLayout);
+        detailsLayout.setVisible(false);
 
 //        END -> DETAILS LAYOUT COMPONENTS
 
@@ -192,21 +170,22 @@ public class ProductLayout extends Component implements HasComponents, HasStyle,
 
 //        END -> PRODUCT QUANTITY LAYOUT COMPONENTS
 
+        basketButton.addClickListener(onClick -> {
+            new Notification(data.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
+        });
+        basketButton.addClassName("product-basket-button");
+
+        detailsButton.addClickListener(onClick -> {
+            detailsLayout.setVisible(true);
+        });
+        detailsButton.addClassName("product-details-button");
 
 //        START -> ACTIONS  LAYOUT COMPONENTS
 
-        basketButton.setWidth("50vw");
-        basketButton.getStyle()
-                .set("background", "transparent")
-                .set("vertical-align", "center")
-                .set("margin-top", "10px")
-                .set("color", "black")
-                .set("border", "2px solid #161616");
-        basketButton.addClickListener(onClick -> new Notification(data.getName() + " is added.", 2000, Notification.Position.BOTTOM_CENTER).open());
-        actionsLayout.add(basketButton);
+        actionsLayout.add(detailsButton, basketButton);
 
 //        END -> ACTIONS LAYOUT COMPONENTS
 
-        add(imageLayout, infoLayout, quantityLayout, priceLayout, detailsSection, actionsLayout);
+        add(imageLayout, infoLayout, quantityLayout, priceLayout, detailsLayout, actionsLayout);
     }
 }
