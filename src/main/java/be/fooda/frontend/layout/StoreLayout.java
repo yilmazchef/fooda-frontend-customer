@@ -73,7 +73,8 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
         productGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         productGrid.setVerticalScrollingEnabled(true);
         productGrid.setHeight("100px");
-        productGrid.setMaxHeight("250px");
+        productGrid.setMaxHeight("500px");
+        productGrid.getStyle().set("margin-bottom", "15px");
         menuLayout.add(productGrid);
 
         menuLayout.setVisible(false);
