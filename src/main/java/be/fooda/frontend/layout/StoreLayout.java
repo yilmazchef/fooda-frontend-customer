@@ -64,7 +64,7 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
 
         productGrid.addComponentColumn(product -> {
             final Button addButton = new Button(VaadinIcon.PLUS.create(), onClick -> {
-                new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER);
+                new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
             });
             addButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
             return addButton;
