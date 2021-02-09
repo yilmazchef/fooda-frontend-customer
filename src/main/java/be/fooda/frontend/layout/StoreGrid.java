@@ -38,21 +38,21 @@ public class StoreGrid extends Grid<Store> {
 
         addComponentColumn(store -> {
             menuButton.addClickListener(onClick -> {
-                UI.getCurrent().navigate("/restaurant/menu/" + store.getId());
+                UI.getCurrent().navigate("restaurant/menu/" + store.getId());
             });
             return menuButton;
         }).setHeader("Menu");
 
         addComponentColumn(store -> {
             detailsButton.addClickListener(onClick -> {
-                UI.getCurrent().navigate("/restaurant/details/" + store.getId());
+                UI.getCurrent().navigate("restaurant/details/" + store.getId());
             });
             return detailsButton;
         }).setHeader("Menu");
 
         addComponentColumn(store -> {
             commentsButton.addClickListener(onClick -> {
-                UI.getCurrent().navigate("/restaurant/comments/" + store.getId());
+                UI.getCurrent().navigate("restaurant/comments/" + store.getId());
             });
             return commentsButton;
         }).setHeader("Menu");
