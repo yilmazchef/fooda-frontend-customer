@@ -19,6 +19,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.WrappedSession;
 import org.springframework.http.ResponseEntity;
 
 import java.util.stream.Collectors;
@@ -30,9 +31,9 @@ import static be.fooda.frontend.layout.CardStyleDefinitions.CARD_BUTTON_WITH_ICO
 @PageTitle("Fooda | Home")
 public class HomeView extends VerticalLayout {
 
-    private final String eUserId = VaadinSession.getCurrent().getSession().getAttribute("eUserId").toString();
-    private final String username = VaadinSession.getCurrent().getSession().getAttribute("username").toString();
-    private final String session = VaadinSession.getCurrent().getSession().getId();
+    private final String eUserId;
+    private final String username;
+    private final String session;
 
     private final ProductService productService;
     private final StoreService storeService;
@@ -49,26 +50,35 @@ public class HomeView extends VerticalLayout {
         this.productService = productService;
         this.storeService = storeService;
         this.basketService = basketService;
+        WrappedSession vaadinSession = VaadinSession.getCurrent().getSession();
+        this.eUserId = vaadinSession.getAttribute("eUserId").toString();
+        this.username = vaadinSession.getAttribute("username").toString();
+        this.session = vaadinSession.getId();
         addClassName("page");
 
         searchLayout.addClassName("search-box");
         searchButton.addClickShortcut(Key.ENTER, KeyModifier.ALT);
         searchLayout.add(searchField, searchButton);
 
-        final ResponseEntity storeServiceResponse = storeService.getAllStores(1, 5);
-        if ((storeServiceResponse.getStatusCode().is2xxSuccessful() || storeServiceResponse.getStatusCode().is3xxRedirection()) && storeServiceResponse.hasBody()) {
-            final Store[] data = (Store[]) storeServiceResponse.getBody();
-            initStoreGrid(data);
-            add(storeGrid);
-        }
+        if (eUserId == null || username == null || session == null) {
+            UI.getCurrent().navigate("user/login");
 
-        final ResponseEntity productServiceResponse = productService.getAll(1, 10);
-        if ((productServiceResponse.getStatusCode().is2xxSuccessful() || productServiceResponse.getStatusCode().is3xxRedirection()) && productServiceResponse.hasBody()) {
-            final Product[] data = (Product[]) productServiceResponse.getBody();
-            initProductGrid(data);
-            add(productGrid);
-        }
+        } else {
 
+            final ResponseEntity storeServiceResponse = storeService.getAllStores(1, 5);
+            if ((storeServiceResponse.getStatusCode().is2xxSuccessful() || storeServiceResponse.getStatusCode().is3xxRedirection()) && storeServiceResponse.hasBody()) {
+                final Store[] data = (Store[]) storeServiceResponse.getBody();
+                initStoreGrid(data);
+                add(storeGrid);
+            }
+
+            final ResponseEntity productServiceResponse = productService.getAll(1, 10);
+            if ((productServiceResponse.getStatusCode().is2xxSuccessful() || productServiceResponse.getStatusCode().is3xxRedirection()) && productServiceResponse.hasBody()) {
+                final Product[] data = (Product[]) productServiceResponse.getBody();
+                initProductGrid(data);
+                add(productGrid);
+            }
+        }
     }
 
     private void initProductGrid(Product[] data) {

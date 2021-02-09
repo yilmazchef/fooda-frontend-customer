@@ -1,6 +1,7 @@
 package be.fooda.frontend.view;
 
 import be.fooda.frontend.layout.PhoneNumberField;
+import be.fooda.frontend.model.user.User;
 import be.fooda.frontend.service.UserService;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
@@ -12,10 +13,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @Route(value = "user/login", layout = MainView.class)
 @PageTitle("Fooda | User Login")
@@ -29,14 +32,13 @@ public class LoginView extends VerticalLayout {
     private final ComboBox<String> loginOptionsSelection = new ComboBox<>("Login Options", Arrays.asList(LOGIN_WITH_PASSWORD, LOGIN_WITH_SMS_CODE));
 
     private final VerticalLayout loginWithSmsLayout = new VerticalLayout();
-    private final VerticalLayout loginWithPasswordLayout = new VerticalLayout();
-
     private final PhoneNumberField loginWithSmsPhoneField = new PhoneNumberField("Phone");
-    //    private final TextField loginWithSmsPhoneField = new TextField("Phone");
     private final TextField loginWithSmsCodeField = new TextField("Validation Code");
+
+    private final VerticalLayout loginWithPasswordLayout = new VerticalLayout();
     private final PhoneNumberField loginWithPwdPhoneField = new PhoneNumberField("Phone");
-    //    private final TextField loginWithPwdPhoneField = new TextField("Phone");
     private final TextField loginWithPwdPasswordField = new TextField("Password");
+
     private final UserService userService;
     private final LogDisplay logDisplay = new LogDisplay();
 
@@ -83,10 +85,15 @@ public class LoginView extends VerticalLayout {
         Button loginWithPwdButton = new Button(LOGIN_WITH_PASSWORD);
         loginWithPwdButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         loginWithPwdButton.addClickListener(onClick -> {
-            ResponseEntity<String> response = userService.loginWithPassword(loginWithPwdPhoneField.getValue(), loginWithPwdPasswordField.getValue());
+            final String username = loginWithPwdPhoneField.getValue();
+            ResponseEntity<String> response = userService.loginWithPassword(username, loginWithPwdPasswordField.getValue());
             logDisplay.log(response.getBody());
             if (response.getStatusCode().equals(HttpStatus.ACCEPTED)) {
-                UI.getCurrent().getSession().setAttribute("login", loginWithPwdPhoneField.getValue());
+                final ResponseEntity authenticatedUserResponse = userService.getUserByUsername(username);
+                if (authenticatedUserResponse.getStatusCode().is2xxSuccessful() || authenticatedUserResponse.getStatusCode().is3xxRedirection()) {
+                    VaadinSession.getCurrent().getSession().setAttribute("eUserId", ((User) Objects.requireNonNull(authenticatedUserResponse.getBody())).getId().toString());
+                    VaadinSession.getCurrent().getSession().setAttribute("username", username);
+                }
                 UI.getCurrent().navigate(REDIRECT_ON_SUCCESS_ROUTE);
             }
         });
