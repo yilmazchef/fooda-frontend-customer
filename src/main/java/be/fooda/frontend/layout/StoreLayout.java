@@ -1,18 +1,17 @@
 package be.fooda.frontend.layout;
 
-import be.fooda.frontend.model.store.Product;
+import be.fooda.frontend.mapper.ProductMapper;
+import be.fooda.frontend.model.product.Product;
 import be.fooda.frontend.model.store.Store;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -40,6 +39,8 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
     private final Button detailsButton = new Button(VaadinIcon.CHART_GRID.create());
     private final Button commentsButton = new Button(VaadinIcon.COMMENTS_O.create());
 
+    private final ProductMapper mapper = new ProductMapper();
+
     public StoreLayout(Store data) {
 
         addClassName(CARD.getValue());
@@ -55,22 +56,14 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
         storeDescriptionP.addClassName(CARD_DESCRIPTION.getValue());
         infoLayout.add(storeNameH2, storeDescriptionP);
 
-        List<Product> products = data.getProducts();
-        Grid<Product> productGrid = new Grid<>(Product.class);
-        productGrid.setItems(products);
-        productGrid.removeAllColumns();
-        productGrid.addColumn(Product::getName).setHeader("Name");
-        productGrid.addColumn(Product::getPrice).setHeader("Price");
-
-        productGrid.addComponentColumn(product -> {
-            final Button addButton = new Button(VaadinIcon.PLUS.create(), onClick -> {
-                new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
-            });
-            addButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
-            return addButton;
-        }).setHeader("Add");
-
-        productGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        Product[] products = new Product[data.getProducts().size()];
+        List<be.fooda.frontend.model.store.Product> dataProducts = data.getProducts();
+        for (int i = 0; i < dataProducts.size(); i++) {
+            be.fooda.frontend.model.store.Product product = dataProducts.get(i);
+            Product toProduct = mapper.toProduct(product);
+            products[i] = toProduct;
+        }
+        ProductGrid productGrid = new ProductGrid(products);
         productGrid.setVerticalScrollingEnabled(true);
         productGrid.setHeight("100px");
         productGrid.setMaxHeight("500px");
