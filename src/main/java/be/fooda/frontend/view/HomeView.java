@@ -1,10 +1,12 @@
 package be.fooda.frontend.view;
 
+import be.fooda.frontend.mapper.ProductMapper;
 import be.fooda.frontend.model.product.Product;
 import be.fooda.frontend.model.store.Store;
 import be.fooda.frontend.service.BasketService;
 import be.fooda.frontend.service.ProductService;
 import be.fooda.frontend.service.StoreService;
+import be.fooda.frontend.service.UserService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.UI;
@@ -19,10 +21,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.server.WrappedSession;
 import org.springframework.http.ResponseEntity;
-
-import java.util.stream.Collectors;
 
 import static be.fooda.frontend.layout.CardStyleDefinitions.CARD_BUTTON_WITH_ICON;
 
@@ -31,36 +30,35 @@ import static be.fooda.frontend.layout.CardStyleDefinitions.CARD_BUTTON_WITH_ICO
 @PageTitle("Fooda | Home")
 public class HomeView extends VerticalLayout {
 
-    private final String eUserId;
-    private final String username;
-    private final String session;
+    private final be.fooda.frontend.model.basket.User basketUser;
 
     private final ProductService productService;
     private final StoreService storeService;
     private final BasketService basketService;
 
-    private final HorizontalLayout searchLayout = new HorizontalLayout();
-    private final TextField searchField = new TextField();
-    private final Button searchButton = new Button(VaadinIcon.SEARCH.create());
+    private final ProductMapper productMapper;
 
     private final Grid<Product> productGrid = new Grid<>(Product.class);
     private final Grid<Store> storeGrid = new Grid<>(Store.class);
 
-    public HomeView(ProductService productService, StoreService storeService, BasketService basketService) {
+    public HomeView(ProductService productService, StoreService storeService, BasketService basketService, UserService userService, ProductMapper productMapper) {
         this.productService = productService;
         this.storeService = storeService;
         this.basketService = basketService;
-        WrappedSession vaadinSession = VaadinSession.getCurrent().getSession();
-        this.eUserId = vaadinSession.getAttribute("eUserId").toString();
-        this.username = vaadinSession.getAttribute("username").toString();
-        this.session = vaadinSession.getId();
+        this.productMapper = productMapper;
+
+        VaadinSession session = UI.getCurrent().getSession();
+        this.basketUser = session.getAttribute(be.fooda.frontend.model.basket.User.class);
         addClassName("page");
 
+        HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addClassName("search-box");
+        Button searchButton = new Button(VaadinIcon.SEARCH.create());
         searchButton.addClickShortcut(Key.ENTER, KeyModifier.ALT);
+        TextField searchField = new TextField();
         searchLayout.add(searchField, searchButton);
 
-        if (eUserId == null || username == null || session == null) {
+        if (basketUser == null) {
             UI.getCurrent().navigate("user/login");
 
         } else {
@@ -90,7 +88,7 @@ public class HomeView extends VerticalLayout {
 
         productGrid.addComponentColumn(product -> {
             final Button addButton = new Button(VaadinIcon.PLUS.create(), onClick -> {
-                final ResponseEntity addToBasketResponse = basketService.addProduct(mapToBasketProduct(product));
+                final ResponseEntity addToBasketResponse = basketService.addProduct(productMapper.map(product, basketUser));
                 if (addToBasketResponse.getStatusCode().is2xxSuccessful() || addToBasketResponse.getStatusCode().is3xxRedirection())
                     new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
             });
@@ -101,22 +99,6 @@ public class HomeView extends VerticalLayout {
         productGrid.getColumns().forEach(col -> col.setAutoWidth(true));
         productGrid.setVerticalScrollingEnabled(true);
         productGrid.getStyle().set("margin-bottom", "15px");
-    }
-
-    private be.fooda.frontend.model.basket.Product mapToBasketProduct(Product product) {
-        return new be.fooda.frontend.model.basket.Product(
-                null,
-                product.getId().toString(),
-                new be.fooda.frontend.model.basket.User(null, eUserId, username, session),
-                new be.fooda.frontend.model.basket.Store(null, product.getStore().geteStoreId().toString(), product.getStore().getName()),
-                product.getName(),
-                product.getDefaultImage().getUrl(),
-                product.getPrices().get(0).getAmount(),
-                product.getDescription(),
-                1,
-                product.getIngredients().stream().map(ingredient ->
-                        new be.fooda.frontend.model.basket.Ingredient(null, ingredient.getId().toString(), ingredient.getPrice())).collect(Collectors.toSet())
-        );
     }
 
     private void initStoreGrid(Store[] data) {

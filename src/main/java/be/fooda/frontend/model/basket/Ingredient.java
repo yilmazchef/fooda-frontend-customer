@@ -3,10 +3,11 @@ package be.fooda.frontend.model.basket;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Ingredient {
+public class Ingredient implements Serializable {
 
     private String id;
 

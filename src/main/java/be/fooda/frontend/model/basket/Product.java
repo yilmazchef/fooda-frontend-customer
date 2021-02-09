@@ -2,12 +2,13 @@ package be.fooda.frontend.model.basket;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Product {
+public class Product implements Serializable {
 
     private String id;
 

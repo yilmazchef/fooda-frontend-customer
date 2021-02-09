@@ -64,7 +64,7 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
         List<be.fooda.frontend.model.store.Product> dataProducts = data.getProducts();
         for (int i = 0; i < dataProducts.size(); i++) {
             be.fooda.frontend.model.store.Product product = dataProducts.get(i);
-            Product toProduct = mapper.toProduct(product);
+            Product toProduct = mapper.map(product);
             products[i] = toProduct;
         }
 

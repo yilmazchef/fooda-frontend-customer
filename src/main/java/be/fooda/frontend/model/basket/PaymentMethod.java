@@ -1,6 +1,8 @@
 package be.fooda.frontend.model.basket;
 
-public enum PaymentMethod {
+import java.io.Serializable;
+
+public enum PaymentMethod implements Serializable {
 
     ON_DELIVERY_CASH("Cash on delivery"),
     ON_DELIVERY_CREDIT_CARD("Credit card on delivery"),

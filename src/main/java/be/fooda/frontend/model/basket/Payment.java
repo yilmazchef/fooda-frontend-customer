@@ -2,10 +2,11 @@ package be.fooda.frontend.model.basket;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Payment {
+public class Payment implements Serializable {
 
     private String id;
 

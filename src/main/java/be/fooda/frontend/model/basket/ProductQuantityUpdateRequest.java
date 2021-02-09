@@ -3,9 +3,10 @@ package be.fooda.frontend.model.basket;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ProductQuantityUpdateRequest {
+public class ProductQuantityUpdateRequest implements Serializable {
 
     private String eProductId;
     private String eUserId;

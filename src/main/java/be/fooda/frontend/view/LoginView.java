@@ -1,7 +1,7 @@
 package be.fooda.frontend.view;
 
 import be.fooda.frontend.layout.PhoneNumberField;
-import be.fooda.frontend.model.user.User;
+import be.fooda.frontend.mapper.UserMapper;
 import be.fooda.frontend.service.UserService;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
@@ -40,10 +40,13 @@ public class LoginView extends VerticalLayout {
     private final TextField loginWithPwdPasswordField = new TextField("Password");
 
     private final UserService userService;
+    private final UserMapper userMapper;
+
     private final LogDisplay logDisplay = new LogDisplay();
 
-    public LoginView(UserService userService) {
+    public LoginView(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
         addClassName("page");
 
         loginWithSmsLayout.setVisible(false);
@@ -68,10 +71,16 @@ public class LoginView extends VerticalLayout {
         Button loginWithSmsButton = new Button(LOGIN_WITH_SMS_CODE);
         loginWithSmsButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         loginWithSmsButton.addClickListener(onClick -> {
-            ResponseEntity<String> response = userService.validateSmsCode(loginWithSmsPhoneField.getValue(), loginWithSmsCodeField.getValue());
+            final String username = loginWithSmsPhoneField.getValue();
+            ResponseEntity<String> response = userService.validateSmsCode(username, loginWithSmsCodeField.getValue());
             logDisplay.log(response.getBody());
             if (response.getStatusCode().equals(HttpStatus.ACCEPTED)) {
-                UI.getCurrent().getSession().setAttribute("login", loginWithSmsPhoneField.getValue());
+                final ResponseEntity getUserByUsernameResponse = userService.getUserByUsername(username);
+                if ((getUserByUsernameResponse.getStatusCode().is2xxSuccessful() || getUserByUsernameResponse.getStatusCode().is3xxRedirection())
+                        && getUserByUsernameResponse.hasBody()) {
+                    final be.fooda.frontend.model.user.User user = (be.fooda.frontend.model.user.User) getUserByUsernameResponse.getBody();
+                    VaadinSession.getCurrent().setAttribute(be.fooda.frontend.model.basket.User.class, userMapper.map(Objects.requireNonNull(user), VaadinSession.getCurrent().getSession().getId()));
+                }
                 UI.getCurrent().navigate(REDIRECT_ON_SUCCESS_ROUTE);
             }
         });
@@ -86,13 +95,15 @@ public class LoginView extends VerticalLayout {
         loginWithPwdButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         loginWithPwdButton.addClickListener(onClick -> {
             final String username = loginWithPwdPhoneField.getValue();
-            ResponseEntity<String> response = userService.loginWithPassword(username, loginWithPwdPasswordField.getValue());
-            logDisplay.log(response.getBody());
-            if (response.getStatusCode().equals(HttpStatus.ACCEPTED)) {
-                final ResponseEntity authenticatedUserResponse = userService.getUserByUsername(username);
-                if (authenticatedUserResponse.getStatusCode().is2xxSuccessful() || authenticatedUserResponse.getStatusCode().is3xxRedirection()) {
-                    VaadinSession.getCurrent().getSession().setAttribute("eUserId", ((User) Objects.requireNonNull(authenticatedUserResponse.getBody())).getId().toString());
-                    VaadinSession.getCurrent().getSession().setAttribute("username", username);
+            ResponseEntity<String> loginWithPasswordResponse = userService.loginWithPassword(username, loginWithPwdPasswordField.getValue());
+            logDisplay.log(loginWithPasswordResponse.getBody());
+
+            if (loginWithPasswordResponse.getStatusCode().equals(HttpStatus.ACCEPTED)) {
+                final ResponseEntity getUserByUsernameResponse = userService.getUserByUsername(username);
+                if ((getUserByUsernameResponse.getStatusCode().is2xxSuccessful() || getUserByUsernameResponse.getStatusCode().is3xxRedirection())
+                        && getUserByUsernameResponse.hasBody()) {
+                    final be.fooda.frontend.model.user.User user = (be.fooda.frontend.model.user.User) getUserByUsernameResponse.getBody();
+                    VaadinSession.getCurrent().setAttribute(be.fooda.frontend.model.basket.User.class, userMapper.map(Objects.requireNonNull(user), VaadinSession.getCurrent().getSession().getId()));
                 }
                 UI.getCurrent().navigate(REDIRECT_ON_SUCCESS_ROUTE);
             }

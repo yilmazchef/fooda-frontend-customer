@@ -2,9 +2,10 @@ package be.fooda.frontend.model.basket;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Store {
+public class Store implements Serializable {
 
     private String id;
 

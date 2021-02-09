@@ -3,10 +3,11 @@ package be.fooda.frontend.model.basket;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class Order {
+public class Order implements Serializable {
 
     private String id;
 
