@@ -47,6 +47,9 @@ public class StoreService {
     private static final String SEARCH_BY_RANGE = "search_by_range";
     private static final String GET_PRODUCTS_BY_STORE_ID = "get_all_products_by_store_id";
 
+    //    NON-EXISTENT APIs .. MUST BE ADDED TO STORE API ..
+    private static final String GET_BY_ID = "get_by_id";
+
     private HttpHeaders headers() {
         HttpHeaders authHeaders = new HttpHeaders();
         authHeaders.add("Authorization", "true");
@@ -58,6 +61,13 @@ public class StoreService {
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("pageNo", pageNo);
         queryParams.put("pageSize", pageSize);
+        return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers()), Store[].class, queryParams);
+    }
+
+    public ResponseEntity getAllProductsByStoreId(UUID id) {
+        final String completeUrl = baseUrl + GET_PRODUCTS_BY_STORE_ID + "?id={id}";
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("id", id);
         return restTemplate.exchange(completeUrl, HttpMethod.GET, new HttpEntity<>(headers()), Store[].class, queryParams);
     }
 

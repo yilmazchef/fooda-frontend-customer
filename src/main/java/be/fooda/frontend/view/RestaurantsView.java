@@ -44,10 +44,6 @@ public class RestaurantsView extends VerticalLayout {
         addClassName("page");
         searchLayout.addClassName("search-box");
 
-        addCriteriaButton.setWidth("20px");
-        addCriteriaButton.getStyle()
-                .set("font-size", "medium")
-                .set("background", "transparent");
         addCriteriaButton.addClickListener(onAddCriteria -> {
             if (!searchField.getValue().isEmpty()) {
                 final String hashTagValue = " #" + searchField.getValue();
@@ -59,27 +55,13 @@ public class RestaurantsView extends VerticalLayout {
 
         criteriaLayout.add(criteriaSetP);
 
-        clearCriteriaButton.setWidth("20px");
-        clearCriteriaButton.getStyle()
-                .set("font-size", "medium")
-                .set("background", "transparent");
         clearCriteriaButton.addClickListener(onClearClick -> {
             criteriaSetP.setText("");
         });
 
-        searchField.setWidth("40vw");
-        searchField.setMaxWidth("55vw");
-        searchField.getStyle()
-                .set("font-size", "medium")
-                .set("background", "transparent");
         searchField.focus();
         searchField.setClearButtonVisible(true);
 
-        searchButton.setWidth("15vw");
-        searchButton.setMaxWidth("20vw");
-        searchButton.getStyle()
-                .set("font-size", "medium")
-                .set("background", "transparent");
         searchButton.setIconAfterText(true);
         searchButton.addClickListener(onSearchClick -> {
 
