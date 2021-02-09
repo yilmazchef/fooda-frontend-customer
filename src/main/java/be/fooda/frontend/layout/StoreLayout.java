@@ -8,10 +8,12 @@ import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -31,6 +33,8 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
     private final Paragraph storeDescriptionP = new Paragraph();
 
     private final VerticalLayout menuLayout = new VerticalLayout();
+    private final Grid<Product> productGrid = new Grid<>(Product.class);
+
     private final VerticalLayout detailsLayout = new VerticalLayout();
     private final VerticalLayout commentsLayout = new VerticalLayout();
 
@@ -63,11 +67,8 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
             Product toProduct = mapper.toProduct(product);
             products[i] = toProduct;
         }
-        ProductGrid productGrid = new ProductGrid(products);
-        productGrid.setVerticalScrollingEnabled(true);
-        productGrid.setHeight("100px");
-        productGrid.setMaxHeight("500px");
-        productGrid.getStyle().set("margin-bottom", "15px");
+
+        initProductGrid(products);
         menuLayout.add(productGrid);
 
         menuLayout.setVisible(false);
@@ -84,6 +85,28 @@ public class StoreLayout extends Component implements HasComponents, HasStyle, S
         actionsLayout.add(menuButton, detailsButton, commentsButton);
 
         add(imageLayout, infoLayout, menuLayout, detailsLayout, commentsLayout, actionsLayout);
+    }
+
+    private void initProductGrid(Product[] data) {
+
+        productGrid.setItems(data);
+        productGrid.removeAllColumns();
+        productGrid.addColumn(be.fooda.frontend.model.product.Product::getName).setHeader("Product Name");
+        productGrid.addColumn(product -> product.getPrices().get(0).getAmount()).setHeader("Price");
+
+        productGrid.addComponentColumn(product -> {
+            final Button addButton = new Button(VaadinIcon.PLUS.create(), onClick -> {
+                new Notification(product.getName() + " is added.", 1000, Notification.Position.BOTTOM_CENTER).open();
+            });
+            addButton.addClassName(CARD_BUTTON_WITH_ICON.getValue());
+            return addButton;
+        }).setHeader("Add");
+
+        productGrid.getColumns().forEach(col -> col.setAutoWidth(true));
+        productGrid.getStyle().set("margin-bottom", "15px");
+        productGrid.setVerticalScrollingEnabled(true);
+        productGrid.setHeight("100px");
+        productGrid.setMaxHeight("500px");
     }
 
 }
