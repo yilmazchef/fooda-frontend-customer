@@ -28,13 +28,13 @@ public class ProductMapper {
 
         if (source == null) return null;
 
-        if (source.getName() != null && source.getName().isEmpty())
+        if (source.getName() != null && !source.getName().isEmpty())
             target.setName(source.getName());
 
         if (source.getId() != null && !source.getId().toString().isEmpty())
             target.seteProductId(source.getId().toString());
 
-        if (source.getDescription() != null && source.getDescription().isEmpty())
+        if (source.getDescription() != null && !source.getDescription().isEmpty())
             target.setDescription(source.getDescription());
 
         if (source.getDefaultImage() != null && !source.getDefaultImage().getUrl().isEmpty())
