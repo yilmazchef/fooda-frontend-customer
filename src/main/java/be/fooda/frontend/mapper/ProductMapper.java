@@ -42,8 +42,10 @@ public class ProductMapper {
 
         if (source.getPrices() != null && !source.getPrices().isEmpty()) {
             for (Price sourcePrice : source.getPrices()) {
-                if (sourcePrice.getDefault().equals(Boolean.TRUE))
+                if (sourcePrice.getDefault() != null && sourcePrice.getDefault().equals(Boolean.TRUE))
                     target.setPrice(sourcePrice.getAmount());
+                else
+                    target.setPrice(source.getPrices().get(0).getAmount());
             }
         }
 
